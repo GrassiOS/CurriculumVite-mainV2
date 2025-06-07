@@ -1,0 +1,526 @@
+@page "/CV/Docentes/{idDocente:int}/Contactos"
+@using Entidades.Modelos.CurriculumVite
+@using Entidades.DTO.CurriculumVite
+@using Servicios.IRepositorios.CurriculumVite
+@using AutoMapper
+@inject ISRepositorioContactoDocente ContactoServicios
+@inject ISRepositorioTipoContacto TipoContactoServicios
+@inject ISDocenteRepositorio DocenteServicios
+@inject IMapper Mapper
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>. Gestión de Contactos - UABC</PageTitle>
+
+<div class="container-fluid" style="background-color: #f8f9fa; min-height: 100vh; padding: 0;">
+    @if (cargando)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="text-center">
+                <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3 text-muted">Cargando información de contactos...</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Header con breadcrumb -->
+        <div class="bg-white border-bottom" style="padding: 1.5rem 2rem;">
+            <nav aria-label="breadcrumb" class="mb-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes" class="text-decoration-none" style="color: #2D6B3C;">
+                            <i class="fas fa-chalkboard-teacher me-1"></i>Docentes
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <span style="color: #6c757d;">@nombreCompletoDocente</span>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" style="color: #2D6B3C;">Contactos</li>
+                </ol>
+            </nav>
+            <h1 class="h2 mb-1" style="color: #2D6B3C; font-weight: 600;">
+                <i class="fas fa-address-book me-3" style="color: #4BB463;"></i>
+                Gestión de Contactos
+            </h1>
+            @if (!string.IsNullOrEmpty(nombreCompletoDocente))
+            {
+                <p class="text-muted mb-0">Docente: <strong>@nombreCompletoDocente</strong></p>
+            }
+        </div>
+
+        <!-- Contenido principal -->
+        <div style="padding: 2rem;">
+            <!-- Formulario de agregar contacto -->
+            <div class="mb-4">
+                <div class="bg-white rounded shadow-sm overflow-hidden">
+                    <!-- Header verde "Agregar Contacto" -->
+                    <div style="background-color: @(editando ? "#F4BF3A" : "#4BB463"); padding: 1rem 1.5rem;">
+                        <h3 class="mb-0 h5" style="color: @(editando ? "#2D6B3C" : "white"); font-weight: 600;">
+                            <i class="fas fa-@(editando ? "edit" : "plus") me-2"></i>
+                            @(editando ? "Editar" : "Agregar") Contacto
+                        </h3>
+                    </div>
+
+                    <!-- Formulario -->
+                    <div style="padding: 1.5rem;">
+                        <EditForm Model="contactoActual" OnValidSubmit="GuardarContacto">
+                            <DataAnnotationsValidator />
+                            
+                            <div class="row align-items-end g-3">
+                                <!-- Icono -->
+                                <div class="col-auto">
+                                    <label class="form-label small fw-semibold text-muted">Icono</label>
+                                    <div class="d-flex align-items-center justify-content-center border" 
+                                         style="width: 50px; height: 42px; background-color: @(tipoSeleccionado?.ColorFondo ?? "#e9ecef"); border-radius: 4px;">
+                                        <i class="@(tipoSeleccionado?.Icono ?? "fas fa-link")" 
+                                           style="color: @(tipoSeleccionado != null ? "white" : "#6c757d"); font-size: 1.2rem;"></i>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tipo de Contacto -->
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-semibold text-muted">Tipo de Contacto <span class="text-danger">*</span></label>
+                                    <InputSelect @bind-Value="contactoActual.IdTipoContacto" 
+                                                class="form-select" 
+                                                @onchange="CambiarTipoContacto"
+                                                style="height: 42px; border: 1px solid #dee2e6;">
+                                        <option value="">Seleccionar tipo...</option>
+                                        @if (tiposContacto != null)
+                                        {
+                                            @foreach (var tipo in tiposContacto)
+                                            {
+                                                <option value="@tipo.TipoContactoId">@tipo.Nombre</option>
+                                            }
+                                        }
+                                    </InputSelect>
+                                </div>
+
+                                <!-- URL/Enlace -->
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold text-muted">URL/Enlace <span class="text-danger">*</span></label>
+                                    <InputText @bind-Value="contactoActual.Url" 
+                                              class="form-control" 
+                                              placeholder="@(tipoSeleccionado?.PlaceholderTexto ?? "Ingrese la URL o información de contacto")"
+                                              style="height: 42px; border: 1px solid #dee2e6;" />
+                                </div>
+
+                                <!-- Botón Agregar -->
+                                <div class="col-auto">
+                                    <button type="submit" 
+                                            class="btn px-4 fw-semibold" 
+                                            style="background-color: @(editando ? "#F4BF3A" : "#4BB463"); 
+                                                   border: none; 
+                                                   color: @(editando ? "#2D6B3C" : "white");
+                                                   height: 42px; 
+                                                   border-radius: 4px;" 
+                                            disabled="@guardando">
+                                        @if (guardando)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-2"></span>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-@(editando ? "save" : "plus") me-2"></i>
+                                        }
+                                        @(editando ? "Actualizar" : "Agregar")
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Validaciones -->
+                            <div class="row mt-2">
+                                <div class="col-md-9 offset-md-1">
+                                    <ValidationMessage For="@(() => contactoActual.IdTipoContacto)" class="text-danger d-block small" />
+                                    <ValidationMessage For="@(() => contactoActual.Url)" class="text-danger d-block small" />
+                                    @if (tipoSeleccionado != null)
+                                    {
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            @GetAyudaTipoContacto(tipoSeleccionado.Nombre)
+                                        </small>
+                                    }
+                                </div>
+                                @if (editando)
+                                {
+                                    <div class="col-md-2 text-end">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="CancelarEdicion">
+                                            <i class="fas fa-times me-1"></i>Cancelar
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de contactos existentes -->
+            <div class="bg-white rounded shadow-sm overflow-hidden">
+                <!-- Header -->
+                <div style="background-color: #2D6B3C; padding: 1rem 1.5rem;">
+                    <h3 class="mb-0 h5" style="color: white; font-weight: 600;">
+                        <i class="fas fa-list me-2"></i>
+                        Contactos Registrados (@contactos.Count)
+                    </h3>
+                </div>
+
+                <!-- Contenido -->
+                <div style="padding: 1.5rem;">
+                    @if (!contactos.Any())
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-address-book" style="font-size: 3rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                            <h5 style="color: #6c757d; margin-bottom: 0.5rem;">No hay contactos registrados</h5>
+                            <p style="color: #6c757d; margin-bottom: 0;">Agregue el primer contacto usando el formulario anterior</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Contactos como filas -->
+                        <div class="d-flex flex-column" style="gap: 1rem;">
+                            @foreach (var contacto in contactos)
+                            {
+                                <div class="d-flex align-items-center p-3 border rounded" style="background-color: #fafafa;">
+                                    <!-- Icono grande -->
+                                    <div class="d-flex align-items-center justify-content-center me-3" 
+                                         style="width: 50px; height: 50px; background-color: @contacto.ColorTipoContacto; border-radius: 6px;">
+                                        <i class="@contacto.IconoTipoContacto" style="color: white; font-size: 1.3rem;"></i>
+                                    </div>
+
+                                    <!-- Información del contacto -->
+                                    <div class="flex-grow-1">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <span class="text-muted small fw-semibold" style="text-transform: uppercase; font-size: 0.75rem;">TIPO DE CONTACTO</span>
+                                                <div class="fw-bold" style="color: #2D6B3C; font-size: 0.95rem;">@contacto.NombreTipoContacto</div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <span class="text-muted small fw-semibold" style="text-transform: uppercase; font-size: 0.75rem;">URL</span>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="text-truncate me-2" style="color: #495057; font-size: 0.95rem;" title="@contacto.Url">@contacto.Url</span>
+                                                    @if (EsUrlValida(contacto.Url))
+                                                    {
+                                                        <a href="@contacto.UrlFormateada" target="_blank" 
+                                                           class="btn btn-outline-primary btn-sm"
+                                                           style="padding: 0.2rem 0.5rem; font-size: 0.75rem;"
+                                                           title="Abrir enlace">
+                                                            <i class="fas fa-external-link-alt"></i>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-end">
+                                                <!-- Botones de acción -->
+                                                <div class="d-flex gap-1 justify-content-end">
+                                                    <button type="button" 
+                                                            class="btn btn-outline-warning btn-sm" 
+                                                            style="padding: 0.3rem 0.6rem;"
+                                                            @onclick="() => EditarContacto(contacto)"
+                                                            title="Editar contacto">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" 
+                                                            class="btn btn-outline-danger btn-sm" 
+                                                            style="padding: 0.3rem 0.6rem;"
+                                                            @onclick="() => EliminarContacto(contacto.IdContacto)"
+                                                            title="Eliminar contacto">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Botones de navegación -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn btn-outline-secondary" @onclick="VolverADocente">
+                                    <i class="fas fa-arrow-left me-2"></i>Volver al Docente
+                                </button>
+                                
+                                <div class="text-center">
+                                    <small class="text-muted">Paso 1 de 4 - Información de Contacto</small>
+                                </div>
+                                
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn" style="background-color: #4BB463; color: white;" @onclick="ContinuarAPublicaciones">
+                                        Continuar a Publicaciones <i class="fas fa-arrow-right me-1"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" @onclick="FinalizarGestion">
+                                        <i class="fas fa-times me-2"></i>Salir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int IdDocente { get; set; }
+
+    private ContactoDocenteDTO contactoActual = new();
+    private List<ContactoDocenteDTO> contactos = new();
+    private List<TipoContactoDTO> tiposContacto = new();
+    private TipoContactoDTO? tipoSeleccionado;
+    private string nombreCompletoDocente = "";
+    
+    private bool cargando = true;
+    private bool guardando = false;
+    private bool editando = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await CargarDatos();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al cargar datos: {ex.Message}");
+        }
+        finally
+        {
+            cargando = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task CargarDatos()
+    {
+        // Cargar información del docente
+        var resultadoDocente = await DocenteServicios.ObtenerDocente<DocenteDTO>(IdDocente);
+        if (resultadoDocente.Resultado && resultadoDocente.Entidad != null)
+        {
+            var docente = resultadoDocente.Entidad;
+            nombreCompletoDocente = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim();
+        }
+
+        // Cargar tipos de contacto y mapear a DTO
+        var tiposEntidades = await TipoContactoServicios.GetAllAsync();
+        tiposContacto = Mapper.Map<List<TipoContactoDTO>>(tiposEntidades);
+
+        // Cargar contactos existentes
+        await CargarContactos();
+
+        // Inicializar contacto actual
+        contactoActual = new ContactoDocenteDTO { IdDocente = IdDocente };
+    }
+
+    private async Task CargarContactos()
+    {
+        try
+        {
+            var contactosEntidades = await ContactoServicios.GetContactosByDocenteIdAsync(IdDocente);
+            contactos = new List<ContactoDocenteDTO>();
+            
+            foreach (var contactoEntidad in contactosEntidades)
+            {
+                var contactoDto = Mapper.Map<ContactoDocenteDTO>(contactoEntidad);
+                
+                // Asignar el TipoContactoDTO correspondiente
+                contactoDto.TipoContacto = tiposContacto.FirstOrDefault(t => t.TipoContactoId == contactoDto.IdTipoContacto);
+                contactoDto.NombreTipoContacto = contactoDto.TipoContacto?.Nombre;
+                
+                contactos.Add(contactoDto);
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"❌ Error al cargar contactos: {ex.Message}");
+            contactos = new List<ContactoDocenteDTO>(); // Lista vacía como fallback
+        }
+    }
+
+    private void CambiarTipoContacto(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int tipoId) && tipoId > 0)
+        {
+            tipoSeleccionado = tiposContacto.FirstOrDefault(t => t.TipoContactoId == tipoId);
+        }
+        else
+        {
+            tipoSeleccionado = null;
+        }
+        StateHasChanged();
+    }
+
+    private string GetAyudaTipoContacto(string nombreTipo)
+    {
+        return nombreTipo.ToLower() switch
+        {
+            var n when n.Contains("email") || n.Contains("correo") => "Ingrese la dirección de correo electrónico",
+            var n when n.Contains("teléfono") || n.Contains("telefono") => "Ingrese el número de teléfono con código de país",
+            var n when n.Contains("linkedin") => "URL completa del perfil de LinkedIn",
+            var n when n.Contains("twitter") => "URL del perfil de Twitter/X",
+            var n when n.Contains("github") => "URL del perfil de GitHub",
+            var n when n.Contains("web") || n.Contains("página") => "URL completa del sitio web",
+            _ => "Ingrese la URL o información de contacto"
+        };
+    }
+
+    private async Task GuardarContacto()
+    {
+        try
+        {
+            guardando = true;
+            StateHasChanged();
+
+            // Validar que no exista ya un contacto del mismo tipo (solo al crear)
+            if (!editando && await ContactoServicios.ExisteContactoConTipoParaDocenteAsync(IdDocente, contactoActual.IdTipoContacto))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "❌ Ya existe un contacto de este tipo para el docente.");
+                return;
+            }
+
+            var entidad = Mapper.Map<E_ContactoDocente>(contactoActual);
+
+            if (editando)
+            {
+                try
+                {
+                    await ContactoServicios.UpdateAsync(entidad);
+                    await JSRuntime.InvokeVoidAsync("alert", "✅ Contacto actualizado exitosamente");
+                    editando = false;
+                }
+                catch (KeyNotFoundException)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "❌ El contacto que intenta modificar ya no existe. La página se actualizará.");
+                    await CargarContactos(); // Recargar para mostrar estado actual
+                    return;
+                }
+                catch (InvalidOperationException ex) when (ex.Message.Contains("otro proceso"))
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "❌ Este contacto fue modificado por otro usuario. La página se actualizará.");
+                    await CargarContactos(); // Recargar para mostrar estado actual
+                    return;
+                }
+            }
+            else
+            {
+                await ContactoServicios.AddAsync(entidad);
+                await JSRuntime.InvokeVoidAsync("alert", "✅ Contacto agregado exitosamente");
+            }
+
+            // Recargar contactos y limpiar formulario
+            await CargarContactos();
+            contactoActual = new ContactoDocenteDTO { IdDocente = IdDocente };
+            tipoSeleccionado = null;
+        }
+        catch (Exception ex)
+        {
+            var mensaje = ex.Message.Contains("tracking") || ex.Message.Contains("tracked")
+                ? "❌ Error de sistema. Por favor, recargue la página e intente nuevamente."
+                : $"❌ Error al guardar contacto: {ex.Message}";
+            
+            await JSRuntime.InvokeVoidAsync("alert", mensaje);
+        }
+        finally
+        {
+            guardando = false;
+            StateHasChanged();
+        }
+    }
+
+    private void EditarContacto(ContactoDocenteDTO contacto)
+    {
+        // Crear una copia limpia para evitar problemas de referencia
+        contactoActual = new ContactoDocenteDTO
+        {
+            IdContacto = contacto.IdContacto,
+            IdDocente = contacto.IdDocente,
+            IdTipoContacto = contacto.IdTipoContacto,
+            Url = contacto.Url?.Trim() // Limpiar espacios
+        };
+        
+        tipoSeleccionado = tiposContacto.FirstOrDefault(t => t.TipoContactoId == contacto.IdTipoContacto);
+        editando = true;
+        StateHasChanged();
+    }
+
+    private void CancelarEdicion()
+    {
+        contactoActual = new ContactoDocenteDTO { IdDocente = IdDocente };
+        tipoSeleccionado = null;
+        editando = false;
+        StateHasChanged();
+    }
+
+    private async Task EliminarContacto(int idContacto)
+    {
+        var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
+            "🗑️ ¿Estás seguro de que deseas eliminar este contacto?");
+
+        if (confirmado)
+        {
+            try
+            {
+                await ContactoServicios.DeleteAsync(idContacto);
+                await JSRuntime.InvokeVoidAsync("alert", "✅ Contacto eliminado exitosamente");
+                await CargarContactos();
+                
+                // Si estábamos editando este contacto, cancelar la edición
+                if (editando && contactoActual.IdContacto == idContacto)
+                {
+                    CancelarEdicion();
+                }
+            }
+            catch (KeyNotFoundException)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "❌ El contacto que intenta eliminar ya no existe. La página se actualizará.");
+                await CargarContactos(); // Recargar para mostrar estado actual
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("otro proceso"))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "❌ Este contacto fue eliminado por otro usuario. La página se actualizará.");
+                await CargarContactos(); // Recargar para mostrar estado actual
+            }
+            catch (Exception ex)
+            {
+                var mensaje = ex.Message.Contains("concurrency") || ex.Message.Contains("tracking")
+                    ? "❌ Error de sincronización. Por favor, recargue la página e intente nuevamente."
+                    : $"❌ Error al eliminar contacto: {ex.Message}";
+                
+                await JSRuntime.InvokeVoidAsync("alert", mensaje);
+            }
+        }
+    }
+
+    private bool EsUrlValida(string url)
+    {
+        return !string.IsNullOrEmpty(url) && 
+               (url.StartsWith("http://") || url.StartsWith("https://") || 
+                url.Contains("@") || url.Contains(".") || url.StartsWith("+"));
+    }
+
+    private void VolverADocente()
+    {
+        Navigation.NavigateTo($"/CV/Docentes/Editar/{IdDocente}");
+    }
+
+    private void ContinuarAPublicaciones()
+    {
+        Navigation.NavigateTo($"/CV/Docentes/{IdDocente}/Publicaciones");
+    }
+
+    private void FinalizarGestion()
+    {
+        Navigation.NavigateTo("/CV/Docentes");
+    }
+} 

@@ -1,0 +1,369 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Presentacion
+build_property.RootNamespace = Presentacion
+build_property.ProjectDir = /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/DocumentosEducacion.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvRG9jdW1lbnRvc0VkdWNhY2lvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/DocumentosExperiencia.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvRG9jdW1lbnRvc0V4cGVyaWVuY2lhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/DocumentosProyecto.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvRG9jdW1lbnRvc1Byb3llY3RvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/DocumentosPublicacion.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvRG9jdW1lbnRvc1B1YmxpY2FjaW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/GestionContactos.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvR2VzdGlvbkNvbnRhY3Rvcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/GestionDocente.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvR2VzdGlvbkRvY2VudGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/GestorEducacion.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvR2VzdG9yRWR1Y2FjaW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/GestorExperiencia.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvR2VzdG9yRXhwZXJpZW5jaWEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/GestorProyectos.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvR2VzdG9yUHJveWVjdG9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/GestorPublicaciones.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvR2VzdG9yUHVibGljYWNpb25lcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/ListarDocentes.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvTGlzdGFyRG9jZW50ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/VerDocente.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvVmVyRG9jZW50ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/VerEducacion.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvVmVyRWR1Y2FjaW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/VerExperiencia.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvVmVyRXhwZXJpZW5jaWEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/VerProyectos.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvVmVyUHJveWVjdG9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Docentes/VerPublicaciones.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvRG9jZW50ZXMvVmVyUHVibGljYWNpb25lcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Profesores/GestionProfesor.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvUHJvZmVzb3Jlcy9HZXN0aW9uUHJvZmVzb3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Profesores/ListarProfesores.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvUHJvZmVzb3Jlcy9MaXN0YXJQcm9mZXNvcmVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/CV/Profesores/VerProfesor.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQ1YvUHJvZmVzb3Jlcy9WZXJQcm9mZXNvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/Carreras/GestionCarrera.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL0NhcnJlcmFzL0dlc3Rpb25DYXJyZXJhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/Carreras/ListarCarreras.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL0NhcnJlcmFzL0xpc3RhckNhcnJlcmFzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/Materias/AgregarMateriaCarrera.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL01hdGVyaWFzL0FncmVnYXJNYXRlcmlhQ2FycmVyYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/Materias/AgregarPracticaTallerMateria.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL01hdGVyaWFzL0FncmVnYXJQcmFjdGljYVRhbGxlck1hdGVyaWEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/Materias/AgregarUnidadesMateria.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL01hdGVyaWFzL0FncmVnYXJVbmlkYWRlc01hdGVyaWEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/Materias/GestionMateria.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL01hdGVyaWFzL0dlc3Rpb25NYXRlcmlhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/Materias/ListarMaterias.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL01hdGVyaWFzL0xpc3Rhck1hdGVyaWFzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/PlanDeEstudio/AgregarMateriaPlanEstudios.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL1BsYW5EZUVzdHVkaW8vQWdyZWdhck1hdGVyaWFQbGFuRXN0dWRpb3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/PlanDeEstudio/GestionPlanEstudio.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL1BsYW5EZUVzdHVkaW8vR2VzdGlvblBsYW5Fc3R1ZGlvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/PlanesDeEstudio/PlanDeEstudio/ListarPlanesDeEstudio.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvUGxhbmVzRGVFc3R1ZGlvL1BsYW5EZUVzdHVkaW8vTGlzdGFyUGxhbmVzRGVFc3R1ZGlvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Areas/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvX0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/AccessDenied.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0FjY2Vzc0RlbmllZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ConfirmEmail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0NvbmZpcm1FbWFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ConfirmEmailChange.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0NvbmZpcm1FbWFpbENoYW5nZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ExternalLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0V4dGVybmFsTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ForgotPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ZvcmdvdFBhc3N3b3JkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ForgotPasswordConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ZvcmdvdFBhc3N3b3JkQ29uZmlybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/InvalidPasswordReset.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ludmFsaWRQYXNzd29yZFJlc2V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/InvalidUser.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0ludmFsaWRVc2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Lockout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvY2tvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/LoginWith2fa.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvZ2luV2l0aDJmYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/LoginWithRecoveryCode.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL0xvZ2luV2l0aFJlY292ZXJ5Q29kZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/ChangePassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9DaGFuZ2VQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/DeletePersonalData.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9EZWxldGVQZXJzb25hbERhdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/Disable2fa.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9EaXNhYmxlMmZhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/Email.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9FbWFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/EnableAuthenticator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9FbmFibGVBdXRoZW50aWNhdG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/ExternalLogins.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9FeHRlcm5hbExvZ2lucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/GenerateRecoveryCodes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9HZW5lcmF0ZVJlY292ZXJ5Q29kZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9JbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/PersonalData.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9QZXJzb25hbERhdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/ResetAuthenticator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9SZXNldEF1dGhlbnRpY2F0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/SetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9TZXRQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/TwoFactorAuthentication.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9Ud29GYWN0b3JBdXRoZW50aWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Manage/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL01hbmFnZS9fSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1JlZ2lzdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/RegisterConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1JlZ2lzdGVyQ29uZmlybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ResendEmailConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1Jlc2VuZEVtYWlsQ29uZmlybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ResetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1Jlc2V0UGFzc3dvcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/ResetPasswordConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL1Jlc2V0UGFzc3dvcmRDb25maXJtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Pages/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1BhZ2VzL19JbXBvcnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Shared/ExternalLoginPicker.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9FeHRlcm5hbExvZ2luUGlja2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Shared/ManageLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9NYW5hZ2VMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Shared/ManageNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9NYW5hZ2VOYXZNZW51LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Shared/NoEstaLaPagina.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9Ob0VzdGFMYVBhZ2luYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Shared/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9SZWRpcmVjdFRvTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Shared/ShowRecoveryCodes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9TaG93UmVjb3ZlcnlDb2Rlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Account/Shared/StatusMessage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BY2NvdW50L1NoYXJlZC9TdGF0dXNNZXNzYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Layout/NavControlEscolar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2Q29udHJvbEVzY29sYXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Layout/NavGestionUsuarios.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2R2VzdGlvblVzdWFyaW9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Pages/Auth.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BdXRoLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Shared/EncabezadoFIAD.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvRW5jYWJlemFkb0ZJQUQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Shared/EncabezadoPlanesEstudio.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvRW5jYWJlemFkb1BsYW5lc0VzdHVkaW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Shared/ModalEducacion.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvTW9kYWxFZHVjYWNpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Shared/ModalExperiencia.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvTW9kYWxFeHBlcmllbmNpYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Shared/ModalProyecto.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvTW9kYWxQcm95ZWN0by5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Shared/ModalPublicacion.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvTW9kYWxQdWJsaWNhY2lvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Shared/QuillEditor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9TaGFyZWQvUXVpbGxFZGl0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9fSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-iljuwvfofd
+
+[/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/Components/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-qph9gystaj

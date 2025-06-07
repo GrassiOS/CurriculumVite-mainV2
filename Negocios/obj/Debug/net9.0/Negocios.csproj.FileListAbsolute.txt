@@ -1,0 +1,17 @@
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/bin/Debug/net9.0/Negocios.deps.json
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/bin/Debug/net9.0/Negocios.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/bin/Debug/net9.0/Negocios.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/bin/Debug/net9.0/Datos.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/bin/Debug/net9.0/Entidades.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/bin/Debug/net9.0/Datos.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/bin/Debug/net9.0/Entidades.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.csproj.AssemblyReference.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.GeneratedMSBuildEditorConfig.editorconfig
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.AssemblyInfoInputs.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.AssemblyInfo.cs
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.csproj.CoreCompileInputs.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.csproj.Up2Date
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/refint/Negocios.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/ref/Negocios.dll

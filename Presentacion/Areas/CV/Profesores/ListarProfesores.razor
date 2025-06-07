@@ -1,0 +1,478 @@
+@page "/ListarProfesores"
+@page "/CurriculumVite"
+
+@using Entidades.DTO.CurriculumVite;
+@using Entidades.Modelos.CurriculumVite;
+@using Microsoft.AspNetCore.Components.Forms;
+@using Microsoft.AspNetCore.Components.Routing;
+
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRunTime
+
+<style>
+    :root {
+        --uabc-primary-green: #2D6B3C;
+        --uabc-secondary-green: #4BB463;
+        --uabc-golden-yellow: #F4BF3A;
+        --uabc-pure-white: #FFFFFF;
+        --uabc-light-gray: #F8F9FA;
+        --uabc-medium-gray: #9CA3AF;
+        --uabc-danger-red: #FCA5A5;
+    }
+
+    body {
+        background-color: var(--uabc-light-gray);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    .page-header {
+        background-color: var(--uabc-pure-white);
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #E5E7EB;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        color: var(--uabc-primary-green);
+        font-size: 2rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .search-section {
+        background-color: var(--uabc-pure-white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input {
+        border: 2px solid #E5E7EB;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
+        width: 100%;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: var(--uabc-secondary-green);
+        box-shadow: 0 0 0 3px rgba(75, 180, 99, 0.1);
+    }
+
+    .btn-new-professor {
+        background-color: var(--uabc-secondary-green);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-new-professor:hover {
+        background-color: #3da353;
+        color: white;
+    }
+
+    .professors-table-container {
+        background-color: var(--uabc-pure-white);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .professors-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-header {
+        background-color: var(--uabc-light-gray);
+        border-bottom: 2px solid #E5E7EB;
+    }
+
+    .table-header th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: var(--uabc-primary-green);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .table-row {
+        border-bottom: 1px solid #F3F4F6;
+        transition: background-color 0.2s ease;
+    }
+
+    .table-row:hover {
+        background-color: #F9FAFB;
+    }
+
+    .table-cell {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .professor-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .professor-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--uabc-primary-green), var(--uabc-secondary-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+    }
+
+    .professor-details h4 {
+        margin: 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .professor-details p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: var(--uabc-medium-gray);
+    }
+
+    .contact-info {
+        color: #6B7280;
+        font-size: 0.875rem;
+    }
+
+    .contact-email {
+        color: var(--uabc-primary-green);
+        text-decoration: none;
+    }
+
+    .contact-email:hover {
+        text-decoration: underline;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.375rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+
+    .status-available {
+        background-color: rgba(75, 180, 99, 0.1);
+        color: var(--uabc-secondary-green);
+    }
+
+    .status-unavailable {
+        background-color: rgba(252, 165, 165, 0.2);
+        color: #DC2626;
+    }
+
+    .status-off-duty {
+        background-color: rgba(156, 163, 175, 0.2);
+        color: var(--uabc-medium-gray);
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .status-available .status-dot {
+        background-color: var(--uabc-secondary-green);
+    }
+
+    .status-unavailable .status-dot {
+        background-color: #DC2626;
+    }
+
+    .status-off-duty .status-dot {
+        background-color: var(--uabc-medium-gray);
+    }
+
+    .actions-cell {
+        text-align: right;
+    }
+
+    .action-menu {
+        position: relative;
+        display: inline-block;
+    }
+
+    .action-trigger {
+        background: none;
+        border: none;
+        color: var(--uabc-medium-gray);
+        font-size: 1.25rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+
+    .action-trigger:hover {
+        background-color: #F3F4F6;
+        color: var(--uabc-primary-green);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .action-btn {
+        padding: 0.5rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-view {
+        background-color: var(--uabc-secondary-green);
+        color: white;
+    }
+
+    .btn-view:hover {
+        background-color: #3da353;
+    }
+
+    .btn-edit {
+        background-color: var(--uabc-golden-yellow);
+        color: #1F2937;
+    }
+
+    .btn-edit:hover {
+        background-color: #FBBF24;
+    }
+
+    .btn-delete {
+        background-color: var(--uabc-danger-red);
+        color: #7F1D1D;
+    }
+
+    .btn-delete:hover {
+        background-color: #F87171;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--uabc-medium-gray);
+    }
+
+    .empty-state-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title h3 {
+        margin: 0;
+        color: var(--uabc-primary-green);
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
+
+    .professor-count {
+        color: var(--uabc-medium-gray);
+        font-size: 0.875rem;
+        background-color: #F3F4F6;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+    }
+</style>
+
+<div class="page-header">
+    <div class="main-container">
+        <div class="d-flex align-items-center justify-content-between">
+            <h1 class="page-title">Professors</h1>
+            <NavLink href="GestionProfesor" class="btn-new-professor">
+                <i class="bi bi-plus"></i>
+                New Professor
+            </NavLink>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="search-section">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <InputText @bind-Value="CriterioBusqueda" 
+                          class="search-input" 
+                          placeholder="Search..." />
+            </div>
+            <div class="col-md-4 d-flex justify-content-end">
+                <button class="btn btn-outline-secondary" @onclick="BuscarProfesor">
+                    <i class="bi bi-sliders"></i>
+                    Filter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">
+        <h3>All Professors</h3>
+        <span class="professor-count">@LstProfesores.Count() professors</span>
+    </div>
+
+    <div class="professors-table-container">
+        @if (!LstProfesores.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h4>No professors found</h4>
+                <p>Get started by adding your first professor.</p>
+            </div>
+        }
+        else
+        {
+            <table class="professors-table">
+                <thead class="table-header">
+                    <tr>
+                        <th>Professor Name</th>
+                        <th>Contact Details</th>
+                        <th>Status</th>
+                        <th>Area of Teaching</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var profesor in LstProfesores)
+                    {
+                        <tr class="table-row">
+                            <td class="table-cell">
+                                <div class="professor-info">
+                                    <div class="professor-avatar">
+                                        @GetInitials(profesor.NombreDocente, profesor.ApellidoPaterno)
+                                    </div>
+                                    <div class="professor-details">
+                                        <h4>@profesor.NombreDocente @profesor.ApellidoPaterno @profesor.ApellidoMaterno</h4>
+                                        <p>@GetProfessorTitle(profesor.Cedula)</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-cell">
+                                <div class="contact-info">
+                                    <div>@profesor.Telefono</div>
+                                    <a href="mailto:@profesor.Email" class="contact-email">@profesor.Email</a>
+                                </div>
+                            </td>
+                            <td class="table-cell">
+                                @{
+                                    var statusClass = GetStatusClass(profesor.EstadoDocenteBool);
+                                    var statusText = GetStatusText(profesor.EstadoDocenteBool);
+                                }
+                                <span class="status-badge @statusClass">
+                                    <span class="status-dot"></span>
+                                    @statusText
+                                </span>
+                            </td>
+                            <td class="table-cell">
+                                <span class="contact-info">@(profesor.Especialidad ?? "Not specified")</span>
+                            </td>
+                            <td class="table-cell actions-cell">
+                                <div class="action-buttons">
+                                    <NavLink href="@($"VerProfesor/{profesor.IdDocente}")" 
+                                            class="action-btn btn-view" 
+                                            title="View professor">
+                                        <i class="bi bi-eye"></i>
+                                    </NavLink>
+                                    <NavLink href="@($"GestionProfesor/{profesor.IdDocente}")" 
+                                            class="action-btn btn-edit" 
+                                            title="Edit professor">
+                                        <i class="bi bi-pencil"></i>
+                                    </NavLink>
+                                    <button class="action-btn btn-delete" 
+                                           title="Delete professor" 
+                                           @onclick="()=>BorrarProfesor(profesor.IdDocente)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <button class="action-trigger">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@code {
+    private string GetInitials(string firstName, string? lastName)
+    {
+        var firstInitial = !string.IsNullOrEmpty(firstName) ? firstName[0].ToString() : "";
+        var lastInitial = !string.IsNullOrEmpty(lastName) ? lastName[0].ToString() : "";
+        return (firstInitial + lastInitial).ToUpper();
+    }
+
+    private string GetProfessorTitle(string? cedula)
+    {
+        if (!string.IsNullOrEmpty(cedula))
+        {
+            return "Professor";
+        }
+        return "Lecturer";
+    }
+
+    private string GetStatusClass(bool estadoDocente)
+    {
+        return estadoDocente ? "status-available" : "status-unavailable";
+    }
+
+    private string GetStatusText(bool estadoDocente)
+    {
+        return estadoDocente ? "Available" : "Unavailable";
+    }
+} 

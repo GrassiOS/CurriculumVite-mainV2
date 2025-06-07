@@ -1,0 +1,502 @@
+@page "/CV/Docentes/{idDocente:int}/Proyecto/{idProyecto:int}/Documentos"
+@using Entidades.DTO.CurriculumVite
+@using Entidades.Modelos.CurriculumVite
+@using Servicios.IRepositorios.CurriculumVite
+@using Servicios.IRepositorios
+@using Entidades.Utilidades
+@inject ISRepositorioDocumento DocumentoServicios
+@inject ISRepositorioProyecto ProyectoServicios
+@inject ISDocenteRepositorio DocenteServicios
+@inject IDocumentRepository DocumentRepository
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Documentos de Proyecto - UABC</PageTitle>
+
+<div class="container-fluid" style="background-color: #F8F9FA; min-height: 100vh; padding: 0;">
+    @if (CargandoDocumentos)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="text-center">
+                <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3 text-muted">Cargando documentos del proyecto...</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Header con breadcrumb -->
+        <div class="bg-white border-bottom" style="padding: 1.5rem 2rem;">
+            <nav aria-label="breadcrumb" class="mb-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes" class="text-decoration-none" style="color: #2D6B3C;">
+                            <i class="fas fa-chalkboard-teacher me-1"></i>Docentes
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <span style="color: #6c757d;">@NombreDocente</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes/@IdDocente/Proyectos" class="text-decoration-none" style="color: #2D6B3C;">Proyectos</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" style="color: #2D6B3C;">Documentos</li>
+                </ol>
+            </nav>
+            <h1 class="h2 mb-1" style="color: #2D6B3C; font-weight: 600;">
+                <i class="fas fa-file-alt me-3" style="color: #4BB463;"></i>
+                Documentos de Proyecto
+            </h1>
+            @if (ProyectoActual != null)
+            {
+                <p class="text-muted mb-0">
+                    Proyecto: <strong>@ProyectoActual.Titulo</strong>
+                    @if (!string.IsNullOrEmpty(ProyectoActual.Institucion))
+                    {
+                        <span> - @ProyectoActual.Institucion</span>
+                    }
+                </p>
+            }
+        </div>
+
+        <!-- Contenido principal -->
+        <div style="padding: 2rem;">
+            <!-- Botón para subir nuevo documento -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <button class="btn btn-success" @onclick="AbrirModalDocumento">
+                        <i class="fas fa-upload me-2"></i>Subir Nuevo Documento
+                    </button>
+                </div>
+            </div>
+
+            @if (!DocumentosDeProyecto.Any())
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-file-alt" style="font-size: 4rem; color: #E9ECEF;"></i>
+                        </div>
+                        <h4 class="text-muted">No hay documentos para este proyecto</h4>
+                        <p class="text-muted mb-4">
+                            Los documentos se pueden agregar desde el formulario de edición de proyecto.
+                        </p>
+                        <button class="btn btn-outline-secondary" @onclick="RegresarAProyectos">
+                            <i class="fas fa-arrow-left"></i> Volver a Proyectos
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header" style="background-color: #2D6B3C; color: white;">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-file-alt me-2"></i>
+                                    Documentos de Evidencia (@DocumentosDeProyecto.Count())
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                @foreach (var documento in DocumentosDeProyecto)
+                                {
+                                    <div class="document-card border-bottom p-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="document-icon me-3">
+                                                        <i class="fas fa-file-pdf" style="color: #DC3545; font-size: 2rem;"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1" style="color: #2D6B3C;">@documento.Titulo</h6>
+                                                        @if (!string.IsNullOrEmpty(documento.Descripcion))
+                                                        {
+                                                            <p class="text-muted small mb-1">@documento.Descripcion</p>
+                                                        }
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-calendar me-1"></i>
+                                                            Subido: @documento.FechaSubida.ToString("dd/MM/yyyy HH:mm")
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-end">
+                                                <div class="btn-group" role="group">
+                                                    <a href="@documento.Url" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                        <i class="fas fa-eye"></i> Ver
+                                                    </a>
+                                                    <a href="@documento.Url" download class="btn btn-outline-success btn-sm">
+                                                        <i class="fas fa-download"></i> Descargar
+                                                    </a>
+                                                    <button class="btn btn-outline-danger btn-sm" @onclick="() => EliminarDocumento(documento)">
+                                                        <i class="fas fa-trash"></i> Eliminar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Botón de regreso -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0">
+                        <div class="card-body text-center">
+                            <button class="btn btn-secondary" @onclick="RegresarAProyectos">
+                                <i class="fas fa-arrow-left me-2"></i>Regresar a Proyectos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal para Subir Documento -->
+@if (MostrarModalDocumento)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #2D6B3C; color: white;">
+                    <h5 class="modal-title">
+                        <i class="fas fa-upload me-2"></i>Subir Nuevo Documento
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CerrarModalDocumento"></button>
+                </div>
+                <div class="modal-body">
+                    @if (SubiendoArchivo)
+                    {
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">Subiendo archivo...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Subiendo documento...</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Título del Documento</label>
+                            <input type="text" class="form-control" id="titulo" @bind="NuevoDocumento.Titulo" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción (opcional)</label>
+                            <textarea class="form-control" id="descripcion" rows="3" @bind="NuevoDocumento.Descripcion"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="archivo" class="form-label">Seleccionar Archivo</label>
+                            <InputFile id="archivo" class="form-control" OnChange="OnFileSelected" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                            <div class="form-text">Formatos permitidos: PDF, DOC, DOCX, JPG, JPEG, PNG. Máximo 50MB.</div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(MensajeArchivo))
+                        {
+                            <div class="alert @(EsErrorArchivo ? "alert-danger" : "alert-success")" role="alert">
+                                @MensajeArchivo
+                            </div>
+                        }
+                        @if (ArchivoSeleccionado != null)
+                        {
+                            <div class="alert alert-info">
+                                <i class="fas fa-file"></i> @ArchivoSeleccionado.Name
+                                <br />
+                                <small>Tamaño: @(Math.Round(ArchivoSeleccionado.Size / 1024.0 / 1024.0, 2)) MB</small>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CerrarModalDocumento">Cancelar</button>
+                    <button type="button" class="btn btn-success" @onclick="SubirDocumento" disabled="@(SubiendoArchivo || ArchivoSeleccionado == null)">
+                        <i class="fas fa-upload me-2"></i>Subir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .document-card:hover {
+        background-color: #F8F9FA;
+        transition: background-color 0.2s;
+    }
+    
+    .document-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background-color: #F8F9FA;
+        border-radius: 8px;
+    }
+    
+    .btn-group .btn {
+        margin: 0 2px;
+    }
+    
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .document-card .card-body {
+            padding: 1rem;
+        }
+        
+        .document-card .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+</style>
+
+@code {
+    [Parameter] public int IdDocente { get; set; }
+    [Parameter] public int IdProyecto { get; set; }
+
+    private bool CargandoDocumentos = true;
+    private List<E_Documento> DocumentosDeProyecto = new();
+    private E_Proyecto? ProyectoActual;
+    private string NombreDocente = "";
+    private string nombreCompletoDocente = "";
+    private string numeroEmpleado = "";
+
+    // Variables para el modal de subir documento
+    private bool MostrarModalDocumento;
+    private bool SubiendoArchivo;
+    private IBrowserFile? ArchivoSeleccionado;
+    private string MensajeArchivo = "";
+    private bool EsErrorArchivo;
+    private string UrlDocumento = "";
+
+    private class NuevoDocumentoModel
+    {
+        public string? Titulo { get; set; }
+        public string? Descripcion { get; set; }
+    }
+
+    private NuevoDocumentoModel NuevoDocumento = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await CargarDatos();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error al cargar datos: {ex.Message}");
+        }
+        finally
+        {
+            CargandoDocumentos = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task CargarDatos()
+    {
+        // Cargar información del docente
+        var resultadoDocente = await DocenteServicios.ObtenerDocente<DocenteDTO>(IdDocente);
+        if (resultadoDocente.Resultado && resultadoDocente.Entidad != null)
+        {
+            var docente = resultadoDocente.Entidad;
+            NombreDocente = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim();
+            nombreCompletoDocente = NombreDocente;
+            numeroEmpleado = docente.NumeroEmpleado ?? "";
+        }
+
+        // Cargar información del proyecto
+        var todosProyectos = await ProyectoServicios.GetAllAsync();
+        ProyectoActual = todosProyectos.FirstOrDefault(p => p.IdProyecto == IdProyecto);
+
+        // Cargar documentos del proyecto
+        var todosDocumentos = await DocumentoServicios.GetAllAsync();
+        DocumentosDeProyecto = todosDocumentos
+            .Where(d => d.IdDocente == IdDocente && d.IdProyecto == IdProyecto)
+            .OrderByDescending(d => d.FechaSubida)
+            .ToList();
+    }
+
+    private async Task EliminarDocumento(E_Documento documento)
+    {
+        var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
+            $"¿Está seguro de que desea eliminar el documento '{documento.Titulo}'?");
+        
+        if (confirmado)
+        {
+            try
+            {
+                // 1. Extraer el ID de Drive de la URL
+                string? driveId = null;
+                if (!string.IsNullOrEmpty(documento.Url))
+                {
+                    try
+                    {
+                        var uri = new Uri(documento.Url);
+                        if (uri.Host.Contains("drive.google.com"))
+                        {
+                            if (uri.AbsolutePath.Contains("/file/d/"))
+                            {
+                                driveId = uri.AbsolutePath.Split("/file/d/")[1].Split('/')[0];
+                            }
+                            else if (uri.Query.Contains("id="))
+                            {
+                                driveId = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("id");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await JSRuntime.InvokeVoidAsync("console.error", $"Error al extraer ID de Drive: {ex.Message}");
+                    }
+                }
+
+                // 2. Si encontramos el ID de Drive, intentar eliminar primero de Drive
+                if (!string.IsNullOrEmpty(driveId))
+                {
+                    try
+                    {
+                        var eliminadoDeDrive = await DocumentRepository.EliminarDocumentoAsync(driveId);
+                        if (!eliminadoDeDrive)
+                        {
+                            if (!await JSRuntime.InvokeAsync<bool>("confirm", 
+                                "No se pudo eliminar el archivo de Google Drive. ¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    catch (Exception driveEx)
+                    {
+                        if (!await JSRuntime.InvokeAsync<bool>("confirm", 
+                            $"Error al eliminar de Google Drive: {driveEx.Message}\n\n¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                        {
+                            return;
+                        }
+                    }
+                }
+
+                // 3. Eliminar de la base de datos
+                await DocumentoServicios.DeleteAsync(documento.IdDocumento);
+                await JSRuntime.InvokeVoidAsync("alert", "Documento eliminado correctamente");
+                await CargarDatos();
+            }
+            catch (Exception ex)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar documento: {ex.Message}");
+            }
+        }
+    }
+
+    private void RegresarAProyectos()
+    {
+        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Proyectos");
+    }
+
+    private void AbrirModalDocumento()
+    {
+        NuevoDocumento = new NuevoDocumentoModel();
+        ArchivoSeleccionado = null;
+        MensajeArchivo = "";
+        EsErrorArchivo = false;
+        UrlDocumento = "";
+        MostrarModalDocumento = true;
+        StateHasChanged();
+    }
+
+    private void CerrarModalDocumento()
+    {
+        MostrarModalDocumento = false;
+        StateHasChanged();
+    }
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        ArchivoSeleccionado = e.File;
+        MensajeArchivo = "";
+        EsErrorArchivo = false;
+        
+        // Validar tamaño
+        if (ArchivoSeleccionado.Size > 50 * 1024 * 1024) // 50MB
+        {
+            MensajeArchivo = "El archivo no puede superar los 50MB";
+            EsErrorArchivo = true;
+            ArchivoSeleccionado = null;
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task SubirDocumento()
+    {
+        if (ArchivoSeleccionado == null || string.IsNullOrWhiteSpace(NuevoDocumento.Titulo))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Por favor complete los campos requeridos");
+            return;
+        }
+
+        try
+        {
+            SubiendoArchivo = true;
+            StateHasChanged();
+
+            // 1. Subir archivo a Drive
+            using var stream = ArchivoSeleccionado.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            var fileData = ms.ToArray();
+
+            var response = await DocumentRepository.SubirDocumentoAsync(
+                fileData,
+                ArchivoSeleccionado.Name,
+                ArchivoSeleccionado.ContentType,
+                nombreCompletoDocente,
+                numeroEmpleado,
+                DocumentType.Proyecto);
+
+            if (string.IsNullOrEmpty(response?.Url))
+            {
+                throw new Exception("No se pudo obtener la URL del documento subido");
+            }
+
+            // 2. Guardar en la base de datos
+            var documento = new E_Documento
+            {
+                IdDocente = IdDocente,
+                IdProyecto = IdProyecto,
+                Titulo = NuevoDocumento.Titulo.Trim(),
+                Url = response.Url,
+                Descripcion = string.IsNullOrWhiteSpace(NuevoDocumento.Descripcion) 
+                    ? $"Documento de evidencia para el proyecto: {ProyectoActual?.Titulo}"
+                    : NuevoDocumento.Descripcion.Trim(),
+                FechaSubida = DateTime.Now
+            };
+
+            await DocumentoServicios.AddAsync(documento);
+            await JSRuntime.InvokeVoidAsync("alert", "Documento guardado correctamente");
+            
+            CerrarModalDocumento();
+            await CargarDatos();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al subir el documento: {ex.Message}");
+        }
+        finally
+        {
+            SubiendoArchivo = false;
+            StateHasChanged();
+        }
+    }
+} 

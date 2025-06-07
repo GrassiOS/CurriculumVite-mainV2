@@ -1,0 +1,336 @@
+﻿@page "/GestionMateria"
+@page "/GestionMateria/{IdMateria:int}"
+
+@using System.ComponentModel.DataAnnotations
+@using Entidades.DTO.PlanesDeEstudio.Materias
+@using Entidades.Generales;
+@using Entidades.Modelos;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
+@using Presentacion.Components.Shared
+@using Servicios;
+@using Servicios.Repositorios.PlanesDeEstudio
+
+
+@inject MateriaServicios MateriaServicios;
+@inject NavigationManager navigationManager;
+@inject IJSRuntime jsRunTime
+
+<!-- Contenedor principal con diseño mejorado -->
+<div class="container-lg">
+  <h4 class="mb-0 d-flex align-items-center gap-2">
+    <a href="https://localhost:7205/ListarMaterias" class="text-decoration-none text-success"><i class="bi bi-arrow-left-circle-fill"></i></a>
+    Gestión de materias
+  </h4>
+  <hr />
+
+  <div class="card border-0 shadow-lg">
+    <div class="card-header @(EsModificacion ? "bg-gradient-primary" : "bg-gradient-success") text-white py-2">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-journal-bookmark-fill me-1"></i>@(EsModificacion ? "Edición de Materia" : "Nueva Materia")</h5>
+        <span class="badge bg-white @(EsModificacion ? "text-primary" : "text-success") fs-6 py-2 px-3 rounded-pill">
+          <i class="bi bi-@(EsModificacion ? "pencil-square" : "plus-circle") me-1"></i>@(EsModificacion ? "Modo Edición" : "Nuevo Registro")
+        </span>
+      </div>
+    </div>
+
+    <EditForm Model="MateriaDTO" OnValidSubmit="HandleValidSubmit" class="needs-validation" novalidate>
+      <DataAnnotationsValidator />
+      <ValidationSummary class="alert alert-danger" @ref="validationSummary" />
+
+      <div class="card-body">
+        <!-- Sección de información básica -->
+        <div class="mb-3">
+          <div class="d-flex align-items-center mb-2">
+            @*             <div class="@(EsModificacion ? "bg-primary" : "bg-success") p-2 rounded-circle me-3">
+              <i class="bi bi-info-circle-fill text-white fs-5"></i>
+            </div> *@
+            <h5 class="fw-bold @(EsModificacion ? "text-primary" : "text-success") mb-0">
+              Información Básica
+            </h5>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-key-fill me-2 @(EsModificacion ? "text-primary" : "text-success")"></i>Clave*
+              </label>
+              <InputText @bind-Value="MateriaDTO.ClaveMateria" class="form-control border-2 shadow-sm" placeholder="Ej. 40006" aria-required="true" />
+              <ValidationMessage For="() => MateriaDTO.ClaveMateria" class="invalid-feedback d-block" />
+            </div>
+
+            <div class="col-md-9">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-card-heading me-1 @(EsModificacion ? "text-primary" : "text-success")"></i>Nombre*
+              </label>
+              <InputText @bind-Value="MateriaDTO.NombreMateria" class="form-control border-2 shadow-sm" placeholder="Ej. Matemáticas Avanzadas" aria-required="true" />
+              <ValidationMessage For="() => MateriaDTO.NombreMateria" class="invalid-feedback d-block" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de horas en un solo renglón - Diseño moderno -->
+        <div class="mb-2">
+          <div class="d-flex align-items-center mb-2">
+            <div class="@(EsModificacion ? "bg-primary" : "bg-success") p-2 rounded-circle me-3">
+              @*   <i class="bi bi-clock-fill text-white fs-5"></i>*@
+            </div>
+            <h5 class="fw-bold @(EsModificacion ? "text-primary" : "text-success") mb-0">Horas Académicas</h5>
+          </div>
+
+          <div class="bg-light p-2 rounded-3 shadow-sm">
+            <div class="row g-3">
+              <div class="col">
+                <div class="text-center">
+                  <label class="form-label fw-semibold d-block mb-0">HC</label>
+                  <InputNumber @bind-Value="MateriaDTO.HC" class="form-control border-2 text-center fw-bold fs-5" placeholder="0" />
+                  <small class="text-muted">Horas Clase</small>
+                  <ValidationMessage For="() => MateriaDTO.HC" class="invalid-feedback d-block" />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="text-center">
+                  <label class="form-label fw-semibold d-block mb-0">HL</label>
+                  <InputNumber @bind-Value="MateriaDTO.HL" class="form-control border-2 text-center fw-bold fs-5" placeholder="0" />
+                  <small class="text-muted">Horas Laboratorio</small>
+                  <ValidationMessage For="() => MateriaDTO.HL" class="invalid-feedback d-block" />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="text-center">
+                  <label class="form-label fw-semibold d-block mb-0">HT</label>
+                  <InputNumber @bind-Value="MateriaDTO.HT" class="form-control border-2 text-center fw-bold fs-5" placeholder="0" />
+                  <small class="text-muted">Horas Teóricas</small>
+                  <ValidationMessage For="() => MateriaDTO.HT" class="invalid-feedback d-block" />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="text-center">
+                  <label class="form-label fw-semibold d-block mb-0">HPC</label>
+                  <InputNumber @bind-Value="MateriaDTO.HPC" class="form-control border-2 text-center fw-bold fs-5" placeholder="0" />
+                  <small class="text-muted">Horas Práctica</small>
+                  <ValidationMessage For="() => MateriaDTO.HPC" class="invalid-feedback d-block" />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="text-center">
+                  <label class="form-label fw-semibold d-block m-0">HCL</label>
+                  <InputNumber @bind-Value="MateriaDTO.HCL" class="form-control border-2 text-center fw-bold fs-5" placeholder="0" />
+                  <small class="text-muted">Horas Clínica</small>
+                  <ValidationMessage For="() => MateriaDTO.HCL" class="invalid-feedback d-block" />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="text-center">
+                  <label class="form-label fw-semibold d-block mb-0">HE</label>
+                  <InputNumber @bind-Value="MateriaDTO.HE" class="form-control border-2 text-center fw-bold fs-5" placeholder="0" />
+                  <small class="text-muted">Horas Extra</small>
+                  <ValidationMessage For="() => MateriaDTO.HE" class="invalid-feedback d-block" />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="text-center">
+                  <label class="form-label fw-semibold d-block mb-0">CR</label>
+                  <InputNumber @bind-Value="MateriaDTO.CR" class="form-control border-2 text-center fw-bold fs-5" placeholder="0" />
+                  <small class="text-muted">Créditos</small>
+                  <ValidationMessage For="() => MateriaDTO.CR" class="invalid-feedback d-block" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-1">
+          <div class="d-flex align-items-center mb-2">
+            <div class="@(EsModificacion ? "bg-primary" : "bg-success") p-2 rounded-circle me-3">
+              @*  <i class="bi bi-collection-fill text-white fs-5"></i> *@
+            </div>
+            <h5 class="fw-bold @(EsModificacion ? "text-primary" : "text-success") mb-0">
+              Detalles Académicos
+            </h5>
+          </div>
+
+          <div class="bg-light p-3 rounded-3 shadow-sm">
+            <ul class="nav nav-pills mb-3" id="materiaTabs" role="tablist">
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link active d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="proposito-tab" data-bs-toggle="pill" data-bs-target="#proposito"
+                        type="button" role="tab" aria-controls="proposito" aria-selected="true">
+                  <i class="bi bi-bullseye me-2"></i>Propósito
+                </button>
+              </li>
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="competencia-tab" data-bs-toggle="pill" data-bs-target="#competencia"
+                        type="button" role="tab" aria-controls="competencia" aria-selected="false">
+                  <i class="bi bi-award me-2"></i>Competencia
+                </button>
+              </li>
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="evidencia-tab" data-bs-toggle="pill" data-bs-target="#evidencia"
+                        type="button" role="tab" aria-controls="evidencia" aria-selected="false">
+                  <i class="bi bi-file-earmark-check me-2"></i>Evidencias
+                </button>
+              </li>
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="metodologia-tab" data-bs-toggle="pill" data-bs-target="#metodologia"
+                        type="button" role="tab" aria-controls="metodologia" aria-selected="false">
+                  <i class="bi bi-kanban me-2"></i>Método
+                </button>
+              </li>
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="criterios-tab" data-bs-toggle="pill" data-bs-target="#criterios"
+                        type="button" role="tab" aria-controls="criterios" aria-selected="false">
+                  <i class="bi bi-clipboard2-check me-2"></i>Criterios
+                </button>
+              </li>
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="basicas-tab" data-bs-toggle="pill" data-bs-target="#basicas"
+                        type="button" role="tab" aria-controls="basicas" aria-selected="false">
+                  <i class="bi bi-book me-2"></i>Básicas
+                </button>
+              </li>
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="complementarias-tab" data-bs-toggle="pill" data-bs-target="#complementarias"
+                        type="button" role="tab" aria-controls="complementarias" aria-selected="false">
+                  <i class="bi bi-journal-text me-2"></i>Complementarias
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link d-flex align-items-center @(EsModificacion ? "text-primary" : "text-success")"
+                        id="docente-tab" data-bs-toggle="pill" data-bs-target="#docente"
+                        type="button" role="tab" aria-controls="docente" aria-selected="false">
+                  <i class="bi bi-person-badge me-2"></i>Docente
+                </button>
+              </li>
+            </ul>
+
+            <div class="tab-content p-0 bg-white rounded-0" id="materiaTabsContent">
+              <div class="tab-pane fade show active" id="proposito" role="tabpanel" aria-labelledby="proposito-tab">
+                <QuillEditor MinHeight="140"
+                             @bind-Value="MateriaDTO.PropositoGeneral"
+                             Placeholder="Describa el propósito general de la materia..." />
+              </div>
+
+              <div class="tab-pane fade" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
+                <QuillEditor MinHeight="100"
+                             @bind-Value="MateriaDTO.Competencia"
+                             Placeholder="Describa las competencias que desarrolla la materia..." />
+              </div>
+
+              <div class="tab-pane fade" id="evidencia" role="tabpanel" aria-labelledby="evidencia-tab">
+                <QuillEditor MinHeight="100"
+                             @bind-Value="MateriaDTO.Evidencia"
+                             Placeholder="Describa las evidencias de aprendizaje..." />
+              </div>
+
+              <div class="tab-pane fade" id="metodologia" role="tabpanel" aria-labelledby="metodologia-tab">
+                <QuillEditor MinHeight="200"
+                             @bind-Value="MateriaDTO.Metodologia"
+                             Placeholder="Describa la metodología de trabajo..." />
+              </div>
+
+              <div class="tab-pane fade" id="criterios" role="tabpanel" aria-labelledby="criterios-tab">
+                <QuillEditor MinHeight="200"
+                             @bind-Value="MateriaDTO.Criterios"
+                             Placeholder="Describa los criterios de evaluación..." />
+              </div>
+
+              <div class="tab-pane fade" id="basicas" role="tabpanel" aria-labelledby="basicas-tab">
+                <QuillEditor MinHeight="200"
+                             @bind-Value="MateriaDTO.BibliografiaBasica"
+                             Placeholder="Liste las referencias bibliográficas básicas..." />
+              </div>
+
+              <div class="tab-pane fade" id="complementarias" role="tabpanel" aria-labelledby="complementarias-tab">
+                <QuillEditor MinHeight="200"
+                             @bind-Value="MateriaDTO.BibliografiaComplementaria"
+                             Placeholder="Liste las referencias bibliográficas complementarias..." />
+              </div>
+
+              <div class="tab-pane fade" id="docente" role="tabpanel" aria-labelledby="docente-tab">
+                <QuillEditor MinHeight="100"
+                             @bind-Value="MateriaDTO.PerfilDocente"
+                             Placeholder="Describa el perfil del docente..." />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check form-switch form-check-reverse mb-2 d-flex justify-content-end">
+          <span class="fw-bold me-2">Estado de la Materia:</span>
+          <label for="estadoMateria" class="form-check-label fw-semibold me-3">
+            <span class="badge @(MateriaDTO.EstadoMateria ? "bg-success" : "bg-danger")">
+              @(MateriaDTO.EstadoMateria ? "Activa" : "Inactiva")
+            </span>
+          </label>
+
+          <InputCheckbox id="estadoMateria" class="form-check-input shadow-none" @bind-Value="MateriaDTO.EstadoMateria" />
+        </div>
+      </div>
+
+      <!-- Pie de página con acciones mejoradas -->
+      <div class="card-footer bg-light d-flex justify-content-between py-3">
+        <NavLink href="ListarMaterias" class="btn btn-outline-secondary rounded-pill px-4">
+          <i class="bi bi-arrow-left-circle me-1"></i> Volver al Listado
+        </NavLink>
+
+        <button type="submit" class="btn @(EsModificacion ? "btn-primary" : "btn-success") rounded-pill px-4 shadow">
+          <i class="bi bi-@(EsModificacion ? "arrow-repeat" : "save") me-1"></i>
+          @(EsModificacion ? "Actualizar Materia" : "Guardar Nueva Materia")
+        </button>
+      </div>
+    </EditForm>
+  </div>
+</div>
+
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  }
+
+  .bg-gradient-success {
+    background: linear-gradient(135deg, #198754, #157347);
+  }
+
+  .nav-pills .nav-link {
+    border-radius: 20px;
+    padding: 0.5rem 1.25rem;
+    transition: all 0.3s ease;
+  }
+
+    .nav-pills .nav-link.active {
+      background-color: @(EsModificacion ? "rgba(13, 110, 253, 0.2)" : "rgba(25, 135, 84, 0.2)");
+      color: @(EsModificacion ? "#0d6efd" : "#198754") !important;
+      border: 1px solid @(EsModificacion ? "#0d6efd" : "#198754");
+    }
+
+    .nav-pills .nav-link:not(.active):hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+  .form-control {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+    .form-control:focus {
+      border-color: @(EsModificacion ? "#0d6efd" : "#198754");
+      box-shadow: 0 0 0 0.25rem @(EsModificacion ? "rgba(13, 110, 253, 0.25)" : "rgba(25, 135, 84, 0.25)");
+    }
+
+  .form-check-input:checked {
+    background-color: @(EsModificacion ? "#0d6efd" : "#198754");
+    border-color: @(EsModificacion ? "#0d6efd" : "#198754");
+  }
+</style>

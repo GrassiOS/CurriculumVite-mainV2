@@ -1,0 +1,12 @@
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/bin/Debug/net9.0/Entidades.deps.json
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/bin/Debug/net9.0/Entidades.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/bin/Debug/net9.0/Entidades.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.csproj.AssemblyReference.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.GeneratedMSBuildEditorConfig.editorconfig
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.AssemblyInfoInputs.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.AssemblyInfo.cs
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.csproj.CoreCompileInputs.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/refint/Entidades.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/ref/Entidades.dll

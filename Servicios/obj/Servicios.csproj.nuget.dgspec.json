@@ -1,0 +1,311 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/Servicios.csproj": {}
+  },
+  "projects": {
+    "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/Datos.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/Datos.csproj",
+        "projectName": "Datos",
+        "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/Datos.csproj",
+        "packagesPath": "/Users/martinortiz/.nuget/packages/",
+        "outputPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/martinortiz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj": {
+                "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj",
+        "projectName": "Entidades",
+        "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj",
+        "packagesPath": "/Users/martinortiz/.nuget/packages/",
+        "outputPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/martinortiz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[14.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/Negocios.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/Negocios.csproj",
+        "projectName": "Negocios",
+        "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/Negocios.csproj",
+        "packagesPath": "/Users/martinortiz/.nuget/packages/",
+        "outputPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/martinortiz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/Datos.csproj": {
+                "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/Datos.csproj"
+              },
+              "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj": {
+                "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/Servicios.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/Servicios.csproj",
+        "projectName": "Servicios",
+        "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/Servicios.csproj",
+        "packagesPath": "/Users/martinortiz/.nuget/packages/",
+        "outputPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/martinortiz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/Datos.csproj": {
+                "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/Datos.csproj"
+              },
+              "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj": {
+                "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/Entidades.csproj"
+              },
+              "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/Negocios.csproj": {
+                "projectPath": "/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/Negocios.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[14.0.0, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2024.12.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

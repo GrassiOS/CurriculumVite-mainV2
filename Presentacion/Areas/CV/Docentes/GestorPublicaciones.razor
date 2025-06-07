@@ -1,0 +1,627 @@
+@page "/CV/Docentes/{idDocente:int}/Publicaciones"
+@using Entidades.DTO.CurriculumVite
+@using Entidades.Modelos.CurriculumVite
+@using Servicios.IRepositorios.CurriculumVite
+@using Servicios.IRepositorios
+@using Entidades.Utilidades
+@using Presentacion.Components.Shared
+@inject ISRepositorioPublicacion PublicacionServicios
+@inject ISRepositorioDocumento DocumentoServicios
+@inject ISDocenteRepositorio DocenteServicios
+@inject IDocumentRepository DocumentRepository
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Gestión de Publicaciones - UABC</PageTitle>
+
+<div class="container-fluid" style="background-color: #F8F9FA; min-height: 100vh; padding: 0;">
+    @if (CargandoPublicaciones)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="text-center">
+                <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3 text-muted">Cargando publicaciones...</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Header con breadcrumb -->
+        <div class="bg-white border-bottom" style="padding: 1.5rem 2rem;">
+            <nav aria-label="breadcrumb" class="mb-2">
+                <ol class="breadcrumb mb-0">
+                    @if (FromProfile)
+                    {
+                        <li class="breadcrumb-item">
+                            <button type="button" class="btn btn-link p-0" @onclick="VolverAPerfilDocente" style="color: #2D6B3C; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-1"></i>Volver al Perfil
+                            </button>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page" style="color: #2D6B3C;">
+                            Publicaciones - @nombreCompletoDocente
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="/CV/Docentes" class="text-decoration-none" style="color: #2D6B3C;">
+                                <i class="fas fa-chalkboard-teacher me-1"></i>Docentes
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span style="color: #6c757d;">@nombreCompletoDocente</span>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="/CV/Docentes/@IdDocente/Contactos" class="text-decoration-none" style="color: #2D6B3C;">Contactos</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page" style="color: #2D6B3C;">Publicaciones</li>
+                    }
+                </ol>
+            </nav>
+            <h1 class="h2 mb-1" style="color: #2D6B3C; font-weight: 600;">
+                <i class="fas fa-book-open me-3" style="color: #4BB463;"></i>
+                Gestión de Publicaciones
+            </h1>
+            @if (!string.IsNullOrEmpty(nombreCompletoDocente))
+            {
+                <p class="text-muted mb-0">Docente: <strong>@nombreCompletoDocente</strong></p>
+            }
+        </div>
+
+        <!-- Header con estadísticas -->
+        <div style="padding: 2rem;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #2D6B3C 0%, #4BB463 100%);">
+                        <div class="card-body text-white" style="padding: 1.5rem;">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h2 class="mb-2 h4">
+                                        <i class="fas fa-book-open"></i> Publicaciones Académicas
+                                    </h2>
+                                    <p class="mb-0 opacity-90">
+                                        Administra las publicaciones científicas, artículos de revista, libros y documentos de evidencia
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="me-4 text-center">
+                                            <div class="h3 mb-0">@ListaPublicaciones.Count()</div>
+                                            <small class="opacity-90">Total</small>
+                                        </div>
+                                        <div class="me-4 text-center">
+                                            <div class="h3 mb-0">@ListaPublicaciones.Count(p => p.TieneEnlace)</div>
+                                            <small class="opacity-90">Con Enlace</small>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="h3 mb-0">@CantidadDocumentos</div>
+                                            <small class="opacity-90">Documentos</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de acciones y filtros -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex gap-3">
+                                        <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="AbrirModalNuevo">
+                                            <i class="fas fa-plus"></i> Nueva Publicación
+                                        </button>
+                                        <button class="btn btn-outline-secondary" @onclick="ExportarPublicaciones">
+                                            <i class="fas fa-download"></i> Exportar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex gap-2">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                            <input type="text" class="form-control" placeholder="Buscar por título, autores o fuente..." 
+                                                   @bind="filtroTitulo" @oninput="FiltrarPublicaciones">
+                                        </div>
+                                        <select class="form-select" style="max-width: 200px;" @bind="filtroTipo" @bind:after="FiltrarPublicaciones">
+                                            <option value="">Todos los tipos</option>
+                                            @foreach (var tipo in TiposPublicacion)
+                                            {
+                                                <option value="@tipo">@tipo</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen de filtros aplicados -->
+            @if (!string.IsNullOrEmpty(filtroTitulo) || !string.IsNullOrEmpty(filtroTipo))
+            {
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-2">
+                            <small class="text-muted">Filtros aplicados:</small>
+                            @if (!string.IsNullOrEmpty(filtroTitulo))
+                            {
+                                <span class="badge bg-light text-dark border">
+                                    Texto: "@filtroTitulo" 
+                                    <button type="button" class="btn-close btn-close-sm ms-1" @onclick="@(() => { filtroTitulo = string.Empty; FiltrarPublicaciones(); })"></button>
+                                </span>
+                            }
+                            @if (!string.IsNullOrEmpty(filtroTipo))
+                            {
+                                <span class="badge bg-light text-dark border">
+                                    Tipo: @filtroTipo 
+                                    <button type="button" class="btn-close btn-close-sm ms-1" @onclick="@(() => { filtroTipo = string.Empty; FiltrarPublicaciones(); })"></button>
+                                </span>
+                            }
+                            <button class="btn btn-sm btn-outline-secondary" @onclick="LimpiarFiltros">
+                                <i class="fas fa-times"></i> Limpiar todo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Lista de publicaciones -->
+            @if (!ListaPublicaciones.Any())
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-book-open" style="font-size: 4rem; color: #E9ECEF;"></i>
+                        </div>
+                        <h4 class="text-muted">No hay publicaciones registradas</h4>
+                        <p class="text-muted mb-4">Comience agregando la primera publicación académica</p>
+                        <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="AbrirModalNuevo">
+                            <i class="fas fa-plus"></i> Agregar Primera Publicación
+                        </button>
+                    </div>
+                </div>
+            }
+            else if (!PublicacionesFiltradas.Any())
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-search" style="font-size: 4rem; color: #E9ECEF;"></i>
+                        </div>
+                        <h4 class="text-muted">No se encontraron publicaciones</h4>
+                        <p class="text-muted mb-4">Intente ajustar los filtros de búsqueda</p>
+                        <button class="btn btn-outline-secondary" @onclick="LimpiarFiltros">
+                            <i class="fas fa-times"></i> Limpiar Filtros
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Contador de resultados -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <small class="text-muted">
+                            Mostrando @PublicacionesFiltradas.Count() de @ListaPublicaciones.Count() publicaciones
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Grid de publicaciones -->
+                <div class="row">
+                    @foreach (var publicacion in PublicacionesFiltradas.OrderByDescending(p => p.Anio ?? 0))
+                    {
+                        <div class="col-lg-6 col-xl-4 mb-4">
+                            <div class="card border-0 shadow-sm h-100 publication-card">
+                                <div class="card-header border-0" style="background-color: #F8F9FA;">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <span class="badge" style="background-color: #2D6B3C; color: white;">
+                                            @publicacion.TipoPublicacion
+                                        </span>
+                                        @if (publicacion.Anio.HasValue)
+                                        {
+                                            <span class="badge" style="background-color: #F4BF3A; color: #1A1A1A;">
+                                                @publicacion.Anio
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title mb-3" style="color: #2D6B3C; line-height: 1.4;">
+                                        @publicacion.Titulo
+                                    </h6>
+
+                                    @if (!string.IsNullOrEmpty(publicacion.Autores))
+                                    {
+                                        <p class="card-text mb-2">
+                                            <i class="fas fa-users text-muted"></i>
+                                            <small class="text-muted">@publicacion.AutoresFormateados</small>
+                                        </p>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(publicacion.Fuente))
+                                    {
+                                        <p class="card-text mb-2">
+                                            <i class="fas fa-building text-muted"></i>
+                                            <small class="text-muted">@publicacion.Fuente</small>
+                                        </p>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(publicacion.Enlace))
+                                    {
+                                        <p class="card-text mb-3">
+                                            <a href="@publicacion.Enlace" target="_blank" class="text-decoration-none" style="color: #4BB463;">
+                                                <i class="fas fa-external-link-alt"></i> Ver publicación
+                                            </a>
+                                        </p>
+                                    }
+
+                                    <!-- Indicador de documentos -->
+                                    <div class="mb-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-paperclip"></i> 
+                                            @DocumentosPorPublicacion.GetValueOrDefault(publicacion.IdPublicacion, 0) documento(s) adjunto(s)
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0" style="background-color: #F8F9FA;">
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill" @onclick="() => AbrirModalEditar(publicacion)">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" @onclick="() => VerDocumentos(publicacion.IdPublicacion)">
+                                            <i class="fas fa-file-alt"></i> Documentos
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmarEliminar(publicacion)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- Botones de navegación -->
+            @if (!FromProfile)
+            {
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button class="btn btn-outline-secondary" @onclick="VolverAContactos">
+                                        <i class="fas fa-arrow-left"></i> Volver a Contactos
+                                    </button>
+                                    <div class="text-center">
+                                        <small class="text-muted">Paso 2 de 4 - Publicaciones</small>
+                                    </div>
+                                    <button class="btn" style="background-color: #4BB463; color: white;" @onclick="ContinuarAEducacion">
+                                        Continuar a Educación <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Modal de Publicación -->
+<ModalPublicacion @ref="ModalPublicacionRef" EmpleadoNombre="@nombreCompletoDocente" NumeroEmpleado="@numeroEmpleado" OnPublicacionGuardada="OnPublicacionGuardada" />
+
+<!-- Estilos CSS -->
+<style>
+    .publication-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .publication-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(45, 107, 60, 0.15) !important;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: #6C757D;
+    }
+
+    .btn-close-sm {
+        font-size: 0.7rem;
+        width: 0.8rem;
+        height: 0.8rem;
+    }
+</style>
+
+@code {
+    [Parameter] public int IdDocente { get; set; }
+    [Parameter] public bool FromProfile { get; set; }
+
+    private List<PublicacionDTO> ListaPublicaciones = new();
+    private List<PublicacionDTO> PublicacionesFiltradas = new();
+    private string nombreCompletoDocente = "";
+    private string numeroEmpleado = "";
+    private string filtroTitulo = "";
+    private string filtroTipo = "";
+    private int? filtroAnio;
+    private bool cargandoDatos = true;
+    private bool CargandoPublicaciones => cargandoDatos;
+    private Dictionary<int, int> DocumentosPorPublicacion = new();
+    private int CantidadDocumentos = 0;
+    private ModalPublicacion? ModalPublicacionRef;
+    
+    private readonly string[] TiposPublicacion = {
+        "Artículo de Revista",
+        "Libro",
+        "Capítulo de Libro", 
+        "Memoria de Congreso",
+        "Tesis",
+        "Reporte Técnico",
+        "Otro"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await CargarDatosDocente();
+            await CargarPublicaciones();
+            await CargarConteoDocumentos();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al cargar datos: {ex.Message}");
+        }
+        finally
+        {
+            cargandoDatos = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task CargarDatosDocente()
+    {
+        var resultadoDocente = await DocenteServicios.ObtenerDocente<DocenteDTO>(IdDocente);
+        if (resultadoDocente.Resultado && resultadoDocente.Entidad != null)
+        {
+            var docente = resultadoDocente.Entidad;
+            nombreCompletoDocente = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim();
+            numeroEmpleado = docente.NumeroEmpleado ?? "";
+        }
+    }
+
+    private async Task CargarPublicaciones()
+    {
+        var publicacionesEntidades = await PublicacionServicios.GetAllAsync();
+        
+        ListaPublicaciones = publicacionesEntidades
+            .Where(p => p.IdDocente == IdDocente)
+            .Select(p => new PublicacionDTO
+            {
+                IdPublicacion = p.IdPublicacion,
+                IdDocente = p.IdDocente,
+                Titulo = p.Titulo,
+                TipoPublicacion = p.TipoPublicacion,
+                Autores = p.Autores,
+                Fuente = p.Fuente,
+                Anio = p.Anio,
+                Enlace = p.Enlace,
+                NombreDocente = nombreCompletoDocente
+            }).ToList();
+        
+        PublicacionesFiltradas = ListaPublicaciones;
+    }
+
+    private async Task CargarConteoDocumentos()
+    {
+        try
+        {
+            var todosDocumentos = await DocumentoServicios.GetAllAsync();
+            var documentosDocente = todosDocumentos.Where(d => d.IdDocente == IdDocente);
+            CantidadDocumentos = documentosDocente.Count(d => d.IdPublicacion.HasValue);
+            
+            DocumentosPorPublicacion = documentosDocente
+                .Where(d => d.IdPublicacion.HasValue)
+                .GroupBy(d => d.IdPublicacion!.Value)
+                .ToDictionary(g => g.Key, g => g.Count());
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $". Error al cargar documentos: {ex.Message}");
+        }
+    }
+
+    private void FiltrarPublicaciones()
+    {
+        PublicacionesFiltradas = ListaPublicaciones.Where(p =>
+            (string.IsNullOrEmpty(filtroTitulo) || 
+             (p.Titulo?.Contains(filtroTitulo, StringComparison.OrdinalIgnoreCase) ?? false) ||
+             (p.Autores?.Contains(filtroTitulo, StringComparison.OrdinalIgnoreCase) ?? false) ||
+             (p.Fuente?.Contains(filtroTitulo, StringComparison.OrdinalIgnoreCase) ?? false)) &&
+            (string.IsNullOrEmpty(filtroTipo) || p.TipoPublicacion == filtroTipo)
+        ).ToList();
+        StateHasChanged();
+    }
+
+    private void LimpiarFiltros()
+    {
+        filtroTitulo = string.Empty;
+        filtroTipo = string.Empty;
+        FiltrarPublicaciones();
+    }
+
+    private async Task AbrirModalEditar(PublicacionDTO publicacion)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("console.log", $". Abriendo modal editar publicación ID: {publicacion.IdPublicacion}");
+            
+            if (ModalPublicacionRef is not null)
+            {
+                await ModalPublicacionRef.AbrirModal(publicacion);
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("console.error", ". ModalPublicacionRef es null");
+                await JSRuntime.InvokeVoidAsync("alert", ". Error: No se pudo acceder al formulario de publicación");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $". Error al abrir modal editar: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al abrir el formulario de edición: {ex.Message}");
+        }
+    }
+
+    private async Task AbrirModalNuevo()
+    {
+        try
+        {
+            if (ModalPublicacionRef is not null)
+            {
+                await ModalPublicacionRef.AbrirModal(null, IdDocente);
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("console.error", ". ModalPublicacionRef es null");
+                await JSRuntime.InvokeVoidAsync("alert", ". Error: No se pudo acceder al formulario de publicación");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $". Error al abrir modal nuevo: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al abrir el formulario: {ex.Message}");
+        }
+    }
+
+    private async Task OnPublicacionGuardada(PublicacionDTO publicacion)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("console.log", ". Recargando datos después de guardar publicación");
+            await CargarPublicaciones();
+            await CargarConteoDocumentos();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $". Error al recargar datos: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $". La publicación se guardó, pero hubo un error al recargar la lista: {ex.Message}");
+        }
+    }
+
+    private async Task ConfirmarEliminar(PublicacionDTO publicacion)
+    {
+        var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
+            $". ¿Está seguro de que desea eliminar la publicación '{publicacion.Titulo}'?");
+        
+        if (confirmado)
+        {
+            await EliminarPublicacion(publicacion.IdPublicacion);
+        }
+    }
+
+    private async Task EliminarPublicacion(int idPublicacion)
+    {
+        try
+        {
+            // 1. Obtener todos los documentos asociados a la publicación
+            var documentos = await DocumentoServicios.GetDocumentosByPublicacionAsync(idPublicacion);
+            
+            // 2. Eliminar cada documento de Drive y de la base de datos
+            foreach (var documento in documentos)
+            {
+                try
+                {
+                    // Eliminar de Drive
+                    if (!string.IsNullOrEmpty(documento.Url))
+                    {
+                        // Extraer el ID de Drive de la URL
+                        string? driveId = null;
+                        try
+                        {
+                            var uri = new Uri(documento.Url);
+                            if (uri.Host.Contains("drive.google.com"))
+                            {
+                                // Formato 1: https://drive.google.com/file/d/FILE_ID/view
+                                // Formato 2: https://drive.google.com/uc?id=FILE_ID
+                                if (uri.AbsolutePath.Contains("/file/d/"))
+                                {
+                                    driveId = uri.AbsolutePath.Split("/file/d/")[1].Split('/')[0];
+                                }
+                                else if (uri.Query.Contains("id="))
+                                {
+                                    driveId = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("id");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await JSRuntime.InvokeVoidAsync("console.error", $". Error al extraer ID de Drive: {ex.Message}");
+                        }
+
+                        if (!string.IsNullOrEmpty(driveId))
+                        {
+                            await DocumentRepository.EliminarDocumentoAsync(driveId);
+                        }
+                    }
+                    
+                    // Eliminar de la base de datos
+                    await DocumentoServicios.DeleteAsync(documento.IdDocumento);
+                }
+                catch (Exception docEx)
+                {
+                    await JSRuntime.InvokeVoidAsync("console.error", $". Error al eliminar documento {documento.IdDocumento}: {docEx.Message}");
+                    // Continuamos con los siguientes documentos incluso si uno falla
+                }
+            }
+
+            // 3. Eliminar la publicación
+            await PublicacionServicios.DeleteAsync(idPublicacion);
+            await CargarPublicaciones();
+            await CargarConteoDocumentos();
+            await JSRuntime.InvokeVoidAsync("alert", ". Publicación y sus documentos eliminados correctamente");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al eliminar publicación: {ex.Message}");
+        }
+    }
+
+    private async Task VerDocumentos(int idPublicacion)
+    {
+        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Publicaciones/{idPublicacion}/Documentos");
+    }
+
+    private async Task ExportarPublicaciones()
+    {
+        await JSRuntime.InvokeVoidAsync("alert", ". Funcionalidad de exportación en desarrollo");
+    }
+
+    private void VolverAContactos()
+    {
+        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Contactos");
+    }
+
+    private void ContinuarAEducacion()
+    {
+        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Educacion");
+    }
+
+    private void VolverAPerfilDocente()
+    {
+        NavigationManager.NavigateTo($"/CV/Docentes/Ver/{IdDocente}");
+    }
+} 

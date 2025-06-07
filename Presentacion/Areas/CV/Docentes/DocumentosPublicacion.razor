@@ -1,0 +1,622 @@
+@page "/CV/Docentes/{idDocente:int}/Publicaciones/{idPublicacion:int}/Documentos"
+@using Entidades.DTO.CurriculumVite
+@using Entidades.Modelos.CurriculumVite
+@using Servicios.IRepositorios.CurriculumVite
+@using Servicios.IRepositorios
+@using Microsoft.AspNetCore.Components.Forms
+@using Entidades.Utilidades
+@inject ISRepositorioPublicacion PublicacionServicios
+@inject ISRepositorioDocumento DocumentoServicios
+@inject ISDocenteRepositorio DocenteServicios
+@inject IDocumentRepository DocumentRepository
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Documentos de Publicación - UABC</PageTitle>
+
+<div class="container-fluid" style="background-color: #F8F9FA; min-height: 100vh; padding: 0;">
+    @if (CargandoDatos)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="text-center">
+                <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3 text-muted">Cargando información...</p>
+            </div>
+        </div>
+    }
+    else if (PublicacionActual == null)
+    {
+        <div class="bg-white border-bottom" style="padding: 1.5rem 2rem;">
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #E9ECEF;"></i>
+                </div>
+                <h4 class="text-muted">Publicación no encontrada</h4>
+                <p class="text-muted mb-4">La publicación solicitada no existe o ha sido eliminada</p>
+                <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="VolverAPublicaciones">
+                    <i class="fas fa-arrow-left"></i> Volver a Publicaciones
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Header con breadcrumb -->
+        <div class="bg-white border-bottom" style="padding: 1.5rem 2rem;">
+            <nav aria-label="breadcrumb" class="mb-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes" class="text-decoration-none" style="color: #2D6B3C;">
+                            <i class="fas fa-chalkboard-teacher me-1"></i>Docentes
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <span style="color: #6c757d;">@nombreCompletoDocente</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes/@IdDocente/Contactos" class="text-decoration-none" style="color: #2D6B3C;">Contactos</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes/@IdDocente/Publicaciones" class="text-decoration-none" style="color: #2D6B3C;">Publicaciones</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" style="color: #2D6B3C;">Documentos</li>
+                </ol>
+            </nav>
+            <h1 class="h2 mb-1" style="color: #2D6B3C; font-weight: 600;">
+                <i class="fas fa-paperclip me-3" style="color: #4BB463;"></i>
+                Documentos de Evidencia
+            </h1>
+            @if (!string.IsNullOrEmpty(nombreCompletoDocente))
+            {
+                <p class="text-muted mb-0">Docente: <strong>@nombreCompletoDocente</strong></p>
+            }
+        </div>
+
+        <!-- Header de la publicación -->
+        <div style="padding: 2rem;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #2D6B3C 0%, #4BB463 100%);">
+                        <div class="card-body text-white" style="padding: 1.5rem;">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <button class="btn btn-outline-light btn-sm" @onclick="VolverAPublicaciones">
+                                            <i class="fas fa-arrow-left"></i> Volver
+                                        </button>
+                                        <div>
+                                            <span class="badge bg-light text-dark mb-2">@PublicacionActual.TipoPublicacion</span>
+                                            <h3 class="mb-2 h4">@PublicacionActual.Titulo</h3>
+                                            @if (!string.IsNullOrEmpty(PublicacionActual.Autores))
+                                            {
+                                                <p class="mb-1 opacity-90">
+                                                    <i class="fas fa-users"></i> @PublicacionActual.AutoresFormateados
+                                                </p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(PublicacionActual.Fuente))
+                                            {
+                                                <p class="mb-1 opacity-90">
+                                                    <i class="fas fa-building"></i> @PublicacionActual.Fuente
+                                                </p>
+                                            }
+                                            @if (PublicacionActual.Anio.HasValue)
+                                            {
+                                                <p class="mb-0 opacity-90">
+                                                    <i class="fas fa-calendar"></i> @PublicacionActual.Anio
+                                                </p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="text-center">
+                                        <div class="h2 mb-0">@ListaDocumentosPublicacion.Count()</div>
+                                        <small class="opacity-90">Documento(s) de Evidencia</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentos -->
+            @if (!ListaDocumentosPublicacion.Any())
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-file-alt" style="font-size: 4rem; color: #E9ECEF;"></i>
+                        </div>
+                        <h4 class="text-muted">No hay documentos adjuntos</h4>
+                        <p class="text-muted mb-4">Esta publicación aún no tiene documentos de evidencia asociados</p>
+                        <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="AgregarDocumento">
+                            <i class="fas fa-plus"></i> Agregar Primer Documento
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Barra de acciones -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-paperclip"></i> Documentos de Evidencia
+                                    </h5>
+                                    <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="AgregarDocumento">
+                                        <i class="fas fa-plus"></i> Agregar Documento
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de documentos -->
+                <div class="row">
+                    @foreach (var documento in ListaDocumentosPublicacion.OrderByDescending(d => d.FechaSubida))
+                    {
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card border-0 shadow-sm h-100 document-card">
+                                <div class="card-header border-0" style="background-color: #F8F9FA;">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <span class="badge" style="background-color: #F4BF3A; color: #1A1A1A;">
+                                            <i class="fas fa-file-pdf"></i> Documento
+                                        </span>
+                                        <small class="text-muted">
+                                            @documento.FechaSubida.ToString("dd/MM/yyyy")
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title mb-3" style="color: #2D6B3C;">
+                                        @(documento.Titulo ?? "Documento sin título")
+                                    </h6>
+                                    
+                                    @if (!string.IsNullOrEmpty(documento.Descripcion))
+                                    {
+                                        <p class="card-text text-muted small mb-3">
+                                            @documento.Descripcion
+                                        </p>
+                                    }
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="@documento.Url" target="_blank" class="btn btn-sm" style="background-color: #4BB463; color: white;">
+                                            <i class="fas fa-external-link-alt"></i> Ver
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmarEliminarDocumento(documento)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Modal para Agregar Documento -->
+<div class="modal fade" id="modalAgregarDocumento" tabindex="-1" aria-labelledby="modalAgregarDocumentoLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2D6B3C; color: white;">
+                <h5 class="modal-title" id="modalAgregarDocumentoLabel">
+                    <i class="fas fa-file-upload"></i> Agregar Documento
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="CerrarModalDocumento"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="tituloDocumento" class="form-label">Título del Documento *</label>
+                    <input type="text" class="form-control" id="tituloDocumento" @bind="NuevoDocumento.Titulo" 
+                           placeholder="Ej: Certificado, Constancia, etc." />
+                </div>
+
+                <div class="mb-3">
+                    <label for="descripcionDocumento" class="form-label">Descripción</label>
+                    <textarea class="form-control" id="descripcionDocumento" @bind="NuevoDocumento.Descripcion" 
+                            rows="3" placeholder="Descripción opcional del documento"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="archivoDocumento" class="form-label">Archivo *</label>
+                    <InputFile id="archivoDocumento" OnChange="OnFileSelected" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                    <div class="form-text">Formatos permitidos: PDF, DOC, DOCX, JPG, PNG. Tamaño máximo: 50MB</div>
+                    @if (!string.IsNullOrEmpty(MensajeArchivo))
+                    {
+                        <div class="@(EsErrorArchivo ? "text-danger" : "text-success") mt-2">
+                            @MensajeArchivo
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CerrarModalDocumento" disabled="@SubiendoArchivo">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-success" @onclick="GuardarDocumento" disabled="@SubiendoArchivo">
+                    @if (SubiendoArchivo)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="ms-2">Subiendo...</span>
+                    }
+                    else
+                    {
+                        <i class="fas fa-save"></i>
+                        <span class="ms-2">Guardar</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos CSS -->
+<style>
+    .document-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .document-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(45, 107, 60, 0.15) !important;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: #6C757D;
+    }
+</style>
+
+@code {
+    [Parameter] public int IdDocente { get; set; }
+    [Parameter] public int IdPublicacion { get; set; }
+
+    private PublicacionDTO? PublicacionActual;
+    private List<E_Documento> ListaDocumentosPublicacion = new();
+    private bool CargandoDatos = true;
+    private string nombreCompletoDocente = "";
+
+    private class NuevoDocumentoModel
+    {
+        public string? Titulo { get; set; }
+        public string? Descripcion { get; set; }
+    }
+
+    private NuevoDocumentoModel NuevoDocumento = new();
+    private IBrowserFile? ArchivoSeleccionado;
+    private bool SubiendoArchivo = false;
+    private string MensajeArchivo = "";
+    private bool EsErrorArchivo = false;
+    private string UrlDocumento = "";
+    private string DocumentoId = "";
+    private string DocumentoPath = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        try
+        {
+            CargandoDatos = true;
+
+            // Cargar datos del docente
+            var resultadoDocente = await DocenteServicios.ObtenerDocente<DocenteDTO>(IdDocente);
+            if (resultadoDocente.Resultado && resultadoDocente.Entidad != null)
+            {
+                var docente = resultadoDocente.Entidad;
+                nombreCompletoDocente = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim();
+            }
+
+            // Cargar publicación
+            var publicacionEntity = await PublicacionServicios.GetByIdAsync(IdPublicacion);
+            if (publicacionEntity != null && publicacionEntity.IdDocente == IdDocente)
+            {
+                PublicacionActual = new PublicacionDTO
+                {
+                    IdPublicacion = publicacionEntity.IdPublicacion,
+                    IdDocente = publicacionEntity.IdDocente,
+                    Titulo = publicacionEntity.Titulo,
+                    TipoPublicacion = publicacionEntity.TipoPublicacion,
+                    Autores = publicacionEntity.Autores,
+                    Fuente = publicacionEntity.Fuente,
+                    Anio = publicacionEntity.Anio,
+                    Enlace = publicacionEntity.Enlace
+                };
+
+                // Cargar documentos
+                var documentos = await DocumentoServicios.GetDocumentosByPublicacionAsync(IdPublicacion);
+                ListaDocumentosPublicacion = documentos.ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al cargar datos: {ex.Message}");
+        }
+        finally
+        {
+            CargandoDatos = false;
+        }
+    }
+
+    private void VolverAPublicaciones()
+    {
+        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Publicaciones");
+    }
+
+    private async Task AgregarDocumento()
+    {
+        try
+        {
+            // Limpiar estado
+            NuevoDocumento = new();
+            ArchivoSeleccionado = null;
+            MensajeArchivo = "";
+            EsErrorArchivo = false;
+            UrlDocumento = "";
+            DocumentoId = "";
+            DocumentoPath = "";
+            SubiendoArchivo = false;
+
+            // Abrir modal
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                (function() {
+                    try {
+                        const modalElement = document.getElementById('modalAgregarDocumento');
+                        if (modalElement) {
+                            const modal = new bootstrap.Modal(modalElement);
+                            modal.show();
+                        }
+                    } catch (error) {
+                        console.error('Error al abrir el modal:', error);
+                    }
+                })();
+            ");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al abrir el modal: {ex.Message}");
+        }
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        ArchivoSeleccionado = e.File;
+        MensajeArchivo = "";
+        EsErrorArchivo = false;
+        UrlDocumento = "";
+        DocumentoId = "";
+        DocumentoPath = "";
+        
+        // Validar tamaño inmediatamente
+        if (ArchivoSeleccionado != null && ArchivoSeleccionado.Size > 50 * 1024 * 1024)
+        {
+            MensajeArchivo = "El archivo no puede superar los 50MB";
+            EsErrorArchivo = true;
+            ArchivoSeleccionado = null;
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task CerrarModalDocumento()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                (function() {
+                    try {
+                        const modalElement = document.getElementById('modalAgregarDocumento');
+                        if (modalElement) {
+                            const modal = bootstrap.Modal.getInstance(modalElement);
+                            if (modal) {
+                                modal.hide();
+                            }
+
+                            // Limpiar manualmente el backdrop y las clases
+                            document.body.classList.remove('modal-open');
+                            const backdrops = document.getElementsByClassName('modal-backdrop');
+                            while (backdrops.length > 0) {
+                                backdrops[0].remove();
+                            }
+
+                            // Restaurar el scroll
+                            document.body.style.overflow = '';
+                            document.body.style.paddingRight = '';
+                        }
+                    } catch (error) {
+                        console.error('Error al cerrar el modal:', error);
+                    }
+                })();
+            ");
+
+            // Limpiar estado
+            NuevoDocumento = new();
+            ArchivoSeleccionado = null;
+            MensajeArchivo = "";
+            EsErrorArchivo = false;
+            UrlDocumento = "";
+            DocumentoId = "";
+            DocumentoPath = "";
+            SubiendoArchivo = false;
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al cerrar el modal: {ex.Message}");
+        }
+    }
+
+    private async Task GuardarDocumento()
+    {
+        try
+        {
+            // Validaciones
+            if (string.IsNullOrWhiteSpace(NuevoDocumento.Titulo))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", ". Error: El título del documento es obligatorio");
+                return;
+            }
+
+            if (ArchivoSeleccionado == null)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", ". Error: Debe seleccionar un archivo");
+                return;
+            }
+
+            SubiendoArchivo = true;
+            StateHasChanged();
+
+            // Subir archivo a Drive
+            using var stream = ArchivoSeleccionado.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var fileData = memoryStream.ToArray();
+
+            // Obtener el nombre del docente para la ruta en Drive
+            var resultadoDocente = await DocenteServicios.ObtenerDocente<DocenteDTO>(IdDocente);
+            if (!resultadoDocente.Resultado || resultadoDocente.Entidad == null)
+            {
+                throw new Exception("No se pudo obtener la información del docente");
+            }
+
+            var docente = resultadoDocente.Entidad;
+            var nombreDocente = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim();
+            var numeroEmpleado = docente.NumeroEmpleado ?? "";
+
+            // Subir a Google Drive
+            var response = await DocumentRepository.SubirDocumentoAsync(
+                fileData,
+                ArchivoSeleccionado.Name,
+                ArchivoSeleccionado.ContentType,
+                nombreDocente,
+                numeroEmpleado,
+                DocumentType.Publicacion);
+
+            if (response.Status != "success" || string.IsNullOrEmpty(response.Url))
+            {
+                throw new Exception("Error al subir el archivo a Google Drive");
+            }
+
+            // Guardar en la base de datos
+            await DocumentoServicios.CreateDocumentoForPublicacionAsync(
+                IdDocente,
+                IdPublicacion,
+                NuevoDocumento.Titulo.Trim(),
+                response.Url,
+                NuevoDocumento.Descripcion?.Trim() ?? $"Documento subido desde: {response.Path}"
+            );
+
+            // Cerrar modal y recargar datos
+            await CerrarModalDocumento();
+            await CargarDatos();
+            await JSRuntime.InvokeVoidAsync("alert", ". Documento guardado correctamente");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al guardar el documento: {ex.Message}");
+        }
+        finally
+        {
+            SubiendoArchivo = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task ConfirmarEliminarDocumento(E_Documento documento)
+    {
+        var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
+            $". ¿Está seguro de que desea eliminar el documento '{documento.Titulo}'?");
+        
+        if (confirmado)
+        {
+            await EliminarDocumento(documento.IdDocumento);
+        }
+    }
+
+    private async Task EliminarDocumento(int idDocumento)
+    {
+        try
+        {
+            // Obtener el documento antes de eliminarlo
+            var documento = await DocumentoServicios.GetByIdAsync(idDocumento);
+            if (documento == null)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", ". Error: No se encontró el documento");
+                return;
+            }
+
+            // Extraer el ID de Drive de la URL
+            string? driveId = null;
+            if (!string.IsNullOrEmpty(documento.Url))
+            {
+                try
+                {
+                    var uri = new Uri(documento.Url);
+                    if (uri.Host.Contains("drive.google.com"))
+                    {
+                        // Formato 1: https://drive.google.com/file/d/FILE_ID/view
+                        // Formato 2: https://drive.google.com/uc?id=FILE_ID
+                        if (uri.AbsolutePath.Contains("/file/d/"))
+                        {
+                            driveId = uri.AbsolutePath.Split("/file/d/")[1].Split('/')[0];
+                        }
+                        else if (uri.Query.Contains("id="))
+                        {
+                            driveId = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("id");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await JSRuntime.InvokeVoidAsync("console.error", $". Error al extraer ID de Drive: {ex.Message}");
+                }
+            }
+
+            // Si encontramos el ID de Drive, intentar eliminar primero de Drive
+            if (!string.IsNullOrEmpty(driveId))
+            {
+                try
+                {
+                    var eliminadoDeDrive = await DocumentRepository.EliminarDocumentoAsync(driveId);
+                    if (!eliminadoDeDrive)
+                    {
+                        if (!await JSRuntime.InvokeAsync<bool>("confirm", 
+                            ". No se pudo eliminar el archivo de Google Drive. ¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                        {
+                            return;
+                        }
+                    }
+                }
+                catch (Exception driveEx)
+                {
+                    if (!await JSRuntime.InvokeAsync<bool>("confirm", 
+                        $". Error al eliminar de Google Drive: {driveEx.Message}\n\n¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            // Eliminar de la base de datos
+            await DocumentoServicios.DeleteAsync(idDocumento);
+            await CargarDatos(); // Recargar datos
+            await JSRuntime.InvokeVoidAsync("alert", ". Documento eliminado correctamente");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $". Error al eliminar documento: {ex.Message}");
+        }
+    }
+} 

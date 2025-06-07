@@ -1,0 +1,62 @@
+﻿@page "/ControlEscolar"
+
+<div class="container">
+  <h4 class="mb-0 d-flex align-items-center gap-2">
+    <a href="https://localhost:7205/" class="text-decoration-none text-success"><i class="bi bi-arrow-left-circle-fill"></i></a>
+    Control escolar
+  </h4>
+  <hr />
+  <div class="row mt-5">
+    <!-- Gestión de Usuarios -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <!-- Reemplaza con tu imagen -->
+        <img src="imagenes/materias.jpg" class="card-img-top h-75" alt="Materias">
+        <div class="card-body text-center">
+          <a href="ListarMaterias" class="btn btn-success w-100">
+            <i class="bi bi-people-fill me-2"></i>Materias
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestión de carreras -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="imagenes/Carreras.jpg" class="card-img-top h-75" alt="Carreras">
+        <div class="card-body text-center">
+          <a href="ListarCarreras" class="btn btn-success w-100">
+            <i class="bi bi-mortarboard me-2"></i>Carreras
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestión de planes de estudio -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="imagenes/GestionSalidas.jpg" class="card-img-top h-75" alt="Planes de estudio">
+        <div class="card-body text-center">
+          <a href="ListarPlanesDeEstudio" class="btn btn-success w-100">
+            <i class="bi-clipboard2-pulse me-2"></i>Planes de estudio
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestión de atributos de egreso -->
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="imagenes/Periodos.jpg" class="card-img-top  h-75" alt="atributos de egreso">
+        <div class="card-body text-center">
+          <a href="AtributosEgreso" class="btn btn-success w-100">
+            <i class="bi bi-link-45deg me-2"></i>Atributos de egreso
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@code {
+
+}

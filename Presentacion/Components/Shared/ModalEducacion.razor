@@ -1,0 +1,567 @@
+@using Entidades.DTO.CurriculumVite
+@using Entidades.Utilidades
+@using Servicios.IRepositorios.CurriculumVite
+@using Servicios.IRepositorios
+@using Entidades.Modelos.CurriculumVite
+@inject ISRepositorioEducacion EducacionServicios
+@inject ISRepositorioDocumento DocumentoServicios
+@inject IDocumentRepository DocumentRepository
+@inject IJSRuntime JSRuntime
+
+<!-- Modal -->
+<div class="modal fade" id="modalEducacion" tabindex="-1" aria-labelledby="modalEducacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2D6B3C; color: white;">
+                <h5 class="modal-title" id="modalEducacionLabel">
+                    <i class="fas fa-graduation-cap"></i> 
+                    @(IsEditing ? "Editar Formación Académica" : "Nueva Formación Académica")
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="EducacionActual" OnValidSubmit="GuardarEducacion">
+                    <DataAnnotationsValidator />
+                    
+                    <!-- Nivel Educativo -->
+                    <div class="mb-3">
+                        <label for="nivel" class="form-label">Nivel Educativo *</label>
+                        <InputSelect id="nivel" class="form-select" @bind-Value="EducacionActual.Nivel">
+                            <option value="">Seleccione un nivel</option>
+                            <option value="Certificación">Certificación</option>
+                            <option value="Diplomado">Diplomado</option>
+                            <option value="Técnico Superior">Técnico Superior</option>
+                            <option value="Licenciatura">Licenciatura</option>
+                            <option value="Especialidad">Especialidad</option>
+                            <option value="Maestría">Maestría</option>
+                            <option value="Doctorado">Doctorado</option>
+                            <option value="Postdoctorado">Postdoctorado</option>
+                            <option value="Curso">Curso</option>
+                            <option value="Taller">Taller</option>
+                            <option value="Seminario">Seminario</option>
+                        </InputSelect>
+                        <ValidationMessage For="@(() => EducacionActual.Nivel)" />
+                    </div>
+
+                    <!-- Título -->
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título o Nombre del Programa</label>
+                        <InputText id="titulo" class="form-control" @bind-Value="EducacionActual.Titulo" 
+                                 placeholder="Ej: Maestría en Software y Tecnologías Emergentes"/>
+                        <div class="form-text">Nombre completo del programa, certificación o título obtenido</div>
+                    </div>
+
+                    <!-- Institución -->
+                    <div class="mb-3">
+                        <label for="institucion" class="form-label">Institución *</label>
+                        <InputText id="institucion" class="form-control" @bind-Value="EducacionActual.Institucion" 
+                                 placeholder="Ej: Universidad Autónoma de Baja California (UABC)"/>
+                        <ValidationMessage For="@(() => EducacionActual.Institucion)" />
+                    </div>
+
+                    <!-- Especialidad -->
+                    <div class="mb-3">
+                        <label for="especialidad" class="form-label">Especialidad o Área de Enfoque</label>
+                        <InputText id="especialidad" class="form-control" @bind-Value="EducacionActual.Especialidad" 
+                                 placeholder="Ej: Desarrollo de Software, Inteligencia Artificial, etc."/>
+                        <div class="form-text">Área específica de especialización dentro del programa</div>
+                    </div>
+
+                    <!-- País -->
+                    <div class="mb-3">
+                        <label for="pais" class="form-label">País</label>
+                        <InputSelect id="pais" class="form-select" @bind-Value="EducacionActual.Pais">
+                            <option value="">Seleccione un país</option>
+                            <option value="México">México</option>
+                            <option value="Estados Unidos">Estados Unidos</option>
+                            <option value="Canadá">Canadá</option>
+                            <option value="España">España</option>
+                            <option value="Reino Unido">Reino Unido</option>
+                            <option value="Francia">Francia</option>
+                            <option value="Alemania">Alemania</option>
+                            <option value="Italia">Italia</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Japón">Japón</option>
+                            <option value="Otro">Otro</option>
+                        </InputSelect>
+                    </div>
+
+                    <!-- Años de Inicio y Fin -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="anioInicio" class="form-label">Año de Inicio</label>
+                                <InputNumber id="anioInicio" class="form-control" @bind-Value="EducacionActual.AnioInicio" 
+                                           min="1950" max="@DateTime.Now.Year"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="anioFin" class="form-label">Año de Finalización</label>
+                                <div class="input-group">
+                                    <InputNumber id="anioFin" class="form-control" @bind-Value="EducacionActual.AnioFin" 
+                                               min="1950" max="@(DateTime.Now.Year + 10)" disabled="@EnCurso"/>
+                                    <span class="input-group-text">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="enCurso" @onchange="OnEnCursoChanged">
+                                            <label class="form-check-label" for="enCurso">
+                                                En curso
+                                            </label>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="form-text">Si está en curso, marque la casilla</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subida de Documento -->
+                    <div class="mb-3">
+                        <label for="documento" class="form-label">Documento de Evidencia (opcional)</label>
+                        <div class="input-group">
+                            <InputFile id="documento" class="form-control" OnChange="OnFileSelected" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"/>
+                            <span class="input-group-text">
+                                @if (ArchivoSeleccionado != null)
+                                {
+                                    <i class="fas fa-check text-success"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-file-upload text-muted"></i>
+                                }
+                            </span>
+                        </div>
+                        <div class="form-text">Certificado, diploma, título o constancia. Máximo 50MB.</div>
+                        @if (!string.IsNullOrEmpty(MensajeArchivo))
+                        {
+                            <div class="alert @(EsErrorArchivo ? "alert-danger" : "alert-success") mt-2" role="alert">
+                                @MensajeArchivo
+                            </div>
+                        }
+                        @if (ArchivoSeleccionado != null)
+                        {
+                            <div class="mt-2">
+                                <small class="text-info">
+                                    <i class="fas fa-info-circle"></i> Archivo seleccionado: @ArchivoSeleccionado.Name 
+                                    (@(Math.Round(ArchivoSeleccionado.Size / 1024.0 / 1024.0, 2)) MB)
+                                </small>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(UrlDocumento))
+                        {
+                            <div class="mt-2">
+                                <small class="text-success">
+                                    <i class="fas fa-check-circle"></i> Documento subido correctamente
+                                    <a href="@UrlDocumento" target="_blank" class="ms-2">Ver documento</a>
+                                </small>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" disabled="@Guardando">
+                            @if (Guardando)
+                            {
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span> @(SubiendoArchivo ? "Subiendo archivo..." : "Guardando...")</span>
+                            }
+                            else
+                            {
+                                <i class="fas fa-save"></i> <span>Guardar</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public EducacionDTO EducacionActual { get; set; } = new();
+    [Parameter] public bool IsEditing { get; set; }
+    [Parameter] public EventCallback<EducacionDTO> OnEducacionGuardada { get; set; }
+    [Parameter] public string EmpleadoNombre { get; set; } = "";
+    [Parameter] public string NumeroEmpleado { get; set; } = "";
+
+    private IBrowserFile? ArchivoSeleccionado;
+    private bool SubiendoArchivo = false;
+    private bool Guardando = false;
+    private string MensajeArchivo = "";
+    private bool EsErrorArchivo = false;
+    private string UrlDocumento = "";
+    private string DocumentoId = "";
+    private string DocumentoPath = "";
+    private bool EnCurso = false;
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        ArchivoSeleccionado = e.File;
+        MensajeArchivo = "";
+        EsErrorArchivo = false;
+        UrlDocumento = "";
+        DocumentoId = "";
+        DocumentoPath = "";
+        
+        // Validar tamaño inmediatamente
+        if (ArchivoSeleccionado != null && ArchivoSeleccionado.Size > 50 * 1024 * 1024)
+        {
+            MensajeArchivo = "El archivo no puede superar los 50MB";
+            EsErrorArchivo = true;
+            ArchivoSeleccionado = null;
+        }
+        
+        StateHasChanged();
+    }
+
+    private void OnEnCursoChanged(ChangeEventArgs e)
+    {
+        EnCurso = (bool)e.Value!;
+        if (EnCurso)
+        {
+            EducacionActual.AnioFin = null;
+        }
+        StateHasChanged();
+    }
+
+    private async Task<bool> SubirArchivoSiHay()
+    {
+        if (ArchivoSeleccionado == null) return true; // No hay archivo, continuar
+
+        try
+        {
+            SubiendoArchivo = true;
+            StateHasChanged();
+
+            // Leer el archivo
+            using var stream = ArchivoSeleccionado.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var fileData = memoryStream.ToArray();
+
+            // Subir a Google Drive usando DocumentRepository
+            var response = await DocumentRepository.SubirDocumentoAsync(
+                fileData,
+                ArchivoSeleccionado.Name,
+                ArchivoSeleccionado.ContentType,
+                EmpleadoNombre,
+                NumeroEmpleado,
+                DocumentType.Educacion);
+
+            // Procesar respuesta
+            if (response.Status == "success" && !string.IsNullOrEmpty(response.Url))
+            {
+                UrlDocumento = response.Url;
+                DocumentoId = response.Id;
+                DocumentoPath = response.Path;
+                await JSRuntime.InvokeVoidAsync("console.log", $"Archivo subido correctamente: {response.Path}");
+                return true;
+            }
+            else
+            {
+                MensajeArchivo = "Error al subir el archivo al Drive";
+                EsErrorArchivo = true;
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            MensajeArchivo = $"Error al subir archivo: {ex.Message}";
+            EsErrorArchivo = true;
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error subiendo archivo: {ex.Message}");
+            return false;
+        }
+        finally
+        {
+            SubiendoArchivo = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task GuardarEducacion()
+    {
+        try
+        {
+            Guardando = true;
+            StateHasChanged();
+
+            // Validaciones básicas
+            if (string.IsNullOrWhiteSpace(EducacionActual.Nivel))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error: El nivel educativo es obligatorio");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(EducacionActual.Institucion))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error: La institución es obligatoria");
+                return;
+            }
+
+            // Validar años
+            if (EducacionActual.AnioInicio.HasValue && EducacionActual.AnioFin.HasValue && 
+                EducacionActual.AnioInicio > EducacionActual.AnioFin)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error: El año de inicio no puede ser mayor al año de finalización");
+                return;
+            }
+
+            // Subir archivo si existe
+            var archivoSubido = await SubirArchivoSiHay();
+            if (!archivoSubido && ArchivoSeleccionado != null)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error al subir el archivo. Por favor, intente nuevamente.");
+                return;
+            }
+
+            // Preparar entidad para guardar
+            var educacionEntidad = new E_Educacion
+            {
+                IdEducacion = EducacionActual.IdEducacion,
+                IdDocente = EducacionActual.IdDocente,
+                Nivel = EducacionActual.Nivel,
+                Titulo = EducacionActual.Titulo,
+                Institucion = EducacionActual.Institucion,
+                Especialidad = EducacionActual.Especialidad,
+                Pais = EducacionActual.Pais,
+                AnioInicio = EducacionActual.AnioInicio,
+                AnioFin = EducacionActual.AnioFin
+            };
+
+            // Guardar o actualizar educación
+            if (IsEditing)
+            {
+                await EducacionServicios.UpdateAsync(educacionEntidad);
+                await JSRuntime.InvokeVoidAsync("console.log", $"Educación actualizada ID: {educacionEntidad.IdEducacion}");
+            }
+            else
+            {
+                await EducacionServicios.AddAsync(educacionEntidad);
+                await JSRuntime.InvokeVoidAsync("console.log", $"Nueva educación creada para docente: {educacionEntidad.IdDocente}");
+            }
+
+            // Actualizar DTO para devolverlo
+            EducacionActual.IdEducacion = educacionEntidad.IdEducacion;
+
+            // Si hay documento, registrarlo en la base de datos
+            bool documentoGuardado = true;
+            string mensajeDocumento = "";
+            
+            if (!string.IsNullOrEmpty(UrlDocumento))
+            {
+                try
+                {
+                    var documento = new E_Documento
+                    {
+                        IdDocente = EducacionActual.IdDocente,
+                        IdEducacion = EducacionActual.IdEducacion,
+                        Titulo = ArchivoSeleccionado?.Name ?? "Documento de Educación",
+                        Url = UrlDocumento,
+                        Descripcion = $"Documento de evidencia para {EducacionActual.Nivel}: {EducacionActual.Titulo}",
+                        FechaSubida = DateTime.Now
+                    };
+
+                    await DocumentoServicios.AddAsync(documento);
+                    
+                    documentoGuardado = true;
+                    mensajeDocumento = "El archivo se subió al Drive y se registró correctamente en la base de datos.";
+                    await JSRuntime.InvokeVoidAsync("console.log", "Documento guardado correctamente en BD");
+                }
+                catch (Exception docEx)
+                {
+                    documentoGuardado = false;
+                    mensajeDocumento = $"El archivo SÍ se subió al Drive correctamente, pero no se pudo registrar en la base de datos. Error: {docEx.Message}";
+                    await JSRuntime.InvokeVoidAsync("console.error", $"Error al guardar documento en BD: {docEx.Message}");
+                }
+            }
+
+            // Mostrar mensaje final apropiado
+            if (documentoGuardado || string.IsNullOrEmpty(UrlDocumento))
+            {
+                // Caso exitoso completo
+                await JSRuntime.InvokeVoidAsync("alert", $"¡Éxito! La formación académica se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
+            }
+            else
+            {
+                // Educación guardada pero documento falló
+                await JSRuntime.InvokeVoidAsync("alert", $"⠀ FORMACIÓN GUARDADA CORRECTAMENTE\n\n⚠️ Problema con el documento:\n{mensajeDocumento}\n\nPuedes agregar el documento manualmente desde la sección de documentos.");
+            }
+
+            // Notificar al componente padre que se guardó la educación
+            await OnEducacionGuardada.InvokeAsync(EducacionActual);
+            
+            // Cerrar modal
+            await CerrarModal();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error completo: {ex}");
+            
+            // Mostrar error específico según el tipo de excepción
+            var mensajeError = ex.Message;
+            if (ex.InnerException != null)
+            {
+                mensajeError += $"\n\nDetalle: {ex.InnerException.Message}";
+            }
+            
+            if (mensajeError.Contains("Invalid object name") || mensajeError.Contains("Invalid column name"))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error de base de datos: Hay un problema con la estructura de la base de datos. Es necesario ejecutar migraciones o verificar la configuración de Entity Framework.\n\nError técnico: " + mensajeError);
+            }
+            else if (mensajeError.Contains("duplicate key") || mensajeError.Contains("PRIMARY KEY"))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error: Ya existe una formación académica con esos datos");
+            }
+            else if (mensajeError.Contains("FK_") || mensajeError.Contains("FOREIGN KEY"))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error: Hay un problema con las relaciones de datos. Verifique que el docente existe en el sistema");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", $"Error al guardar la formación académica:\n\n{mensajeError}");
+            }
+        }
+        finally
+        {
+            Guardando = false;
+            StateHasChanged();
+        }
+    }
+
+    public async Task AbrirModal(EducacionDTO? educacion = null, int idDocente = 0)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("console.log", $"Abriendo modal - Educación: {educacion?.IdEducacion}, IdDocente: {idDocente}");
+            
+            if (educacion != null)
+            {
+                EducacionActual = new EducacionDTO
+                {
+                    IdEducacion = educacion.IdEducacion,
+                    IdDocente = educacion.IdDocente,
+                    Nivel = educacion.Nivel,
+                    Titulo = educacion.Titulo,
+                    Institucion = educacion.Institucion,
+                    Especialidad = educacion.Especialidad,
+                    Pais = educacion.Pais,
+                    AnioInicio = educacion.AnioInicio,
+                    AnioFin = educacion.AnioFin
+                };
+                EnCurso = educacion.EnCurso;
+                IsEditing = true;
+                await JSRuntime.InvokeVoidAsync("console.log", "Modo edición activado");
+            }
+            else
+            {
+                if (idDocente <= 0)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Error: No se pudo identificar el docente para crear la formación");
+                    return;
+                }
+                
+                EducacionActual = new EducacionDTO 
+                { 
+                    IdDocente = idDocente,
+                    Nivel = "",
+                    Titulo = "",
+                    Institucion = "",
+                    Especialidad = "",
+                    Pais = ""
+                };
+                EnCurso = false;
+                IsEditing = false;
+                await JSRuntime.InvokeVoidAsync("console.log", "Modo creación activado");
+            }
+
+            // Limpiar estado del archivo
+            ArchivoSeleccionado = null;
+            MensajeArchivo = "";
+            EsErrorArchivo = false;
+            UrlDocumento = "";
+            DocumentoId = "";
+            DocumentoPath = "";
+            
+            // Limpiar estado de guardado
+            Guardando = false;
+            SubiendoArchivo = false;
+            
+            StateHasChanged();
+
+            // Abrir modal
+            await JSRuntime.InvokeVoidAsync("console.log", "Intentando abrir modal Bootstrap");
+            
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                (function() {
+                    try {
+                        const modalElement = document.getElementById('modalEducacion');
+                        if (modalElement) {
+                            if (window.bootstrap && window.bootstrap.Modal) {
+                                const modal = new bootstrap.Modal(modalElement);
+                                modal.show();
+                                console.log('Modal abierto con Bootstrap 5');
+                            } else if (typeof $ !== 'undefined' && $.fn.modal) {
+                                $(modalElement).modal('show');
+                                console.log('Modal abierto con jQuery Bootstrap');
+                            } else {
+                                modalElement.style.display = 'block';
+                                modalElement.classList.add('show');
+                                modalElement.classList.add('d-block');
+                                console.log('Modal abierto con CSS directo');
+                            }
+                        } else {
+                            console.error('No se encontró el elemento modal');
+                        }
+                    } catch (error) {
+                        console.error('Error al abrir modal:', error);
+                    }
+                })();
+            ");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error al abrir modal: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al abrir el formulario de educación: {ex.Message}");
+        }
+    }
+
+    private async Task CerrarModal()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                (function() {
+                    try {
+                        const modalElement = document.getElementById('modalEducacion');
+                        if (modalElement) {
+                            if (window.bootstrap && window.bootstrap.Modal) {
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                }
+                            } else if (typeof $ !== 'undefined' && $.fn.modal) {
+                                $(modalElement).modal('hide');
+                            } else {
+                                modalElement.style.display = 'none';
+                                modalElement.classList.remove('show');
+                                modalElement.classList.remove('d-block');
+                                const backdrop = document.querySelector('.modal-backdrop');
+                                if (backdrop) {
+                                    backdrop.remove();
+                                }
+                            }
+                            console.log('Modal cerrado correctamente');
+                        }
+                    } catch (error) {
+                        console.error('Error al cerrar modal:', error);
+                    }
+                })();
+            ");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error al cerrar modal: {ex.Message}");
+        }
+    }
+} 

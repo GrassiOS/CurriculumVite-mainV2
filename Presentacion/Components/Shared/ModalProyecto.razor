@@ -1,0 +1,539 @@
+@using Entidades.DTO.CurriculumVite
+@using Entidades.Utilidades
+@using Entidades.Generales
+@using Servicios.IRepositorios.CurriculumVite
+@using Servicios.IRepositorios
+@using Entidades.Modelos.CurriculumVite
+@inject ISRepositorioProyecto ProyectoServicios
+@inject ISRepositorioDocumento DocumentoServicios
+@inject IDocumentRepository DocumentRepository
+@inject IJSRuntime JSRuntime
+
+<!-- Modal -->
+<div class="modal fade" id="modalProyecto" tabindex="-1" aria-labelledby="modalProyectoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2D6B3C; color: white;">
+                <h5 class="modal-title" id="modalProyectoLabel">
+                    <i class="fas fa-project-diagram"></i> 
+                    @(EsEdicion ? "Editar Proyecto" : "Agregar Proyecto")
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <EditForm Model="ProyectoActual" OnValidSubmit="GuardarProyecto">
+                <DataAnnotationsValidator />
+                
+                <div class="modal-body">
+                    @if (Guardando)
+                    {
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">@(SubiendoArchivo ? "Subiendo archivo..." : "Guardando...")</span>
+                            </div>
+                            <p class="mt-2 text-muted">@(SubiendoArchivo ? "Subiendo archivo..." : "Guardando proyecto...")</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <!-- Información Básica -->
+                            <div class="col-12 mb-4">
+                                <h6 class="text-muted mb-3">
+                                    <i class="fas fa-info-circle"></i> Información del Proyecto
+                                </h6>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Título del Proyecto *</label>
+                                    <InputTextArea @bind-Value="ProyectoActual.Titulo" class="form-control" 
+                                                   rows="2" placeholder="Ej: Desarrollo de Software Educativo para la Enseñanza de Matemáticas" />
+                                    <ValidationMessage For="@(() => ProyectoActual.Titulo)" class="text-danger small" />
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Rol en el Proyecto *</label>
+                                        <InputSelect @bind-Value="ProyectoActual.Rol" class="form-select">
+                                            <option value="">Seleccione un rol</option>
+                                            <option value="Investigador Principal">Investigador Principal</option>
+                                            <option value="Co-Investigador">Co-Investigador</option>
+                                            <option value="Colaborador">Colaborador</option>
+                                            <option value="Asesor">Asesor</option>
+                                            <option value="Coordinador">Coordinador</option>
+                                            <option value="Participante">Participante</option>
+                                            <option value="Director">Director</option>
+                                            <option value="Subdirector">Subdirector</option>
+                                        </InputSelect>
+                                        <ValidationMessage For="@(() => ProyectoActual.Rol)" class="text-danger small" />
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Institución *</label>
+                                        <InputText @bind-Value="ProyectoActual.Institucion" class="form-control" 
+                                                   placeholder="Ej: Universidad Autónoma de Baja California" />
+                                        <ValidationMessage For="@(() => ProyectoActual.Institucion)" class="text-danger small" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Financiamiento -->
+                            <div class="col-12 mb-4">
+                                <h6 class="text-muted mb-3">
+                                    <i class="fas fa-dollar-sign"></i> Financiamiento
+                                </h6>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Fuente de Financiamiento</label>
+                                    <InputText @bind-Value="ProyectoActual.Financiamiento" class="form-control" 
+                                               placeholder="Ej: CONACYT, UABC, Fondos Propios, etc." />
+                                    <div class="form-text">Opcional: Especifica quién financia el proyecto</div>
+                                </div>
+                            </div>
+
+                            <!-- Período -->
+                            <div class="col-12 mb-4">
+                                <h6 class="text-muted mb-3">
+                                    <i class="fas fa-calendar"></i> Período del Proyecto
+                                </h6>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Año de Inicio *</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                            <InputNumber @bind-Value="ProyectoActual.PeriodoInicio" class="form-control" 
+                                                        min="1900" max="@DateTime.Now.Year" placeholder="2020" />
+                                        </div>
+                                        <ValidationMessage For="@(() => ProyectoActual.PeriodoInicio)" class="text-danger small" />
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Año de Finalización *</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                            <InputNumber @bind-Value="ProyectoActual.PeriodoFin" class="form-control" 
+                                                        min="@(ProyectoActual.PeriodoInicio ?? 1900)" max="2100" placeholder="2023" />
+                                        </div>
+                                        <ValidationMessage For="@(() => ProyectoActual.PeriodoFin)" class="text-danger small" />
+                                        <div class="form-text">Para proyectos en curso, use el año estimado de finalización</div>
+                                    </div>
+                                </div>
+                                
+                                @if (ProyectoActual.PeriodoInicio.HasValue && ProyectoActual.PeriodoFin > 0)
+                                {
+                                    <div class="alert alert-info mt-2">
+                                        <i class="fas fa-info-circle"></i>
+                                        <strong>Duración:</strong> 
+                                        @{
+                                            var duracion = ProyectoActual.PeriodoFin - (ProyectoActual.PeriodoInicio ?? 0) + 1;
+                                        }
+                                        @duracion año@(duracion > 1 ? "s" : "")
+                                        @if (ProyectoActual.PeriodoFin >= DateTime.Now.Year)
+                                        {
+                                            <span class="badge bg-success ms-2">Proyecto Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary ms-2">Proyecto Finalizado</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Subida de Documento -->
+                            <div class="col-12 mb-3">
+                                <h6 class="text-muted mb-3">
+                                    <i class="fas fa-file-upload"></i> Documento de Evidencia
+                                </h6>
+                                
+                                <label for="documento" class="form-label">Documento del Proyecto (opcional)</label>
+                                <div class="input-group">
+                                    <InputFile id="documento" class="form-control" OnChange="OnFileSelected" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"/>
+                                    <span class="input-group-text">
+                                        @if (ArchivoSeleccionado != null)
+                                        {
+                                            <i class="fas fa-check text-success"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-file-upload text-muted"></i>
+                                        }
+                                    </span>
+                                </div>
+                                <div class="form-text">Carta de aceptación, convenio, reporte o documento relacionado. Máximo 50MB.</div>
+                                @if (!string.IsNullOrEmpty(MensajeArchivo))
+                                {
+                                    <div class="alert @(EsErrorArchivo ? "alert-danger" : "alert-success") mt-2" role="alert">
+                                        @MensajeArchivo
+                                    </div>
+                                }
+                                @if (ArchivoSeleccionado != null)
+                                {
+                                    <div class="mt-2">
+                                        <small class="text-info">
+                                            <i class="fas fa-info-circle"></i> Archivo seleccionado: @ArchivoSeleccionado.Name 
+                                            (@(Math.Round(ArchivoSeleccionado.Size / 1024.0 / 1024.0, 2)) MB)
+                                        </small>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(UrlDocumento))
+                                {
+                                    <div class="mt-2">
+                                        <small class="text-success">
+                                            <i class="fas fa-check-circle"></i> Documento subido correctamente
+                                            <a href="@UrlDocumento" target="_blank" class="ms-2">Ver documento</a>
+                                        </small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled="@Guardando">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success" disabled="@Guardando">
+                        @if (Guardando)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            @(SubiendoArchivo ? "Subiendo archivo..." : "Guardando...")
+                        }
+                        else
+                        {
+                            <i class="fas fa-save"></i>
+                            @if (EsEdicion)
+                            {
+                                <text>Actualizar Proyecto</text>
+                            }
+                            else
+                            {
+                                <text>Guardar Proyecto</text>
+                            }
+                        }
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventCallback OnProyectoGuardado { get; set; }
+    [Parameter] public int IdDocente { get; set; }
+    [Parameter] public string EmpleadoNombre { get; set; } = "";
+    [Parameter] public string NumeroEmpleado { get; set; } = "";
+    
+    private ProyectoDTO ProyectoActual = new();
+    private bool EsEdicion = false;
+    private bool Guardando = false;
+    private IBrowserFile? ArchivoSeleccionado;
+    private string MensajeArchivo = string.Empty;
+    private bool EsErrorArchivo = false;
+    private string UrlDocumento = string.Empty;
+    private bool SubiendoArchivo = false;
+
+    public async Task AbrirModal(ProyectoDTO? proyecto = null, int idDocente = 0)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("console.log", $"Abriendo modal proyecto - Proyecto: {proyecto?.IdProyecto}, IdDocente: {idDocente}");
+            
+            if (proyecto != null)
+            {
+                EsEdicion = true;
+                ProyectoActual = new ProyectoDTO 
+                {
+                    IdProyecto = proyecto.IdProyecto,
+                    IdDocente = proyecto.IdDocente,
+                    Titulo = proyecto.Titulo,
+                    Rol = proyecto.Rol,
+                    Institucion = proyecto.Institucion,
+                    Financiamiento = proyecto.Financiamiento,
+                    PeriodoInicio = proyecto.PeriodoInicio,
+                    PeriodoFin = proyecto.PeriodoFin
+                };
+                await JSRuntime.InvokeVoidAsync("console.log", "Modo edición activado");
+            }
+            else
+            {
+                if (idDocente <= 0)
+                {
+                    idDocente = IdDocente;
+                }
+                
+                if (idDocente <= 0)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Error: No se pudo identificar el docente para crear el proyecto");
+                    return;
+                }
+                
+                EsEdicion = false;
+                ProyectoActual = new ProyectoDTO 
+                { 
+                    IdDocente = idDocente,
+                    PeriodoInicio = DateTime.Now.Year,
+                    PeriodoFin = DateTime.Now.Year + 1
+                };
+                await JSRuntime.InvokeVoidAsync("console.log", "Modo creación activado");
+            }
+            
+            // Limpiar estado de guardado y archivo
+            Guardando = false;
+            ArchivoSeleccionado = null;
+            MensajeArchivo = "";
+            EsErrorArchivo = false;
+            UrlDocumento = "";
+            SubiendoArchivo = false;
+            
+            StateHasChanged();
+
+            // Abrir modal con implementación robusta
+            await JSRuntime.InvokeVoidAsync("console.log", "Intentando abrir modal Bootstrap");
+            
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                (function() {
+                    try {
+                        const modalElement = document.getElementById('modalProyecto');
+                        if (modalElement) {
+                            if (window.bootstrap && window.bootstrap.Modal) {
+                                const modal = new bootstrap.Modal(modalElement);
+                                modal.show();
+                                console.log('Modal proyecto abierto con Bootstrap 5');
+                            } else if (typeof $ !== 'undefined' && $.fn.modal) {
+                                $(modalElement).modal('show');
+                                console.log('Modal proyecto abierto con jQuery Bootstrap');
+                            } else {
+                                modalElement.style.display = 'block';
+                                modalElement.classList.add('show');
+                                modalElement.classList.add('d-block');
+                                console.log('Modal proyecto abierto con CSS directo');
+                            }
+                        } else {
+                            console.error('No se encontró el elemento modal de proyecto');
+                        }
+                    } catch (error) {
+                        console.error('Error al abrir modal de proyecto:', error);
+                    }
+                })();
+            ");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error al abrir modal: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al abrir el formulario de proyecto: {ex.Message}");
+        }
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        ArchivoSeleccionado = e.File;
+        MensajeArchivo = "";
+        EsErrorArchivo = false;
+        UrlDocumento = "";
+        
+        // Validar tamaño inmediatamente
+        if (ArchivoSeleccionado != null && ArchivoSeleccionado.Size > 50 * 1024 * 1024)
+        {
+            MensajeArchivo = "El archivo no puede superar los 50MB";
+            EsErrorArchivo = true;
+            ArchivoSeleccionado = null;
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task<bool> SubirArchivoSiHay()
+    {
+        if (ArchivoSeleccionado == null) return true; // No hay archivo, continuar
+
+        try
+        {
+            SubiendoArchivo = true;
+            StateHasChanged();
+
+            // Leer el archivo
+            using var stream = ArchivoSeleccionado.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var fileData = memoryStream.ToArray();
+
+            // Subir a Google Drive usando DocumentRepository
+            var response = await DocumentRepository.SubirDocumentoAsync(
+                fileData,
+                ArchivoSeleccionado.Name,
+                ArchivoSeleccionado.ContentType,
+                EmpleadoNombre,
+                NumeroEmpleado,
+                DocumentType.Proyecto);
+
+            // Procesar respuesta
+            if (response.Status == "success" && !string.IsNullOrEmpty(response.Url))
+            {
+                UrlDocumento = response.Url;
+                await JSRuntime.InvokeVoidAsync("console.log", $"Archivo subido correctamente: {response.Path}");
+                return true;
+            }
+            else
+            {
+                MensajeArchivo = "Error al subir el archivo al Drive";
+                EsErrorArchivo = true;
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            MensajeArchivo = $"Error al subir archivo: {ex.Message}";
+            EsErrorArchivo = true;
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error subiendo archivo: {ex.Message}");
+            return false;
+        }
+        finally
+        {
+            SubiendoArchivo = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task GuardarProyecto()
+    {
+        try
+        {
+            Guardando = true;
+            StateHasChanged();
+
+            // Subir archivo si existe
+            var archivoSubido = await SubirArchivoSiHay();
+            if (!archivoSubido && ArchivoSeleccionado != null)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error al subir el archivo. Por favor, intente nuevamente.");
+                return;
+            }
+
+            // Mapear DTO a entidad
+            var proyecto = new E_Proyecto
+            {
+                IdProyecto = ProyectoActual.IdProyecto,
+                IdDocente = ProyectoActual.IdDocente,
+                Titulo = ProyectoActual.Titulo,
+                Rol = ProyectoActual.Rol,
+                Institucion = ProyectoActual.Institucion,
+                Financiamiento = ProyectoActual.Financiamiento,
+                PeriodoInicio = ProyectoActual.PeriodoInicio,
+                PeriodoFin = ProyectoActual.PeriodoFin
+            };
+            
+            if (EsEdicion)
+            {
+                await ProyectoServicios.UpdateAsync(proyecto);
+            }
+            else
+            {
+                await ProyectoServicios.AddAsync(proyecto);
+            }
+
+            // Actualizar DTO para devolverlo
+            ProyectoActual.IdProyecto = proyecto.IdProyecto;
+
+            // Si hay documento, registrarlo en la base de datos
+            bool documentoGuardado = true;
+            string mensajeDocumento = "";
+            
+            if (!string.IsNullOrEmpty(UrlDocumento))
+            {
+                try
+                {
+                    var documento = new E_Documento
+                    {
+                        IdDocente = ProyectoActual.IdDocente,
+                        IdProyecto = ProyectoActual.IdProyecto,
+                        Titulo = ArchivoSeleccionado?.Name ?? "Documento de Proyecto",
+                        Url = UrlDocumento,
+                        Descripcion = $"Documento de evidencia para el proyecto: {ProyectoActual.Titulo}",
+                        FechaSubida = DateTime.Now
+                    };
+
+                    await DocumentoServicios.AddAsync(documento);
+                    
+                    documentoGuardado = true;
+                    mensajeDocumento = "El archivo se subió al Drive y se registró correctamente en la base de datos.";
+                    await JSRuntime.InvokeVoidAsync("console.log", "Documento guardado correctamente en BD");
+                }
+                catch (Exception docEx)
+                {
+                    documentoGuardado = false;
+                    mensajeDocumento = $"El archivo SÍ se subió al Drive correctamente, pero no se pudo registrar en la base de datos. Error: {docEx.Message}";
+                    await JSRuntime.InvokeVoidAsync("console.error", $"Error al guardar documento en BD: {docEx.Message}");
+                }
+            }
+
+            // Mostrar mensaje final apropiado
+            if (documentoGuardado || string.IsNullOrEmpty(UrlDocumento))
+            {
+                // Caso exitoso completo
+                await JSRuntime.InvokeVoidAsync("alert", $"¡Éxito! El proyecto se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
+            }
+            else
+            {
+                // Proyecto guardado pero documento falló
+                await JSRuntime.InvokeVoidAsync("alert", $"⠀ PROYECTO GUARDADO CORRECTAMENTE\n\n⚠️ Problema con el documento:\n{mensajeDocumento}\n\nPuedes agregar el documento manualmente desde la sección de documentos.");
+            }
+
+            await CerrarModal();
+            await OnProyectoGuardado.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+        }
+        finally
+        {
+            Guardando = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task CerrarModal()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                (function() {
+                    try {
+                        const modalElement = document.getElementById('modalProyecto');
+                        if (modalElement) {
+                            if (window.bootstrap && window.bootstrap.Modal) {
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                }
+                            } else if (typeof $ !== 'undefined' && $.fn.modal) {
+                                $(modalElement).modal('hide');
+                            } else {
+                                modalElement.style.display = 'none';
+                                modalElement.classList.remove('show');
+                                modalElement.classList.remove('d-block');
+                                const backdrop = document.querySelector('.modal-backdrop');
+                                if (backdrop) {
+                                    backdrop.remove();
+                                }
+                            }
+                            console.log('Modal proyecto cerrado correctamente');
+                        }
+                    } catch (error) {
+                        console.error('Error al cerrar modal proyecto:', error);
+                    }
+                })();
+            ");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", $"Error al cerrar modal: {ex.Message}");
+        }
+    }
+} 

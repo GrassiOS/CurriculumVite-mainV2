@@ -1,0 +1,458 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\presentacion\\areas\\cv\\docentes\\documentoseducacion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|solutionrelative:presentacion\\areas\\cv\\docentes\\documentoseducacion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\presentacion\\areas\\cv\\docentes\\gestorpublicaciones.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|solutionrelative:presentacion\\areas\\cv\\docentes\\gestorpublicaciones.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\presentacion\\areas\\cv\\docentes\\documentospublicacion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|solutionrelative:presentacion\\areas\\cv\\docentes\\documentospublicacion.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\presentacion\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|solutionrelative:presentacion\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\entidades\\dto\\curriculumvite\\publicaciondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|solutionrelative:entidades\\dto\\curriculumvite\\publicaciondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\servicios\\repositorios\\documentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|solutionrelative:servicios\\repositorios\\documentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\presentacion\\areas\\cv\\docentes\\gestiondocente.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D75C6447-E48D-47C6-B4B1-AE98DCAC1E34}|Presentacion\\Presentacion.csproj|solutionrelative:presentacion\\areas\\cv\\docentes\\gestiondocente.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\entidades\\perfilesdto\\curriculumvite\\docenteprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|solutionrelative:entidades\\perfilesdto\\curriculumvite\\docenteprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\entidades\\modelos\\curriculumvite\\e_docente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|solutionrelative:entidades\\modelos\\curriculumvite\\e_docente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\contextobd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\contextobd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\entidades\\dto\\curriculumvite\\docentedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|solutionrelative:entidades\\dto\\curriculumvite\\docentedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\servicios\\repositorios\\curriculumvite\\tesisdirigidaservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|solutionrelative:servicios\\repositorios\\curriculumvite\\tesisdirigidaservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\servicios\\repositorios\\curriculumvite\\documentoservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|solutionrelative:servicios\\repositorios\\curriculumvite\\documentoservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\servicios\\repositorios\\curriculumvite\\distincionservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|solutionrelative:servicios\\repositorios\\curriculumvite\\distincionservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\servicios\\repositorios\\curriculumvite\\contactodocenteservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2A0767F-6906-4D40-88E7-D63386F4F1C4}|Servicios\\Servicios.csproj|solutionrelative:servicios\\repositorios\\curriculumvite\\contactodocenteservicios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\tipocontactorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\tipocontactorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\tesisdirigidarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\tesisdirigidarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\publicacionrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\publicacionrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\proyectorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\proyectorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\experienciarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\experienciarepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\educacionrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\educacionrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\documentorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\documentorepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\distincionrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\distincionrepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\repositorios\\curriculumvite\\contactodocenterepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\repositorios\\curriculumvite\\contactodocenterepositorio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\datos\\irepositorios\\curriculumvite\\irepositoriocontactodocente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBEAE92A-81DB-47E2-9871-06740727D33B}|Datos\\Datos.csproj|solutionrelative:datos\\irepositorios\\curriculumvite\\irepositoriocontactodocente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|c:\\users\\jorge\\downloads\\best\\curriculumvite-main\\entidades\\dto\\curriculumvite\\distinciondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA4BAC3-0C82-492A-A744-4689CC673F03}|Entidades\\Entidades.csproj|solutionrelative:entidades\\dto\\curriculumvite\\distinciondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jorge\\AppData\\Local\\Temp\\.vsdbgsrc\\66a120199faffffce7865380dc9a01161a1545de91579f9f2fa44a9cdd49e035\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DocumentosEducacion.razor",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\DocumentosEducacion.razor",
+              "RelativeDocumentMoniker": "Presentacion\\Areas\\CV\\Docentes\\DocumentosEducacion.razor",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\DocumentosEducacion.razor",
+              "RelativeToolTip": "Presentacion\\Areas\\CV\\Docentes\\DocumentosEducacion.razor",
+              "ViewState": "AgIAAM8BAAAAAAAAAAAowNkBAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-06T13:30:49.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GestorPublicaciones.razor",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\GestorPublicaciones.razor",
+              "RelativeDocumentMoniker": "Presentacion\\Areas\\CV\\Docentes\\GestorPublicaciones.razor",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\GestorPublicaciones.razor",
+              "RelativeToolTip": "Presentacion\\Areas\\CV\\Docentes\\GestorPublicaciones.razor",
+              "ViewState": "AgIAAGEBAAAAAAAAAAAcwG8BAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-06T12:55:44.429Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DocumentosPublicacion.razor",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\DocumentosPublicacion.razor",
+              "RelativeDocumentMoniker": "Presentacion\\Areas\\CV\\Docentes\\DocumentosPublicacion.razor",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\DocumentosPublicacion.razor",
+              "RelativeToolTip": "Presentacion\\Areas\\CV\\Docentes\\DocumentosPublicacion.razor",
+              "ViewState": "AgIAAO4BAAAAAAAAAADwv/4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-06T11:59:01.827Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PublicacionDTO.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\DTO\\CurriculumVite\\PublicacionDTO.cs",
+              "RelativeDocumentMoniker": "Entidades\\DTO\\CurriculumVite\\PublicacionDTO.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\DTO\\CurriculumVite\\PublicacionDTO.cs",
+              "RelativeToolTip": "Entidades\\DTO\\CurriculumVite\\PublicacionDTO.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAowBgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T11:31:02.945Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DocumentRepository.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\DocumentRepository.cs",
+              "RelativeDocumentMoniker": "Servicios\\Repositorios\\DocumentRepository.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\DocumentRepository.cs",
+              "RelativeToolTip": "Servicios\\Repositorios\\DocumentRepository.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAIwBAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T10:54:45.095Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Program.cs",
+              "RelativeDocumentMoniker": "Presentacion\\Program.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Program.cs",
+              "RelativeToolTip": "Presentacion\\Program.cs",
+              "ViewState": "AgIAAJcAAAAAAAAAAAAcwKEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:16:22.204Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GestionDocente.razor",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\GestionDocente.razor",
+              "RelativeDocumentMoniker": "Presentacion\\Areas\\CV\\Docentes\\GestionDocente.razor",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Presentacion\\Areas\\CV\\Docentes\\GestionDocente.razor",
+              "RelativeToolTip": "Presentacion\\Areas\\CV\\Docentes\\GestionDocente.razor",
+              "ViewState": "AgIAAJ8CAAAAAAAAAAAhwKwCAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-06T08:36:24.349Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DocenteProfile.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\PerfilesDTO\\CurriculumVite\\DocenteProfile.cs",
+              "RelativeDocumentMoniker": "Entidades\\PerfilesDTO\\CurriculumVite\\DocenteProfile.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\PerfilesDTO\\CurriculumVite\\DocenteProfile.cs",
+              "RelativeToolTip": "Entidades\\PerfilesDTO\\CurriculumVite\\DocenteProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T06:25:57.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DocenteDTO.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\DTO\\CurriculumVite\\DocenteDTO.cs",
+              "RelativeDocumentMoniker": "Entidades\\DTO\\CurriculumVite\\DocenteDTO.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\DTO\\CurriculumVite\\DocenteDTO.cs",
+              "RelativeToolTip": "Entidades\\DTO\\CurriculumVite\\DocenteDTO.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAIwDkAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T06:26:02.859Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "E_Docente.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\Modelos\\CurriculumVite\\E_Docente.cs",
+              "RelativeDocumentMoniker": "Entidades\\Modelos\\CurriculumVite\\E_Docente.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\Modelos\\CurriculumVite\\E_Docente.cs",
+              "RelativeToolTip": "Entidades\\Modelos\\CurriculumVite\\E_Docente.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAlwCwAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T06:24:20.106Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "TesisDirigidaServicios.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\TesisDirigidaServicios.cs",
+              "RelativeDocumentMoniker": "Servicios\\Repositorios\\CurriculumVite\\TesisDirigidaServicios.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\TesisDirigidaServicios.cs",
+              "RelativeToolTip": "Servicios\\Repositorios\\CurriculumVite\\TesisDirigidaServicios.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:30:54.927Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ContextoBD.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\ContextoBD.cs",
+              "RelativeDocumentMoniker": "Datos\\ContextoBD.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\ContextoBD.cs",
+              "RelativeToolTip": "Datos\\ContextoBD.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:19:51.755Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DocumentoServicios.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\DocumentoServicios.cs",
+              "RelativeDocumentMoniker": "Servicios\\Repositorios\\CurriculumVite\\DocumentoServicios.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\DocumentoServicios.cs",
+              "RelativeToolTip": "Servicios\\Repositorios\\CurriculumVite\\DocumentoServicios.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:30:29.197Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ContactoDocenteServicios.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\ContactoDocenteServicios.cs",
+              "RelativeDocumentMoniker": "Servicios\\Repositorios\\CurriculumVite\\ContactoDocenteServicios.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\ContactoDocenteServicios.cs",
+              "RelativeToolTip": "Servicios\\Repositorios\\CurriculumVite\\ContactoDocenteServicios.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:18:11.045Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "DistincionServicios.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\DistincionServicios.cs",
+              "RelativeDocumentMoniker": "Servicios\\Repositorios\\CurriculumVite\\DistincionServicios.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Servicios\\Repositorios\\CurriculumVite\\DistincionServicios.cs",
+              "RelativeToolTip": "Servicios\\Repositorios\\CurriculumVite\\DistincionServicios.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAgwCsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:18:15.816Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "TipoContactoRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\TipoContactoRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\TipoContactoRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\TipoContactoRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\TipoContactoRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:25:28.908Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "TesisDirigidaRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\TesisDirigidaRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\TesisDirigidaRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\TesisDirigidaRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\TesisDirigidaRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:25:23.479Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "PublicacionRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\PublicacionRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\PublicacionRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\PublicacionRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\PublicacionRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:25:17.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ProyectoRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\ProyectoRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\ProyectoRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\ProyectoRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\ProyectoRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:25:11.555Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ExperienciaRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\ExperienciaRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\ExperienciaRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\ExperienciaRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\ExperienciaRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:25:05.62Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "EducacionRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\EducacionRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\EducacionRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\EducacionRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\EducacionRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:24:59.501Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ContactoDocenteRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\ContactoDocenteRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\ContactoDocenteRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\ContactoDocenteRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\ContactoDocenteRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:22:25.707Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "DistincionRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\DistincionRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\DistincionRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\DistincionRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\DistincionRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:23:13.339Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "DocumentoRepositorio.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\DocumentoRepositorio.cs",
+              "RelativeDocumentMoniker": "Datos\\Repositorios\\CurriculumVite\\DocumentoRepositorio.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\Repositorios\\CurriculumVite\\DocumentoRepositorio.cs",
+              "RelativeToolTip": "Datos\\Repositorios\\CurriculumVite\\DocumentoRepositorio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:23:23.475Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IRepositorioContactoDocente.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\IRepositorios\\CurriculumVite\\IRepositorioContactoDocente.cs",
+              "RelativeDocumentMoniker": "Datos\\IRepositorios\\CurriculumVite\\IRepositorioContactoDocente.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Datos\\IRepositorios\\CurriculumVite\\IRepositorioContactoDocente.cs",
+              "RelativeToolTip": "Datos\\IRepositorios\\CurriculumVite\\IRepositorioContactoDocente.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:22:13.188Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "DistincionDTO.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\DTO\\CurriculumVite\\DistincionDTO.cs",
+              "RelativeDocumentMoniker": "Entidades\\DTO\\CurriculumVite\\DistincionDTO.cs",
+              "ToolTip": "C:\\Users\\jorge\\Downloads\\best\\CurriculumVite-main\\Entidades\\DTO\\CurriculumVite\\DistincionDTO.cs",
+              "RelativeToolTip": "Entidades\\DTO\\CurriculumVite\\DistincionDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:18:01.22Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\jorge\\AppData\\Local\\Temp\\.vsdbgsrc\\66a120199faffffce7865380dc9a01161a1545de91579f9f2fa44a9cdd49e035\\Program.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\66a120199faffffce7865380dc9a01161a1545de91579f9f2fa44a9cdd49e035\\Program.cs",
+              "ToolTip": "C:\\Users\\jorge\\AppData\\Local\\Temp\\.vsdbgsrc\\66a120199faffffce7865380dc9a01161a1545de91579f9f2fa44a9cdd49e035\\Program.cs [Solo lectura]",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\66a120199faffffce7865380dc9a01161a1545de91579f9f2fa44a9cdd49e035\\Program.cs [Solo lectura]",
+              "ViewState": "AgIAABcAAAAAAAAAAAAkwB0AAAACAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T22:16:22.225Z",
+              "EditorCaption": " [Solo lectura]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

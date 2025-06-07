@@ -1,0 +1,215 @@
+﻿@page "/GestionPlanEstudio"
+@page "/GestionPlanEstudio/{IdPlanEstudio:int}"
+
+@using Entidades.DTO.PlanesDeEstudio.PlanEstudios
+@using Entidades.Generales;
+@using Entidades.Modelos;
+@using Entidades.Modelos.PlanesDeEstudio
+@using Entidades.Modelos.PlanesDeEstudio.Carreras
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.Routing
+@using Servicios;
+@using Servicios.Repositorios.PlanesDeEstudio
+
+@inject PlanEstudioServicios _planEstudioServicios;
+@inject CarreraServicios _carreraServicios;
+@inject NavigationManager navigationManager;
+@inject IJSRuntime jsRunTime
+
+<div class="container">
+  <h4 class="mb-0 d-flex align-items-center gap-2">
+    <a href="https://localhost:7205/ListarPlanesDeEstudio" class="text-decoration-none text-success"><i class="bi bi-arrow-left-circle-fill"></i></a>
+    Gestión de Planes de estudio
+  </h4>
+  <hr />
+
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-12 col-lg-12">
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header @(EsModificacion ? "bg-primary" : "bg-success") bg-opacity-75 text-white">
+          <h5>@(EsModificacion ? "Modificar" : "Nuevo") Plan de estudios</h5>
+        </div>
+        <div class="card-body">
+
+          <EditForm Model="planEstudioDTO" OnValidSubmit="@(() => GuardarPlanEstudios())">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+
+            <div class="container">
+              <div class="card">
+                <div class="card-body">
+                  <ValidationSummary></ValidationSummary>
+
+                  <!-- Sección de campos básicos -->
+                  <div class="form-group">
+                    <div class="row mb-3">
+                      <div class="col-4 col-lg-4">
+                        <label class="form-label fw-bold">Plan de estudios</label>
+                        <InputText @bind-Value="planEstudioDTO.PlanEstudio" class="form-control" placeholder="Ingrese plan de estudios"></InputText>
+                        <ValidationMessage For="() => planEstudioDTO.PlanEstudio"></ValidationMessage>
+                      </div>
+                      <div class="col-4 col-lg-4">
+                        <label class="form-label fw-medium mb-1" style="color: #495057">Selecciones Carrera</label>
+                        <div class="col-md-12">
+                          <InputSelect @bind-Value="planEstudioDTO.IdCarrera" class="form-control">
+                            <option value="">Seleccione una carrera</option>
+                            @foreach (var carrera in _listaCarrera)
+                            {
+                              <option value="@carrera.IdCarrera">@carrera.NombreCarrera</option>
+                            }
+                          </InputSelect>
+                        </div>
+                      </div>
+                      <div class="col-4 col-lg-4">
+                        <label class="form-label fw-bold">Fecha de creación</label>
+                        <InputDate @bind-Value="planEstudioDTO.FechaCreacion" class="form-control" placeholder="Ingrese el nombre"></InputDate>
+                        <ValidationMessage For="() => planEstudioDTO.FechaCreacion"></ValidationMessage>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="row mb-3">
+                      <div class="col-12 col-lg-4">
+                        <label class="form-label fw-bold">Total de créditos</label>
+                        <InputNumber @bind-Value="planEstudioDTO.TotalCreditos" class="form-control" placeholder="0"></InputNumber>
+                        <ValidationMessage For="() => planEstudioDTO.TotalCreditos"></ValidationMessage>
+                      </div>
+                      <div class="col-12 col-lg-4">
+                        <label class="form-label fw-bold">Créditos obligatorios</label>
+                        <InputNumber @bind-Value="planEstudioDTO.CreditosObligatorios" class="form-control" placeholder="0"></InputNumber>
+                        <ValidationMessage For="() => planEstudioDTO.CreditosObligatorios"></ValidationMessage>
+                      </div>
+                      <div class="col-12 col-lg-4">
+                        <label class="form-label fw-bold">Créditos optativos</label>
+                        <InputNumber @bind-Value="planEstudioDTO.CreditosOptativos" class="form-control" placeholder="0"></InputNumber>
+                        <ValidationMessage For="() => planEstudioDTO.CreditosOptativos"></ValidationMessage>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sección de pestañas -->
+                <div class="row mb-5">
+                  <ul class="nav nav-tabs" id="plan-estudioTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-bold" id="perfil-ingreso-tab" data-bs-toggle="tab" data-bs-target="#perfil-ingreso" type="button" role="tab" aria-controls="perfil-ingreso" aria-selected="true">Perfil de ingreso</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-bold" id="perfil-egreso-tab" data-bs-toggle="tab" data-bs-target="#perfil-egreso" type="button" role="tab" aria-controls="perfil-egreso" aria-selected="false">Perfil de egreso</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-bold" id="campo-ocupacional-tab" data-bs-toggle="tab" data-bs-target="#campo-ocupacional" type="button" role="tab" aria-controls="campo-ocupacional" aria-selected="false">Campo ocupacional</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-bold" id="comentarios-tab" data-bs-toggle="tab" data-bs-target="#comentarios" type="button" role="tab" aria-controls="comentarios" aria-selected="false">Comentarios</button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content p-3 border border-top-0" id="plan-estudioTabsContent">
+                    <div class="tab-pane fade show active" id="perfil-ingreso" role="tabpanel" aria-labelledby="perfil-igreso-tab">
+                      <InputTextArea rows="10" @bind-Value="planEstudioDTO.PerfilDeIngreso" class="form-control" placeholder="Capture el perfil de ingreso"></InputTextArea>
+                      <ValidationMessage For="() => planEstudioDTO.PerfilDeIngreso"></ValidationMessage>
+                    </div>
+                    <div class="tab-pane fade" id="perfil-egreso" role="tabpanel" aria-labelledby="perfil-egreso-tab">
+                      <InputTextArea rows="10" @bind-Value="planEstudioDTO.PerfilDeEgreso" class="form-control" placeholder="Capture el perfil de egreso"></InputTextArea>
+                      <ValidationMessage For="() => planEstudioDTO.PerfilDeEgreso"></ValidationMessage>
+                    </div>
+                    <div class="tab-pane fade" id="campo-ocupacional" role="tabpanel" aria-labelledby="campo-ocupacional-tab">
+                      <InputTextArea rows="10" @bind-Value="planEstudioDTO.CampoOcupacional" class="form-control" placeholder="Capture el campo ocupacional"></InputTextArea>
+                      <ValidationMessage For="() => planEstudioDTO.CampoOcupacional"></ValidationMessage>
+                    </div>
+                    <div class="tab-pane fade" id="comentarios" role="tabpanel" aria-labelledby="comentarios-tab">
+                      <InputTextArea rows="10" @bind-Value="planEstudioDTO.Comentarios" class="form-control" placeholder="Capture comentarios"></InputTextArea>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 form-check form-switch">
+                  <InputCheckbox id="estadoPlanEstudio" class="form-check-input" @bind-Value="planEstudioDTO.EstadoPlanEstudio" />
+                  <label for="estadoPlanEstudio" class="form-check-label">Estado de plan de estudios</label>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                      <button type="submit" class="btn btn-success m-3 mt-0 mb-0"><i class="bi bi-floppy2"></i>&nbsp;Guardar plan de estudios</button>
+                      <NavLink href="ListarPlanesDeEstudio" class="btn btn-secondary mt-0 mb-0"><i class="bi bi-arrow-left-circle"></i>&nbsp;Listado</NavLink>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </EditForm>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@code {
+  [Parameter] public int? IdPlanEstudio { get; set; }
+  private bool EsModificacion => IdPlanEstudio.HasValue;
+  private PlanEstudioDTO planEstudioDTO { get; set; } = new();
+  private IEnumerable<E_Carrera> _listaCarrera = new List<E_Carrera>();
+  private ResultadoAcciones<PlanEstudioDTO> resultadoAccion = new ResultadoAcciones<PlanEstudioDTO>();
+  private ResultadoAcciones resultados = new();
+  private ResultadoAcciones res = new();
+
+  protected override async Task OnInitializedAsync()
+  {
+    _listaCarrera = await _carreraServicios.ListarCarreras();
+
+    if (EsModificacion && IdPlanEstudio.HasValue)
+    {
+      resultadoAccion = await _planEstudioServicios.ObtenerPlanEstudio<PlanEstudioDTO>(IdPlanEstudio.Value);
+
+      if (resultadoAccion.Resultado && resultadoAccion.Entidad != null)
+        planEstudioDTO = resultadoAccion.Entidad;
+      else
+      {
+        ResultadoAcciones r = new()
+          {
+            Mensajes = resultadoAccion.Mensajes,
+            Resultado = false,
+          };
+
+        await jsRunTime.MsgError(r);
+      }
+    }
+  }
+
+  private async Task GuardarPlanEstudios()
+  {
+    if (EsModificacion)
+    {
+      //todo: revisar  planEstudioDTO.IdCarrera depende de la logica de aplicacion
+      res = await _planEstudioServicios.ModificarPlanEstudio(planEstudioDTO, planEstudioDTO.IdCarrera);
+
+      if (res.Resultado)
+      {
+        await jsRunTime.MsgExito($"Los datos del plan de estudios <br>{planEstudioDTO.PlanEstudio}</br> se modificaron correctamente.");
+        navigationManager.NavigateTo("ListarPlanesDeEstudio");
+      }
+      else
+        await jsRunTime.MsgError(res);
+    }
+    else
+    {
+      //todo: revisar  planEstudioDTO.IdCarrera depende de la logica de aplicacion
+
+      resultados = await _planEstudioServicios.InsertarPlanEstudio(planEstudioDTO, planEstudioDTO.IdCarrera);
+
+      if (resultados.Resultado)
+      {
+        await jsRunTime.MsgExito($"Los datos del plan de estudios <b> {planEstudioDTO.PlanEstudio.Trim()}</b> fueron registrados correctamente.");
+        planEstudioDTO = new PlanEstudioDTO();
+      }
+      else
+      {
+        await jsRunTime.MsgError(resultados);
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+﻿@page "/ListarPlanesDeEstudio"
+
+@using Entidades.DTO.PlanesDeEstudio.PlanEstudios
+@using Microsoft.AspNetCore.Components.Forms;
+@using Microsoft.AspNetCore.Components.Routing;
+@using Presentacion.Components.Shared
+@using Servicios;
+@using Servicios.Repositorios.PlanesDeEstudio
+
+@inject PlanEstudioServicios planEstudioServicios
+@inject NavigationManager navigationManager
+@inject SweetAlertServicios servicioSweetAlerta
+@inject IJSRuntime jsRunTime
+
+<div class="container">
+  <h4 class="mb-0 d-flex align-items-center gap-2">
+    <a href="https://localhost:7205/ControlEscolar" class="text-decoration-none text-success"><i class="bi bi-arrow-left-circle-fill"></i></a>
+    Gestión de planes de estudios
+  </h4>
+  <hr />  
+  <div class="row p-2 mt-3 border border-1 border-success">
+    <div class="col-2">
+      <h6 class="card-title text-success fw-bold mt-2">Listado de planes de estudios</h6>
+    </div>
+    <div class="col-5">
+      <InputText @bind-Value="CriterioBusqueda" class="form-control" placeholder="Criterio de búsqueda"></InputText>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-outline-success" @onclick="()=>BuscarPlanEstudio()"><i class="bi bi-search"> Buscar</i></button>
+    </div>
+    <div class="col-2 align-content-end">
+      <NavLink href="GestionPlanEstudio" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i>&nbsp; Nuevo Plan de estudio</NavLink>
+    </div>
+  </div>
+
+  <div class="row mt-3 mb-5">
+    <div>
+      <p class="fw-bold">Existen: @LstPlanEstudios.Count() planEstudios.</p>
+    </div>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr class="text-center">
+          <th>CLAVE</th>
+          <th>CARRERA</th>
+          <th>PLAN ESTUDIOS</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (!LstPlanEstudios.Any())
+        {
+          <tr>
+            <td class="text-center fw-bold text-danger" colspan="5">No hay planEstudios registradas.</td>
+          </tr>
+        }
+        else
+        {
+          foreach (var planEstudio in LstPlanEstudios)
+          {
+            <tr>
+              <td class="text-lg-start">@planEstudio.ClaveCarrera</td>
+              <td>@planEstudio.NombreCarrera</td>
+              <td class="text-lg-start">@planEstudio.PlanEstudio</td>
+              <td>
+                <span class="bg-estado badge bg-@(planEstudio.EstadoPlanEstudio ? "success" : "danger")">
+                  @(planEstudio.EstadoPlanEstudio ? "Activo" : "Inactivo")
+                </span>
+              </td>
+              <td class="text-center">
+                <NavLink href="@($"GestionPlanEstudio/{planEstudio.IdPlanEstudio}")" class="btn btn-sm btn-outline-primary" data-toggle="tooltip" title="Editar los datos del planEstudio"><i class="bi bi-pen"></i></NavLink>
+
+                <NavLink href="@($"AgregarMateriaPlanEstudios/{planEstudio.IdPlanEstudio}")" class="btn btn-sm btn-outline-warning" data-toggle="tooltip" title="Agregar materias al plan de estudios"><i class="bi bi-file-earmark-plus"></i></NavLink>
+                <NavLink href="@($"ListarMateriasPlanEstudio/{planEstudio.IdPlanEstudio}")" class="btn btn-sm btn-outline-secondary" data-toggle="tooltip" title="Listar materias de la planEstudio"><i class="bi bi-list"></i></NavLink>
+                <button class="btn btn-outline-danger btn-sm" data-toggle="tooltip" title="Borrar el plan de estudios de la materia" @onclick="()=>BorrarPlanEstudio(planEstudio.IdPlanEstudio)"> <i class="bi bi-trash-fill"></i> </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@code {
+  private IEnumerable<ListaPlanEstudiosDTO> LstPlanEstudios { get; set; } = [];
+  private string CriterioBusqueda { get; set; } = string.Empty;
+  protected override async Task OnInitializedAsync()
+  {
+    LstPlanEstudios = await planEstudioServicios.ListarPlanEstudios();
+  }
+  private async Task BuscarPlanEstudio()
+  {
+    LstPlanEstudios = await planEstudioServicios.ObtenerPlanDeEstudioPorCriterio(CriterioBusqueda);
+  }
+  private async Task BorrarPlanEstudio(int? idPlanEstudio)
+  {
+    try
+    {
+      bool confirmacion = await servicioSweetAlerta.ShowConfirmation("¿Está seguro de borrar la planEstudio?", "Esta acción no se podrá deshacer.");
+
+      if (confirmacion)
+      {
+        if (!idPlanEstudio.HasValue) 
+          return;
+        int id = idPlanEstudio.Value;
+        await planEstudioServicios.BorrarPlanEstudio(id);
+        await jsRunTime.MsgExito("La planEstudio fue borrada correctamente.");
+        LstPlanEstudios = await planEstudioServicios.ListarPlanEstudios();
+      }
+      else
+        await servicioSweetAlerta.ShowAlert("Acción cancelada", "Has aceptado no borrar", "error");
+
+    }
+    catch (Exception)
+    {
+      await servicioSweetAlerta.ShowAlert("ERROR", "LA CARRERA NO PUDO SER BORRADA", "error");
+    }
+  }
+}

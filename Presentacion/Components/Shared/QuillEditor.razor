@@ -1,0 +1,49 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div id="@EditorId" style="min-height:@(MinHeight)px;"></div>
+
+@code {
+	// Contenido del editor (puede vincularse con @bind-Value)
+	[Parameter] public string Value { get; set; } = "";
+	// Método invocado cuando el contenido cambia (necesario)
+	[Parameter] public EventCallback<string> ValueChanged { get; set; }
+	// Altura mínima en píxeles
+	[Parameter] public int MinHeight { get; set; } = 50;
+	// Texto predeterminado cuando el contenido está vacío
+	[Parameter] public string Placeholder { get; set; } = "";
+
+	// Identificador global único
+	private string EditorId = $"editor-{Guid.NewGuid()}";
+	// Referencia a un objeto JavaScript que representa el módulo de 'quillInterop.js'
+	private IJSObjectReference? _quillModule;
+	// Referencia a un objeto JavaScript que representa la instancia del editor
+	private IJSObjectReference? _quillInstance;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender) return;
+
+		_quillModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+			"import",
+			"./lib/quillInterop.js"
+		);
+
+		_quillInstance = await _quillModule.InvokeAsync<IJSObjectReference>(
+			"createQuillEditor",
+			EditorId,
+			Placeholder,
+			MinHeight,
+			DotNetObjectReference.Create(this),
+			nameof(OnQuillEditorChanged)
+		);
+
+		await _quillModule.InvokeVoidAsync("setQuillEditorContent", _quillInstance, Value);
+	}
+
+	[JSInvokable]
+	public async Task OnQuillEditorChanged(string htmlContent)
+	{
+		Value = htmlContent;
+		await ValueChanged.InvokeAsync(Value);
+	}
+}

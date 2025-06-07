@@ -1,0 +1,450 @@
+@page "/CV/Docentes"
+@using Entidades.Modelos.CurriculumVite
+@using Servicios.IRepositorios.CurriculumVite
+@using Entidades.Modelos.PlanesDeEstudio.Carreras
+@using Servicios.Repositorios.PlanesDeEstudio
+@inject ISDocenteRepositorio DocenteServicios
+@inject CarreraServicios CarreraServicios
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>. Gestión de Docentes - UABC</PageTitle>
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="h3 mb-1" style="color: #2D6B3C;">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>
+                        . Gestión de Docentes
+                    </h2>
+                    <p class="text-muted mb-0">Administra la información de los docentes de la institución</p>
+                </div>
+                <button class="btn btn-primary" style="background-color: #2D6B3C; border-color: #2D6B3C;" 
+                        @onclick="AgregarDocente">
+                    <i class="fas fa-plus me-2"></i>Agregar Docente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros y Búsqueda -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Buscar por nombre, número de empleado, email..."
+                       @bind="criterioBusqueda" @onkeyup="BuscarDocentes" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" @bind="carreraSeleccionada" @bind:event="oninput">
+                <option value="">Todas las carreras</option>
+                @foreach (var carrera in carreras)
+                {
+                    <option value="@carrera.IdCarrera">@carrera.NombreCarrera</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Registros por página:</label>
+                <select class="form-select" @bind="registrosPorPagina" @bind:event="onchange">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2 text-end">
+            <span class="badge bg-secondary fs-6">Total: @docentes.Count() docentes</span>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    @if (cargando)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2 text-muted">Cargando docentes...</p>
+        </div>
+    }
+    else
+    {
+        <!-- Tabla de Docentes -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead style="background-color: #f8f9fa;">
+                                    <tr>
+                                        <th class="fw-semibold" style="color: #2D6B3C;">Foto</th>
+                                        <th class="fw-semibold" style="color: #2D6B3C;">Información Personal</th>
+                                        <th class="fw-semibold" style="color: #2D6B3C;">Información Institucional</th>
+                                        <th class="fw-semibold" style="color: #2D6B3C;">Contacto</th>
+                                        <th class="fw-semibold" style="color: #2D6B3C;">Estado</th>
+                                        <th class="fw-semibold" style="color: #2D6B3C;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var docente in docentesPaginados)
+                                    {
+                                        <tr style="border-bottom: 1px solid #e9ecef;">
+                                            <td class="align-middle">
+                                                @if (!string.IsNullOrEmpty(docente.URLFoto))
+                                                {
+                                                    <div class="iframe-container rounded-circle"
+                                                         style="width: 50px; height: 50px; overflow: hidden; border: 2px solid #4BB463;">
+                                                        <iframe src="@GetGoogleDrivePreviewUrl(docente.URLFoto)"
+                                                                style="width: 100%; height: 100%; border: none;"
+                                                                allowfullscreen>
+                                                        </iframe>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                                         style="width: 50px; height: 50px; background-color: #4BB463; color: white; font-weight: bold;">
+                                                        @GetIniciales(docente.NombreDocente, docente.PaternoDocente)
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td class="align-middle">
+                                                <div>
+                                                    <div class="fw-semibold" style="color: #2D6B3C;">
+                                                        @docente.NombreDocente @docente.PaternoDocente @docente.MaternoDocente
+                                                    </div>
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-id-card me-1"></i>@docente.NumeroEmpleado
+                                                    </small>
+                                                    @if (!string.IsNullOrEmpty(docente.RFC))
+                                                    {
+                                                        <br>
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-file-invoice me-1"></i>@docente.RFC
+                                                        </small>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div>
+                                                    <small class="text-muted d-block">
+                                                        <i class="fas fa-graduation-cap me-1"></i>
+                                                        @(docente.Carrera?.NombreCarrera ?? "No asignada")
+                                                    </small>
+                                                    <small class="text-muted d-block">
+                                                        <i class="fas fa-user-tie me-1"></i>
+                                                        @(docente.Categoria?.NombreCategoria ?? "No asignada")
+                                                    </small>
+                                                    @if (docente.FechaIngreso.HasValue)
+                                                    {
+                                                        <small class="text-muted d-block">
+                                                            <i class="fas fa-calendar me-1"></i>
+                                                            Desde @docente.FechaIngreso.Value.ToString("MMM yyyy")
+                                                        </small>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div>
+                                                    @if (!string.IsNullOrEmpty(docente.EmailInstitucional))
+                                                    {
+                                                        <small class="text-muted d-block">
+                                                            <i class="fas fa-envelope me-1"></i>
+                                                            <a href="mailto:@docente.EmailInstitucional" class="text-decoration-none">
+                                                                @docente.EmailInstitucional
+                                                            </a>
+                                                        </small>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(docente.TelefonoCelular))
+                                                    {
+                                                        <small class="text-muted d-block">
+                                                            <i class="fas fa-phone me-1"></i>@docente.TelefonoCelular
+                                                        </small>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(docente.Extension))
+                                                    {
+                                                        <small class="text-muted d-block">
+                                                            <i class="fas fa-phone-alt me-1"></i>Ext. @docente.Extension
+                                                        </small>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                @if (docente.EstadoDocente == 1)
+                                                {
+                                                    <span class="badge rounded-pill" style="background-color: #4BB463; color: white;">
+                                                        <i class="fas fa-check-circle me-1"></i>Activo
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary rounded-pill">
+                                                        <i class="fas fa-pause-circle me-1"></i>Inactivo
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button class="btn btn-outline-primary btn-sm" 
+                                                            @onclick="() => VerDocente(docente.IdDocente)"
+                                                            title="Ver detalles del docente">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-secondary btn-sm" 
+                                                            @onclick="() => EditarDocente(docente.IdDocente)"
+                                                            title="Editar docente">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger btn-sm" 
+                                                            @onclick="() => EliminarDocente(docente.IdDocente)"
+                                                            title="Eliminar docente">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        @if (!docentes.Any())
+                        {
+                            <div class="text-center py-5">
+                                <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No se encontraron docentes</h5>
+                                <p class="text-muted">
+                                    @if (string.IsNullOrEmpty(criterioBusqueda))
+                                    {
+                                        <span>Comienza agregando el primer docente al sistema</span>
+                                    }
+                                    else
+                                    {
+                                        <span>No hay docentes que coincidan con "@criterioBusqueda"</span>
+                                    }
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(paginaActual == 1 ? "disabled" : "")">
+                            <button class="page-link" @onclick="() => CambiarPagina(paginaActual - 1)" disabled="@(paginaActual == 1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </li>
+                        @for (int i = 1; i <= totalPaginas; i++)
+                        {
+                            var numeroPagina = i;
+                            <li class="page-item @(paginaActual == numeroPagina ? "active" : "")">
+                                <button class="page-link" @onclick="() => CambiarPagina(numeroPagina)">@numeroPagina</button>
+                            </li>
+                        }
+                        <li class="page-item @(paginaActual == totalPaginas ? "disabled" : "")">
+                            <button class="page-link" @onclick="() => CambiarPagina(paginaActual + 1)" disabled="@(paginaActual == totalPaginas)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private IEnumerable<E_Docente> docentes = new List<E_Docente>();
+    private IEnumerable<E_Docente> docentesPaginados = new List<E_Docente>();
+    private List<E_Carrera> carreras = new List<E_Carrera>();
+    private string criterioBusqueda = "";
+    private int _carreraSeleccionada;
+    private int carreraSeleccionada
+    {
+        get => _carreraSeleccionada;
+        set
+        {
+            if (_carreraSeleccionada != value)
+            {
+                _carreraSeleccionada = value;
+                FiltrarDocentesAsync().ConfigureAwait(false);
+            }
+        }
+    }
+    private bool cargando = true;
+    
+    // Paginación
+    private int paginaActual = 1;
+    private int registrosPorPagina = 10;
+    private int totalPaginas => (int)Math.Ceiling(docentes.Count() / (double)registrosPorPagina);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ActualizarPaginacion();
+    }
+
+    private async Task CargarDatos()
+    {
+        try
+        {
+            cargando = true;
+            StateHasChanged();
+            
+            // Cargar carreras
+            carreras = (await CarreraServicios.ListarCarreras()).ToList();
+            
+            // Cargar docentes
+            await CargarDocentes();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", "Error al cargar datos:", ex.Message);
+        }
+        finally
+        {
+            cargando = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task CargarDocentes()
+    {
+        if (string.IsNullOrEmpty(criterioBusqueda))
+        {
+            docentes = await DocenteServicios.ListarDocentes();
+        }
+        else
+        {
+            docentes = await DocenteServicios.ListarDocentes(criterioBusqueda);
+        }
+
+        // Aplicar filtro de carrera si está seleccionada
+        if (carreraSeleccionada > 0)
+        {
+            docentes = docentes.Where(d => d.IdCarrera == carreraSeleccionada);
+        }
+
+        ActualizarPaginacion();
+    }
+
+    private void ActualizarPaginacion()
+    {
+        docentesPaginados = docentes
+            .Skip((paginaActual - 1) * registrosPorPagina)
+            .Take(registrosPorPagina);
+    }
+
+    private async Task BuscarDocentes()
+    {
+        paginaActual = 1; // Resetear a la primera página al buscar
+        await CargarDocentes();
+    }
+
+    private async Task FiltrarDocentesAsync()
+    {
+        paginaActual = 1; // Resetear a la primera página al filtrar
+        await CargarDocentes();
+        StateHasChanged();
+    }
+
+    private void CambiarPagina(int numeroPagina)
+    {
+        if (numeroPagina >= 1 && numeroPagina <= totalPaginas)
+        {
+            paginaActual = numeroPagina;
+            ActualizarPaginacion();
+        }
+    }
+
+    private void AgregarDocente()
+    {
+        Navigation.NavigateTo("/CV/Docentes/Agregar");
+    }
+
+    private void VerDocente(int idDocente)
+    {
+        Navigation.NavigateTo($"/CV/Docentes/Ver/{idDocente}");
+    }
+
+    private void EditarDocente(int idDocente)
+    {
+        Navigation.NavigateTo($"/CV/Docentes/Editar/{idDocente}");
+    }
+
+    private async Task EliminarDocente(int idDocente)
+    {
+        var docente = docentes.FirstOrDefault(d => d.IdDocente == idDocente);
+        if (docente == null) return;
+
+        var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
+            $". ¿Estás seguro de que deseas eliminar al docente {docente.NombreDocente} {docente.PaternoDocente}?");
+
+        if (confirmado)
+        {
+            try
+            {
+                var resultado = await DocenteServicios.BorrarDocente(idDocente);
+                
+                if (resultado.Resultado)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", ". Docente eliminado exitosamente");
+                    await CargarDocentes();
+                }
+                else
+                {
+                    var mensajes = string.Join(", ", resultado.Mensajes);
+                    await JSRuntime.InvokeVoidAsync("alert", $". Error al eliminar: {mensajes}");
+                }
+            }
+            catch (Exception ex)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", $". Error inesperado: {ex.Message}");
+            }
+        }
+    }
+
+    private string GetIniciales(string nombre, string? apellido)
+    {
+        var iniciales = "";
+        if (!string.IsNullOrEmpty(nombre))
+            iniciales += nombre[0];
+        if (!string.IsNullOrEmpty(apellido))
+            iniciales += apellido[0];
+        return iniciales.ToUpper();
+    }
+
+    private string GetGoogleDrivePreviewUrl(string url)
+    {
+        try
+        {
+            var fileId = url.Split("/d/")[1].Split("/")[0];
+            return $"https://drive.google.com/file/d/{fileId}/preview";
+        }
+        catch
+        {
+            return url;
+        }
+    }
+} 

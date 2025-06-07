@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Datos\Datos.csproj" />
+    <ProjectReference Include="..\Entidades\Entidades.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="IRepositorios\CurriculumVite\" />
+    <Folder Include="IRepositorios\PlanesDeEstudio\" />
+    <Folder Include="IRepositorios\SolicitudSalidas\" />
+    <Folder Include="Repositorios\CurriculumVite\" />
+    <Folder Include="Repositorios\SolicitudSalidas\" />
+  </ItemGroup>
+
+</Project>

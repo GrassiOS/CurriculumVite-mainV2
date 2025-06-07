@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="QuestPDF" Version="2024.12.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Datos\Datos.csproj" />
+    <ProjectReference Include="..\Entidades\Entidades.csproj" />
+    <ProjectReference Include="..\Negocios\Negocios.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="IRepositorios\SolicitudSalidas\" />
+    <Folder Include="IRepositorios\PlanesDeEstudio\" />
+    <Folder Include="Repositorios\SolicitudSalidas\" />
+  </ItemGroup>
+
+</Project>

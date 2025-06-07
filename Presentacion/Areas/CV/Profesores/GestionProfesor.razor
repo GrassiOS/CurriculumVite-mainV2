@@ -1,0 +1,294 @@
+@page "/GestionProfesor"
+@page "/GestionProfesor/{IdProfesor:int}"
+
+@using Entidades.DTO.CurriculumVite
+@using Entidades.Modelos.CurriculumVite;
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+
+<style>
+    :root {
+        --uabc-dark-olive: #4B360B;
+        --uabc-burgundy: #122253;
+        --uabc-black: #000000;
+        --uabc-light-green: #6ABFB2;
+        --uabc-cream: #C5B7B7;
+    }
+
+    .uabc-header {
+        background: linear-gradient(135deg, var(--uabc-dark-olive), var(--uabc-burgundy));
+        color: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .uabc-card {
+        background-color: white;
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .uabc-card-header {
+        background: linear-gradient(135deg, var(--uabc-dark-olive), var(--uabc-burgundy));
+        color: white;
+        padding: 1.5rem;
+        border: none;
+    }
+
+    .uabc-card-header.edit-mode {
+        background: linear-gradient(135deg, var(--uabc-burgundy), var(--uabc-dark-olive));
+    }
+
+    .uabc-form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        background-color: #fafafa;
+    }
+
+    .uabc-form-control:focus {
+        border-color: var(--uabc-light-green);
+        box-shadow: 0 0 0 0.2rem rgba(106, 191, 178, 0.25);
+        background-color: white;
+    }
+
+    .uabc-form-label {
+        color: var(--uabc-dark-olive);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .uabc-btn-primary {
+        background: linear-gradient(135deg, var(--uabc-dark-olive), var(--uabc-burgundy));
+        border: none;
+        color: white;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+    .uabc-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        background: linear-gradient(135deg, var(--uabc-burgundy), var(--uabc-dark-olive));
+    }
+
+    .uabc-btn-secondary {
+        background-color: var(--uabc-cream);
+        border: 2px solid var(--uabc-light-green);
+        color: var(--uabc-dark-olive);
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+    .uabc-btn-secondary:hover {
+        background-color: var(--uabc-light-green);
+        color: var(--uabc-black);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    .form-switch .form-check-input {
+        background-color: var(--uabc-cream);
+        border-color: var(--uabc-light-green);
+    }
+
+    .form-switch .form-check-input:checked {
+        background-color: var(--uabc-light-green);
+        border-color: var(--uabc-light-green);
+    }
+
+    .validation-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .background-pattern {
+        background: linear-gradient(135deg, #f8f9fa 0%, var(--uabc-cream) 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+</style>
+
+<div class="background-pattern">
+    <div class="container">
+        <div class="uabc-header">
+            <div class="d-flex align-items-center gap-3">
+                <NavLink href="ListarProfesores" class="text-white text-decoration-none">
+                    <i class="bi bi-arrow-left-circle-fill fs-3"></i>
+                </NavLink>
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-person-vcard me-2"></i>
+                        @(EsModificacion ? "Editar" : "Nuevo") Profesor
+                    </h2>
+                    <p class="mb-0 mt-1 opacity-75">Gestión de Curriculum Vitae - UABC</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <div class="uabc-card">
+                    <div class="uabc-card-header @(EsModificacion ? "edit-mode" : "")">
+                        <h4 class="mb-0">
+                            <i class="bi bi-@(EsModificacion ? "pencil-square" : "person-plus") me-2"></i>
+                            @(EsModificacion ? "Modificar Información del Profesor" : "Registrar Nuevo Profesor")
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <EditForm Model="@ProfesorDTO" OnValidSubmit="GuardarProfesor" class="needs-validation" novalidate>
+                            <DataAnnotationsValidator />
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombreDocente" class="uabc-form-label">
+                                        <i class="bi bi-person-fill"></i>
+                                        Nombre(s)
+                                    </label>
+                                    <InputText id="nombreDocente" 
+                                             class="form-control uabc-form-control" 
+                                             @bind-Value="ProfesorDTO.NombreDocente" 
+                                             placeholder="Ingrese el nombre" />
+                                    <ValidationMessage For="@(() => ProfesorDTO.NombreDocente)" class="validation-message">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </ValidationMessage>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="apellidoPaterno" class="uabc-form-label">
+                                        <i class="bi bi-person-lines-fill"></i>
+                                        Apellido Paterno
+                                    </label>
+                                    <InputText id="apellidoPaterno" 
+                                             class="form-control uabc-form-control" 
+                                             @bind-Value="ProfesorDTO.ApellidoPaterno" 
+                                             placeholder="Ingrese el apellido paterno" />
+                                    <ValidationMessage For="@(() => ProfesorDTO.ApellidoPaterno)" class="validation-message">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </ValidationMessage>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="apellidoMaterno" class="uabc-form-label">
+                                        <i class="bi bi-person-lines-fill"></i>
+                                        Apellido Materno
+                                    </label>
+                                    <InputText id="apellidoMaterno" 
+                                             class="form-control uabc-form-control" 
+                                             @bind-Value="ProfesorDTO.ApellidoMaterno" 
+                                             placeholder="Ingrese el apellido materno" />
+                                    <ValidationMessage For="@(() => ProfesorDTO.ApellidoMaterno)" class="validation-message">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </ValidationMessage>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="cedula" class="uabc-form-label">
+                                        <i class="bi bi-card-text"></i>
+                                        Cédula Profesional
+                                    </label>
+                                    <InputText id="cedula" 
+                                             class="form-control uabc-form-control" 
+                                             @bind-Value="ProfesorDTO.Cedula" 
+                                             placeholder="Ingrese la cédula (opcional)" />
+                                    <ValidationMessage For="@(() => ProfesorDTO.Cedula)" class="validation-message">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </ValidationMessage>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="uabc-form-label">
+                                        <i class="bi bi-envelope-fill"></i>
+                                        Correo Electrónico
+                                    </label>
+                                    <InputText id="email" 
+                                             type="email"
+                                             class="form-control uabc-form-control" 
+                                             @bind-Value="ProfesorDTO.Email" 
+                                             placeholder="profesor@uabc.edu.mx" />
+                                    <ValidationMessage For="@(() => ProfesorDTO.Email)" class="validation-message">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </ValidationMessage>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefono" class="uabc-form-label">
+                                        <i class="bi bi-telephone-fill"></i>
+                                        Teléfono
+                                    </label>
+                                    <InputText id="telefono" 
+                                             class="form-control uabc-form-control" 
+                                             @bind-Value="ProfesorDTO.Telefono" 
+                                             placeholder="(664) 123-4567" />
+                                    <ValidationMessage For="@(() => ProfesorDTO.Telefono)" class="validation-message">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </ValidationMessage>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="especialidad" class="uabc-form-label">
+                                    <i class="bi bi-bookmark-star-fill"></i>
+                                    Especialidad
+                                </label>
+                                <InputText id="especialidad" 
+                                         class="form-control uabc-form-control" 
+                                         @bind-Value="ProfesorDTO.Especialidad" 
+                                         placeholder="Área de especialización (opcional)" />
+                                <ValidationMessage For="@(() => ProfesorDTO.Especialidad)" class="validation-message">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                </ValidationMessage>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check form-switch">
+                                    <InputCheckbox id="estadoDocente" 
+                                                 class="form-check-input" 
+                                                 @bind-Value="ProfesorDTO.EstadoDocenteBool" />
+                                    <label for="estadoDocente" class="form-check-label uabc-form-label">
+                                        <i class="bi bi-toggle-on"></i>
+                                        Estado del Profesor (Activo/Inactivo)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr class="my-4" />
+
+                            <div class="d-flex justify-content-end gap-3">
+                                <NavLink href="ListarProfesores" class="btn uabc-btn-secondary">
+                                    <i class="bi bi-arrow-left-circle me-2"></i>
+                                    Cancelar
+                                </NavLink>
+                                <button type="submit" class="btn uabc-btn-primary">
+                                    <i class="bi bi-@(EsModificacion ? "save" : "plus-circle") me-2"></i>
+                                    @(EsModificacion ? "Guardar Cambios" : "Crear Profesor")
+                                </button>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

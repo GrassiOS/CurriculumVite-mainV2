@@ -1,0 +1,93 @@
+﻿@page "/ListarMaterias"
+
+@using Entidades.DTO.PlanesDeEstudio.Materias;
+@using Entidades.Modelos;
+@using Microsoft.AspNetCore.Components.Forms;
+@using Microsoft.AspNetCore.Components.Routing;
+@using Servicios;
+@using Servicios.Repositorios.PlanesDeEstudio
+
+@inject MateriaServicios MateriaServicios
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRunTime
+@inject SweetAlertServicios servicioSweetAlerta
+
+<div class="container">
+  <h4 class="mb-0 d-flex align-items-center gap-2">
+    <a href="https://localhost:7205/ControlEscolar" class="text-decoration-none text-success"><i class="bi bi-arrow-left-circle-fill"></i></a>
+    Gestión de materias
+  </h4>
+  <hr />
+
+  <div class="row p-2 mt-3 border border-1 border-success">
+    <div class="col-2">
+      <h6 class="card-title text-success fw-bold mt-2">Listado de Materias</h6>
+    </div>
+    <div class="col-5">
+      <InputText @bind-Value="criterioBusqueda" class="form-control" placeholder="Criterio de búsqueda"></InputText>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-outline-success" @onclick="()=>BuscarMateria()"><i class="bi bi-search"> Buscar</i></button>
+    </div>
+    <div class="col-2 align-content-end">
+      <NavLink href="GestionMateria" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i>&nbsp; Nueva Materia</NavLink>
+    </div>
+  </div>
+
+  <div class="row mt-3 mb-5">
+    <div>
+      <p class="fw-bold">Existen: @LstMaterias.Count() Materias.</p>
+    </div>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr class="text-center">
+          <th>CLAVE</th>
+          <th>NOMBRE</th>
+          <th>HC</th>
+          <th>HL</th>
+          <th>HT</th>
+          <th>HE</th>
+          <th>CR</th>
+          <th>ESTADO</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (!LstMaterias.Any())
+        {
+          <tr>
+            <td class="text-center fw-bold text-danger" colspan="5">No hay Materias registradas.</td>
+          </tr>
+        }
+        else
+        {
+          foreach (var Materia in LstMaterias)
+          {
+            <tr class="text-center">
+              <td>@Materia.ClaveMateria</td>
+              <td class="text-lg-start">@Materia.NombreMateria</td>
+              <td class="text-center">@Materia.HC</td>
+              <td class="text-center">@Materia.HL</td>
+              <td class="text-center">@Materia.HT</td>
+              <td class="text-center">@Materia.HE</td>
+              <td class="text-center">@Materia.CR</td>
+              <td>
+                <span class="bg-estado badge bg-@(Materia.EstadoMateria ? "success" : "danger")">
+                  @(Materia.EstadoMateria ? "Activo" : "Inactivo")
+                </span>
+              </td>
+              <td class="text-center">
+                <NavLink href="@($"GestionMateria/{Materia.IdMateria}")" class="btn btn-sm btn-outline-primary" data-toggle="tooltip" title="Edita los datos de la Materia"><i class="bi bi-pen"></i></NavLink>
+                <NavLink href="@($"AgregarUnidadesMateria/{Materia.IdMateria}")" class="btn btn-sm btn-outline-secondary" data-toggle="tooltip" title="Agregar unidades a la Materia"><i class="bi bi-journal-richtext"></i></NavLink>
+                <NavLink href="@($"AgregarPracticaTallerMateria/{Materia.IdMateria}/{1}")" class="btn btn-sm btn-outline-secondary" data-toggle="tooltip" title="Agregar prácticas a la Materia"><i class="bi bi-tools"></i></NavLink>
+                <NavLink href="@($"AgregarPracticaTallerMateria/{Materia.IdMateria}/{2}")" class="btn btn-sm btn-outline-secondary" data-toggle="tooltip" title="Agregar talleres a la Materia"><i class="bi bi-card-text"></i></NavLink>
+                <NavLink href="@($"https://localhost:7205/PUAS/{Materia.ClaveMateria.Trim()}.pdf")" class="btn btn-sm btn-outline-warning" data-toggle="tooltip" title="Ver PUA en PDF" target="_blank" rel="noopener noreferrer"><i class="bi bi-file-pdf"></i> </NavLink>
+                <button class="btn btn-outline-danger btn-sm" data-toggle="tooltip" title="Borra los datos de la materia" @onclick="()=>BorrarMateria(Materia.IdMateria)"> <i class="bi bi-trash-fill"></i> </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

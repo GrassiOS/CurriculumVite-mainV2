@@ -1,0 +1,71 @@
+﻿@page "/GestionCarrera"
+@page "/GestionCarrera/{IdCarrera:int}"
+
+@using Entidades.DTO.PlanesDeEstudio.Carreras
+@using Entidades.Generales;
+@using Entidades.Modelos;
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.Routing
+@using Servicios;
+@using Servicios.Repositorios.PlanesDeEstudio
+
+@inject CarreraServicios CarreraServicios;
+@inject NavigationManager navigationManager;
+@inject IJSRuntime jsRunTime
+
+<div class="container">
+  <h4 class="mb-0 d-flex align-items-center gap-2">
+    <a href="https://localhost:7205/ListarMaterias" class="text-decoration-none text-success"><i class="bi bi-arrow-left-circle-fill"></i></a>
+    Gestión de carreras
+  </h4>
+  <hr />
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header @(EsModificacion ? "bg-primary" : "bg-success") bg-opacity-75 text-white">
+          <h5>@(EsModificacion ? "Modificar" : "Nueva") Carrera</h5>
+        </div>
+        <div class="card-body">
+          <EditForm Model="@CarreraDTO" OnValidSubmit="GuardarCarrera" class="needs-validation" novalidate>
+            <DataAnnotationsValidator />
+
+            <div class="mb-3">
+              <label for="claveCarrera" class="form-label"><i class="bi bi-key-fill"></i> Clave de Carrera</label>
+              <InputText id="claveCarrera" class="form-control form-control-lg" @bind-Value="CarreraDTO.ClaveCarrera" />
+              <ValidationMessage For="@(() => CarreraDTO.ClaveCarrera)" class="text-danger small" />
+            </div>
+
+            <div class="mb-3">
+              <label for="nombreCarrera" class="form-label"><i class="bi bi-receipt"></i> Nombre de Carrera</label>
+              <InputText id="nombreCarrera" class="form-control form-control-lg" @bind-Value="CarreraDTO.NombreCarrera" />
+              <ValidationMessage For="@(() => CarreraDTO.NombreCarrera)" class="text-danger small" />
+            </div>
+
+            <div class="mb-3">
+              <label for="aliasCarrera" class="form-label"><i class="bi bi-files-alt"></i> Alias de Carrera</label>
+              <InputText id="aliasCarrera" class="form-control form-control-lg" @bind-Value="CarreraDTO.AliasCarrera" />
+              <ValidationMessage For="@(() => CarreraDTO.AliasCarrera)" class="text-danger small" />
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+              <InputCheckbox id="estadoCarrera" class="form-check-input" @bind-Value="CarreraDTO.EstadoCarrera" />
+              <label for="estadoCarrera" class="form-check-label">Estado de Carrera</label>
+            </div>
+
+            <div class="card-footer">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn @(EsModificacion ? "btn-primary" : "btn-success") m-3 mt-0 mb-0"><i class="bi bi-floppy2"></i> @(EsModificacion ? "Guardar cambios" : "Crear carrera")</button>
+                    <NavLink href="ListarCarreras" class="btn btn-secondary mt-0 mb-0"><i class="bi bi-arrow-left-circle"></i>&nbsp;Regresar</NavLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </EditForm>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

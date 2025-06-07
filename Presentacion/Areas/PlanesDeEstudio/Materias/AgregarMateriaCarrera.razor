@@ -1,0 +1,190 @@
+﻿@page "/AgregarMateriaCarrera/{idCarrera:int}"
+
+@using Entidades.DTO.PlanesDeEstudio.Carreras
+@using Entidades.Generales;
+@using Entidades.Modelos;
+@using Entidades.Modelos.PlanesDeEstudio
+@using Entidades.Modelos.PlanesDeEstudio.Materias
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.Routing
+@using Negocios
+@using Servicios;
+@using Servicios.Repositorios.PlanesDeEstudio
+
+
+@inject CarreraServicios carreraServicios;
+@inject MateriaServicios materiaServicios;
+@inject NavigationManager navigationManager;
+
+<div class="container" style="max-width:1024px">
+  <div class="container" style="max-width: 1024px; font-family: 'Segoe UI', system-ui, sans-serif">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fw-semibold mb-0 text-black-50">Gestión de carreras</h4>
+    </div>
+    <div class="d-flex justify-content-center my-3">
+      <div class="card border-0" style="width: 640px; box-shadow: 0 2px 8px rgba(0,0,0,0.1)">
+        <div class="card-header py-3 border-bottom text-center text-white" style="background-color: #28a745">
+          <h6 class="mb-0 fw-medium">Agregar materia a la carrera</h6>
+        </div>
+
+        <div class="card-body px-4 py-3">
+          <div class="mb-2 p-3 roundeD text-color-white">
+            <p class="mb-0 fw-medium" style="color: #495057">
+              <span style="color: #495057">Carrera:</span>
+              @carrera.ClaveCarrera - @carrera.NombreCarrera
+            </p>
+          </div>
+
+          <div class="row mt-3 mb-3">
+            <div class="mb-3">
+              <label class="form-label fw-medium mb-3" style="color: #495057">Materia a registrar</label>
+              <div class="row g-2 align-items-center">
+                <div class="col-md-8">
+                  <InputText @bind-Value="criterioBusqueda" class="form-control" style="border: 1px solid #ced4da; border-radius: 0.3rem" placeholder="Buscar por nombre o clave..." />
+                </div>
+                <div class="col-md-4">
+                  <button class="btn w-100 py-2" style="background-color: #28a745; color: white; border-radius: 0.3rem" @onclick="()=>BuscarMateria()"> <i class="bi bi-search me-2"></i>Buscar	</button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <p class="fw-bold">Existen: @LstMaterias.Count() Materias.</p>
+            </div>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr class="text-center">
+                  <th>CLAVE</th>
+                  <th>NOMBRE</th>
+                  <th>ASIGNAR</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (!LstMaterias.Any())
+                {
+                  <tr>
+                    <td class="text-center fw-bold text-danger" colspan="5">No hay Materias registradas.</td>
+                  </tr>
+                }
+                else
+                {
+                  foreach (var Materia in LstMaterias)
+                  {
+
+                    <tr class="text-center">
+                      <td>@Materia.ClaveMateria</td>
+                      <td class="text-lg-start">@Materia.NombreMateria</td>
+                      <td class="text-center">
+                        <button class="btn btn-outline-success" data-toggle="tooltip" title="Seleccionar materia" @onclick="()=>AgregaMateriaCarrera(LstMaterias.First().IdMateria)"><i class="bi bi-check2-square"></i></button>
+                      </td>
+                    </tr>
+
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+
+
+          <div class="mb-3">
+            <div class="row g-2 align-items-center">
+              <div class="col-4">
+                <label class="form-label fw-medium mb-1" style="color: #495057">Etapa disciplinaria</label>
+                <div class="col-md-12">
+                  <InputSelect @bind-Value="idEtapa" class=" form-control">
+                    <option selected value="1">Etapa básica</option>
+                    <option value="2">Etapa disciplinaria</option>
+                    <option value="3">Etapa terminal</option>
+                  </InputSelect>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <label class="form-label fw-medium mb-1" style="color: #495057">Área de conocimiento</label>
+                <div class="col-md-12">
+                  <InputSelect @bind-Value="idArea" class=" form-control">
+                    <option selected value="1">Matemáticas y Ciencias  Básicas</option>
+                    <option value="2">Métodos y Tecnologías de Software</option>
+                    <option value="3">Aspectos Organizacionales y TI</option>
+                    <option value="4">DesarrolloTecnológico</option>
+                  </InputSelect>
+                </div>
+              </div>
+
+              <div class="col-2">
+                <label class="form-label fw-medium mb-1" style="color: #495057">Semestre</label>
+                <div class="col-md-12">
+                  <InputSelect @bind-Value="Semestre" class=" form-control">
+                    <option selected value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                  </InputSelect>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="p-3 rounded bg-gris-claro">
+          <p class="mb-0 fw-medium" style="color: #495057">
+            <span style="color: #6c757d">Materia seleccionada:</span>
+            @materiaAsiganda
+          </p>
+        </div>
+
+        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-4">
+          <div class="d-flex justify-content-end gap-2">
+            <NavLink href="ListarCarreras" class="btn btn-secondary px-4 py-2"><i class="bi bi-arrow-left-circle me-2"></i>Regresar</NavLink>
+            <button type="submit" class="btn btn-success m-3 mt-0 mb-0"> <i class="bi bi-floppy2"></i>&nbsp;Guardar materia </button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+@code {
+  [Parameter]
+  public int idCarrera { get; set; }
+
+  private CarreraDTO? carrera = new CarreraDTO();
+  private ResultadoAcciones<CarreraDTO> carreraBuscada = new ResultadoAcciones<CarreraDTO>();
+  private string criterioBusqueda { get; set; } = string.Empty;
+  private string materiaAsiganda { get; set; } = string.Empty;
+  private int idEtapa = 1;
+  private int idArea = 1;
+  private int Semestre = 1;
+
+  private IEnumerable<E_Materia> LstMaterias { get; set; } = new List<E_Materia>();
+
+  private string msg = string.Empty;
+
+  protected override async Task OnInitializedAsync()
+  {
+    carreraBuscada = await carreraServicios.ObtenerCarrera<CarreraDTO>(idCarrera);
+    carrera = carreraBuscada.Entidad;
+  }
+
+  private async Task BuscarMateria()
+  {
+    LstMaterias = await materiaServicios.ListarMaterias(criterioBusqueda);
+  }
+
+  private void AgregaMateriaCarrera(int idMateria)
+  {
+    materiaAsiganda = $"{LstMaterias.First(m => m.IdMateria == idMateria).ClaveMateria}: " +
+                      $"{LstMaterias.First(m => m.IdMateria == idMateria).NombreMateria}";
+    LstMaterias = new List<E_Materia>();
+  }
+}

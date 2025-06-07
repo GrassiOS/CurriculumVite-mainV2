@@ -1,0 +1,516 @@
+@page "/CV/Docentes/{idDocente:int}/Experiencia/{idExperiencia:int}/Documentos"
+@using Entidades.DTO.CurriculumVite
+@using Entidades.Modelos.CurriculumVite
+@using Entidades.Utilidades
+@using Servicios.IRepositorios.CurriculumVite
+@using Servicios.IRepositorios
+@inject ISRepositorioDocumento DocumentoServicios
+@inject ISRepositorioExperiencia ExperienciaServicios
+@inject ISDocenteRepositorio DocenteServicios
+@inject IDocumentRepository DocumentRepository
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Documentos de Experiencia - UABC</PageTitle>
+
+<div class="container-fluid" style="background-color: #F8F9FA; min-height: 100vh; padding: 0;">
+    @if (CargandoDocumentos)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="text-center">
+                <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3 text-muted">Cargando documentos de experiencia...</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Header con breadcrumb -->
+        <div class="bg-white border-bottom" style="padding: 1.5rem 2rem;">
+            <nav aria-label="breadcrumb" class="mb-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes" class="text-decoration-none" style="color: #2D6B3C;">
+                            <i class="fas fa-chalkboard-teacher me-1"></i>Docentes
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <span style="color: #6c757d;">@NombreDocente</span>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/CV/Docentes/@IdDocente/Experiencia" class="text-decoration-none" style="color: #2D6B3C;">Experiencia</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" style="color: #2D6B3C;">Documentos</li>
+                </ol>
+            </nav>
+            <h1 class="h2 mb-1" style="color: #2D6B3C; font-weight: 600;">
+                <i class="fas fa-file-alt me-3" style="color: #4BB463;"></i>
+                Documentos de Experiencia
+            </h1>
+            @if (ExperienciaActual != null)
+            {
+                <p class="text-muted mb-0">
+                    Experiencia: <strong>@ExperienciaActual.Puesto</strong> 
+                    @if (!string.IsNullOrEmpty(ExperienciaActual.Institucion))
+                    {
+                        <span> en @ExperienciaActual.Institucion</span>
+                    }
+                </p>
+            }
+        </div>
+
+        <div style="padding: 2rem;">
+            <!-- Botón para subir nuevo documento -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <button class="btn btn-success" @onclick="AbrirModalDocumento">
+                        <i class="fas fa-upload me-2"></i>Subir Nuevo Documento
+                    </button>
+                </div>
+            </div>
+
+            @if (!DocumentosDeExperiencia.Any())
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-file-alt" style="font-size: 4rem; color: #E9ECEF;"></i>
+                        </div>
+                        <h4 class="text-muted">No hay documentos para esta experiencia</h4>
+                        <p class="text-muted mb-4">
+                            Puedes agregar documentos usando el botón "Subir Nuevo Documento".
+                        </p>
+                        <button class="btn btn-outline-secondary" @onclick="RegresarAExperiencia">
+                            <i class="fas fa-arrow-left"></i> Volver a Experiencia
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header" style="background-color: #2D6B3C; color: white;">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-file-alt me-2"></i>
+                                    Documentos de Evidencia (@DocumentosDeExperiencia.Count())
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                @foreach (var documento in DocumentosDeExperiencia)
+                                {
+                                    <div class="document-card border-bottom p-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">
+                                                <h6 class="mb-1">@documento.Titulo</h6>
+                                                <p class="text-muted small mb-0">
+                                                    <i class="fas fa-calendar-alt me-1"></i>
+                                                    Subido el @documento.FechaSubida.ToString("dd/MM/yyyy HH:mm")
+                                                </p>
+                                                        @if (!string.IsNullOrEmpty(documento.Descripcion))
+                                                        {
+                                                    <p class="text-muted small mb-0">
+                                                        <i class="fas fa-info-circle me-1"></i>
+                                                        @documento.Descripcion
+                                                    </p>
+                                                }
+                                            </div>
+                                            <div class="col-md-4 text-end">
+                                                <div class="btn-group" role="group">
+                                                    <a href="@documento.Url" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                        <i class="fas fa-eye"></i> Ver
+                                                    </a>
+                                                    <a href="@documento.Url" download class="btn btn-outline-success btn-sm">
+                                                        <i class="fas fa-download"></i> Descargar
+                                                    </a>
+                                                    <button class="btn btn-outline-danger btn-sm" @onclick="() => ConfirmarEliminar(documento)">
+                                                        <i class="fas fa-trash"></i> Eliminar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Botón de regreso -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0">
+                        <div class="card-body text-center">
+                            <button class="btn btn-secondary" @onclick="RegresarAExperiencia">
+                                <i class="fas fa-arrow-left me-2"></i>Regresar a Experiencia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro de que desea eliminar el documento '@(DocumentoAEliminar?.Titulo)'?
+                <br><br>
+                <strong>Nota:</strong> Esta acción eliminará el documento tanto de Google Drive como de la base de datos.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="EliminarDocumento">
+                    <i class="fas fa-trash me-2"></i>Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Subir Documento -->
+<div class="modal fade" id="modalDocumento" tabindex="-1" aria-labelledby="modalDocumentoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2D6B3C; color: white;">
+                <h5 class="modal-title" id="modalDocumentoLabel">
+                    <i class="fas fa-upload me-2"></i>
+                    Subir Nuevo Documento
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (SubiendoArchivo)
+                {
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Subiendo archivo...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Subiendo documento...</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Título del Documento</label>
+                        <input type="text" class="form-control" @bind="NuevoDocumento.Titulo" placeholder="Ej: Constancia de trabajo" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción (Opcional)</label>
+                        <textarea class="form-control" @bind="NuevoDocumento.Descripcion" rows="3" 
+                                  placeholder="Describe brevemente el contenido del documento..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Archivo</label>
+                        <InputFile OnChange="OnFileSelected" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                        @if (!string.IsNullOrEmpty(MensajeArchivo))
+                        {
+                            <div class="form-text @(EsErrorArchivo ? "text-danger" : "text-success")">
+                                @MensajeArchivo
+                            </div>
+                        }
+                        <div class="form-text">
+                            Formatos permitidos: PDF, DOC, DOCX, JPG, JPEG, PNG. Tamaño máximo: 50MB
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled="@SubiendoArchivo">
+                    <i class="fas fa-times me-2"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-success" @onclick="SubirDocumento" disabled="@(SubiendoArchivo || ArchivoSeleccionado == null)">
+                    @if (SubiendoArchivo)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <span>Subiendo...</span>
+                    }
+                    else
+                    {
+                        <i class="fas fa-upload me-2"></i>
+                        <span>Subir Documento</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int IdDocente { get; set; }
+    [Parameter] public int IdExperiencia { get; set; }
+
+    private string NombreDocente = "";
+    private string nombreCompletoDocente = "";
+    private string numeroEmpleado = "";
+    private E_Experiencia? ExperienciaActual;
+    private List<E_Documento> DocumentosDeExperiencia = new();
+    private bool CargandoDocumentos = true;
+    
+    // Variables para el modal de confirmación
+    private E_Documento? DocumentoAEliminar;
+    private bool MostrarModalConfirmacion;
+    
+    // Variables para subir documentos
+    private bool MostrarModalDocumento;
+    private bool SubiendoArchivo;
+    private IBrowserFile? ArchivoSeleccionado;
+    private string MensajeArchivo = "";
+    private bool EsErrorArchivo;
+    private NuevoDocumentoModel NuevoDocumento = new();
+
+    protected override async Task OnInitializedAsync()
+        {
+            await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        try
+        {
+            CargandoDocumentos = true;
+            StateHasChanged();
+
+        // Cargar información del docente
+        var resultadoDocente = await DocenteServicios.ObtenerDocente<DocenteDTO>(IdDocente);
+        if (resultadoDocente.Resultado && resultadoDocente.Entidad != null)
+        {
+            var docente = resultadoDocente.Entidad;
+            NombreDocente = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim();
+                nombreCompletoDocente = NombreDocente;
+                numeroEmpleado = docente.NumeroEmpleado ?? "";
+        }
+
+        // Cargar información de la experiencia
+        var todasExperiencias = await ExperienciaServicios.GetAllAsync();
+        ExperienciaActual = todasExperiencias.FirstOrDefault(e => e.IdExperiencia == IdExperiencia);
+
+        // Cargar documentos de experiencia
+        var todosDocumentos = await DocumentoServicios.GetAllAsync();
+        DocumentosDeExperiencia = todosDocumentos
+            .Where(d => d.IdDocente == IdDocente && 
+                       !string.IsNullOrEmpty(d.Descripcion) && 
+                       d.Descripcion.Contains($"ID Experiencia: {IdExperiencia}"))
+            .OrderByDescending(d => d.FechaSubida)
+            .ToList();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar datos: {ex.Message}");
+        }
+        finally
+        {
+            CargandoDocumentos = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task ConfirmarEliminar(E_Documento documento)
+    {
+        DocumentoAEliminar = documento;
+        MostrarModalConfirmacion = true;
+        StateHasChanged();
+        
+        var modal = await JSRuntime.InvokeAsync<IJSObjectReference>("bootstrap.Modal.getOrCreateInstance", "#modalConfirmacion");
+        await modal.InvokeVoidAsync("show");
+    }
+
+    private async Task EliminarDocumento()
+    {
+        if (DocumentoAEliminar == null) return;
+
+        try
+        {
+            // Extraer el ID de Drive de la URL
+            string? driveId = null;
+            if (!string.IsNullOrEmpty(DocumentoAEliminar.Url))
+            {
+                try
+                {
+                    var uri = new Uri(DocumentoAEliminar.Url);
+                    if (uri.Host.Contains("drive.google.com"))
+                    {
+                        if (uri.AbsolutePath.Contains("/file/d/"))
+                        {
+                            driveId = uri.AbsolutePath.Split("/file/d/")[1].Split('/')[0];
+                        }
+                        else if (uri.Query.Contains("id="))
+                        {
+                            driveId = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("id");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await JSRuntime.InvokeVoidAsync("console.error", $"Error al extraer ID de Drive: {ex.Message}");
+                }
+            }
+
+            // Si encontramos el ID de Drive, intentar eliminar primero de Drive
+            if (!string.IsNullOrEmpty(driveId))
+            {
+                try
+                {
+                    var eliminadoDeDrive = await DocumentRepository.EliminarDocumentoAsync(driveId);
+                    if (!eliminadoDeDrive)
+                    {
+                        if (!await JSRuntime.InvokeAsync<bool>("confirm", 
+                            "No se pudo eliminar el archivo de Google Drive. ¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                        {
+                            return;
+                        }
+                    }
+                }
+                catch (Exception driveEx)
+                {
+                    if (!await JSRuntime.InvokeAsync<bool>("confirm", 
+                        $"Error al eliminar de Google Drive: {driveEx.Message}\n\n¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            // Eliminar de la base de datos
+            await DocumentoServicios.DeleteAsync(DocumentoAEliminar.IdDocumento);
+                await JSRuntime.InvokeVoidAsync("alert", "Documento eliminado correctamente");
+                await CargarDatos();
+            }
+            catch (Exception ex)
+            {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+        }
+        finally
+        {
+            var modal = await JSRuntime.InvokeAsync<IJSObjectReference>("bootstrap.Modal.getOrCreateInstance", "#modalConfirmacion");
+            await modal.InvokeVoidAsync("hide");
+            MostrarModalConfirmacion = false;
+            DocumentoAEliminar = null;
+            StateHasChanged();
+        }
+    }
+
+    private void RegresarAExperiencia()
+    {
+        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Experiencia");
+    }
+
+    private async Task AbrirModalDocumento()
+    {
+        NuevoDocumento = new NuevoDocumentoModel();
+        MostrarModalDocumento = true;
+        StateHasChanged();
+        
+        var modal = await JSRuntime.InvokeAsync<IJSObjectReference>("bootstrap.Modal.getOrCreateInstance", "#modalDocumento");
+        await modal.InvokeVoidAsync("show");
+    }
+
+    private async Task CerrarModalDocumento()
+    {
+        var modal = await JSRuntime.InvokeAsync<IJSObjectReference>("bootstrap.Modal.getOrCreateInstance", "#modalDocumento");
+        await modal.InvokeVoidAsync("hide");
+        
+        MostrarModalDocumento = false;
+        ArchivoSeleccionado = null;
+        MensajeArchivo = "";
+        EsErrorArchivo = false;
+        StateHasChanged();
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        ArchivoSeleccionado = e.File;
+        MensajeArchivo = "";
+        EsErrorArchivo = false;
+        
+        // Validar tamaño inmediatamente
+        if (ArchivoSeleccionado != null && ArchivoSeleccionado.Size > 50 * 1024 * 1024)
+        {
+            MensajeArchivo = "El archivo no puede superar los 50MB";
+            EsErrorArchivo = true;
+            ArchivoSeleccionado = null;
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task SubirDocumento()
+    {
+        if (ArchivoSeleccionado == null || string.IsNullOrWhiteSpace(NuevoDocumento.Titulo))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Por favor complete los campos requeridos");
+            return;
+        }
+
+        try
+        {
+            SubiendoArchivo = true;
+            StateHasChanged();
+
+            // Preparar el archivo para subir
+            using var stream = ArchivoSeleccionado.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            var fileData = ms.ToArray();
+
+            // Subir a Google Drive
+            var response = await DocumentRepository.SubirDocumentoAsync(
+                fileData,
+                ArchivoSeleccionado.Name,
+                ArchivoSeleccionado.ContentType,
+                nombreCompletoDocente,
+                numeroEmpleado,
+                DocumentType.Experiencia);
+
+            if (string.IsNullOrEmpty(response?.Url))
+            {
+                throw new Exception("No se pudo obtener la URL del documento subido");
+            }
+
+            // Guardar en la base de datos
+            var documento = new E_Documento
+            {
+                IdDocente = IdDocente,
+                Titulo = NuevoDocumento.Titulo.Trim(),
+                Url = response.Url,
+                Descripcion = $"Documento de evidencia para experiencia laboral (ID Experiencia: {IdExperiencia}). {NuevoDocumento.Descripcion?.Trim() ?? ""}",
+                FechaSubida = DateTime.Now
+            };
+
+            await DocumentoServicios.AddAsync(documento);
+
+            await JSRuntime.InvokeVoidAsync("alert", "Documento guardado correctamente");
+            await CargarDatos();
+            await CerrarModalDocumento();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al subir el documento: {ex.Message}");
+        }
+        finally
+        {
+            SubiendoArchivo = false;
+            StateHasChanged();
+        }
+    }
+
+    private class NuevoDocumentoModel
+    {
+        public string Titulo { get; set; } = "";
+        public string? Descripcion { get; set; }
+    }
+} 

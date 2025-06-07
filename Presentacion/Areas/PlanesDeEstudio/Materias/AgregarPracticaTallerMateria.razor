@@ -1,0 +1,29 @@
+﻿@page "/AgregarPracticaTallerMateria/{IdMateria:int}/{IdTipo:int}"
+
+<div class="container">
+
+  <h4 class="mb-0 d-flex align-items-center gap-2">
+    <a href="https://localhost:7205/ListarMaterias" class="text-decoration-none text-success"><i class="bi bi-arrow-left-circle-fill"></i></a>
+    Gestión de materias
+  </h4>
+  <hr />
+
+
+  @if (IdTipo == 1)
+  {
+    <h3>Agregar prácticas a la materia: @IdMateria</h3>
+  }
+  else
+  {
+    <h3>Agregar talleres a la materia: @IdMateria</h3>
+  }
+  <br /><br />
+  <b> Los datos necesarios son:</b><br /><br />
+  <p>- IdMateriaPracticaTaller PK AU</p>
+  <p>- IdMateriaUnidad FK</p>
+  <p>- Número del Taller o práctica</p>
+  <p>- Duración</p>  
+  <p>- Competencia de la práctica o el taller</p>
+  <p>- Descripción de la práctica o el taller</p>
+</div>
+

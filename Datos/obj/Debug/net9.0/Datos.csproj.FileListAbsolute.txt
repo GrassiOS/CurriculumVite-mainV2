@@ -1,0 +1,17 @@
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/bin/Debug/net9.0/Datos.deps.json
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/bin/Debug/net9.0/Datos.runtimeconfig.json
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/bin/Debug/net9.0/Datos.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/bin/Debug/net9.0/Datos.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/bin/Debug/net9.0/Entidades.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/bin/Debug/net9.0/Entidades.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.csproj.AssemblyReference.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.GeneratedMSBuildEditorConfig.editorconfig
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.AssemblyInfoInputs.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.AssemblyInfo.cs
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.csproj.CoreCompileInputs.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.csproj.Up2Date
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/refint/Datos.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.pdb
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.genruntimeconfig.cache
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/ref/Datos.dll
