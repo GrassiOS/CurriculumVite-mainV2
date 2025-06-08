@@ -9,6 +9,7 @@ using Servicios.Repositorios.PlanesDeEstudio;
 using Entidades.Utilidades;
 using Servicios.IRepositorios;
 using Entidades.Generales;
+using Presentacion.Helper;
 
 namespace Presentacion.Areas.CV.Docentes
 {
@@ -151,7 +152,7 @@ namespace Presentacion.Areas.CV.Docentes
                         }
                     }
 
-                    await JSRuntime.InvokeVoidAsync("alert", "Docente creado exitosamente");
+                    await JSRuntime.MsgExito("Docente creado exitosamente");
                     Navigation.NavigateTo($"/CV/Docentes/Ver/{nuevoDocente.IdDocente}");
                 }
                 else
@@ -167,7 +168,7 @@ namespace Presentacion.Areas.CV.Docentes
                         var resultado = await DocenteServicios.ModificarDocente(docente);
                         if (resultado.Resultado)
                         {
-                            await JSRuntime.InvokeVoidAsync("alert", "Docente actualizado exitosamente");
+                            await JSRuntime.MsgExito("Docente actualizado exitosamente");
                             Navigation.NavigateTo($"/CV/Docentes/Ver/{docente.IdDocente}");
                         }
                         else
@@ -302,8 +303,8 @@ namespace Presentacion.Areas.CV.Docentes
         {
             if (!EsEdicion) return;
 
-            var confirmado = await JSRuntime.InvokeAsync<bool>("confirm",
-                $". ¿Estás seguro de que deseas eliminar al docente {docente.NombreDocente} {docente.PaternoDocente}?");
+            var confirmado = await JSRuntime.InvokeAsync<bool>("SweetAlertHelper.showConfirmation", 
+                "¿Eliminar docente?", $"¿Estás seguro de que deseas eliminar al docente {docente.NombreDocente} {docente.PaternoDocente}? Esta acción no se puede deshacer.");
 
             if (confirmado)
             {
@@ -312,18 +313,18 @@ namespace Presentacion.Areas.CV.Docentes
                     var resultado = await DocenteServicios.BorrarDocente(docente.IdDocente);
                     if (resultado.Resultado)
                     {
-                        await JSRuntime.InvokeVoidAsync("alert", ". Docente eliminado exitosamente");
+                        await JSRuntime.MsgExito("Docente eliminado exitosamente");
                         Navigation.NavigateTo("/CV/Docentes");
                     }
                     else
                     {
-                        var mensajes = string.Join(", ", resultado.Mensajes);
-                        await JSRuntime.InvokeVoidAsync("alert", $". Error al eliminar: {mensajes}");
+                        var resultadoError = new ResultadoAcciones { Mensajes = resultado.Mensajes, Resultado = false };
+                        await JSRuntime.MsgError(resultadoError);
                     }
                 }
                 catch (Exception ex)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", $". Error inesperado: {ex.Message}");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error inesperado: {ex.Message}" }, Resultado = false });
                 }
             }
         }
@@ -430,7 +431,7 @@ namespace Presentacion.Areas.CV.Docentes
             StateHasChanged();
 
             // Mostrar mensaje informativo
-            JSRuntime.InvokeVoidAsync("alert", ". Formulario completado automáticamente con datos de ejemplo");
+            JSRuntime.MsgInfo("Formulario completado automáticamente con datos de ejemplo");
         }
 
         private void IrAContactos()
@@ -456,8 +457,8 @@ namespace Presentacion.Areas.CV.Docentes
                 var resultado = await DocenteServicios.InsertarDocente(docente);
                 if (!resultado.Resultado || resultado.Entidad == null)
                 {
-                    var mensajes = string.Join(", ", resultado.Mensajes);
-                    await JSRuntime.InvokeVoidAsync("alert", $". Error al guardar: {mensajes}");
+                    var resultadoError = new ResultadoAcciones { Mensajes = resultado.Mensajes, Resultado = false };
+                    await JSRuntime.MsgError(resultadoError);
                     return;
                 }
 
@@ -496,7 +497,7 @@ namespace Presentacion.Areas.CV.Docentes
                         if (!resultadoUpdate.Resultado)
                         {
                             await JSRuntime.InvokeVoidAsync("console.log", "Error al guardar URL de foto: " + string.Join(", ", resultadoUpdate.Mensajes));
-                            await JSRuntime.InvokeVoidAsync("alert", ". Docente creado pero hubo un error al guardar la URL de la foto. Puede editarla más tarde.");
+                            await JSRuntime.MsgPrecaucion("Docente creado pero hubo un error al guardar la URL de la foto. Puede editarla más tarde.");
                         }
                         else
                         {
@@ -506,16 +507,16 @@ namespace Presentacion.Areas.CV.Docentes
                     else
                     {
                         await JSRuntime.InvokeVoidAsync("console.log", "Error: No se recibió URL de la foto");
-                        await JSRuntime.InvokeVoidAsync("alert", ". Docente creado pero no se pudo subir la foto. Puede intentar subirla más tarde.");
+                        await JSRuntime.MsgPrecaucion("Docente creado pero no se pudo subir la foto. Puede intentar subirla más tarde.");
                     }
                 }
 
-                await JSRuntime.InvokeVoidAsync("alert", ". Docente guardado exitosamente. Ahora puede agregar contactos.");
+                await JSRuntime.MsgExito("Docente guardado exitosamente. Ahora puede agregar contactos.");
                 Navigation.NavigateTo($"/CV/Docentes/{nuevoDocente.IdDocente}/Contactos");
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $". Error inesperado: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error inesperado: {ex.Message}" }, Resultado = false });
             }
             finally
             {

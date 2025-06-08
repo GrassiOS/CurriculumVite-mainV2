@@ -3,6 +3,8 @@
 @using Entidades.DTO.CurriculumVite
 @using Servicios.IRepositorios.CurriculumVite
 @using AutoMapper
+@using Presentacion.Helper
+@using Entidades.Generales
 @inject ISRepositorioContactoDocente ContactoServicios
 @inject ISRepositorioTipoContacto TipoContactoServicios
 @inject ISDocenteRepositorio DocenteServicios
@@ -293,7 +295,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $". Error al cargar datos: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar datos: {ex.Message}" }, Resultado = false });
         }
         finally
         {
@@ -343,7 +345,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"❌ Error al cargar contactos: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar contactos: {ex.Message}" }, Resultado = false });
             contactos = new List<ContactoDocenteDTO>(); // Lista vacía como fallback
         }
     }
@@ -385,7 +387,7 @@
             // Validar que no exista ya un contacto del mismo tipo (solo al crear)
             if (!editando && await ContactoServicios.ExisteContactoConTipoParaDocenteAsync(IdDocente, contactoActual.IdTipoContacto))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "❌ Ya existe un contacto de este tipo para el docente.");
+                await JSRuntime.MsgPrecaucion("Ya existe un contacto de este tipo para el docente.");
                 return;
             }
 
@@ -396,18 +398,18 @@
                 try
                 {
                     await ContactoServicios.UpdateAsync(entidad);
-                    await JSRuntime.InvokeVoidAsync("alert", "✅ Contacto actualizado exitosamente");
+                    await JSRuntime.MsgExito("Contacto actualizado exitosamente");
                     editando = false;
                 }
                 catch (KeyNotFoundException)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", "❌ El contacto que intenta modificar ya no existe. La página se actualizará.");
+                    await JSRuntime.MsgPrecaucion("El contacto que intenta modificar ya no existe. La página se actualizará.");
                     await CargarContactos(); // Recargar para mostrar estado actual
                     return;
                 }
                 catch (InvalidOperationException ex) when (ex.Message.Contains("otro proceso"))
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", "❌ Este contacto fue modificado por otro usuario. La página se actualizará.");
+                    await JSRuntime.MsgPrecaucion("Este contacto fue modificado por otro usuario. La página se actualizará.");
                     await CargarContactos(); // Recargar para mostrar estado actual
                     return;
                 }
@@ -415,7 +417,7 @@
             else
             {
                 await ContactoServicios.AddAsync(entidad);
-                await JSRuntime.InvokeVoidAsync("alert", "✅ Contacto agregado exitosamente");
+                await JSRuntime.MsgExito("Contacto agregado exitosamente");
             }
 
             // Recargar contactos y limpiar formulario
@@ -426,10 +428,10 @@
         catch (Exception ex)
         {
             var mensaje = ex.Message.Contains("tracking") || ex.Message.Contains("tracked")
-                ? "❌ Error de sistema. Por favor, recargue la página e intente nuevamente."
-                : $"❌ Error al guardar contacto: {ex.Message}";
+                ? "Error de sistema. Por favor, recargue la página e intente nuevamente."
+                : $"Error al guardar contacto: {ex.Message}";
             
-            await JSRuntime.InvokeVoidAsync("alert", mensaje);
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { mensaje }, Resultado = false });
         }
         finally
         {
@@ -464,15 +466,15 @@
 
     private async Task EliminarContacto(int idContacto)
     {
-        var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
-            "🗑️ ¿Estás seguro de que deseas eliminar este contacto?");
+        var confirmado = await JSRuntime.InvokeAsync<bool>("SweetAlertHelper.showConfirmation",
+            "¿Eliminar contacto?", "¿Estás seguro de que deseas eliminar este contacto? Esta acción no se puede deshacer.");
 
         if (confirmado)
         {
             try
             {
                 await ContactoServicios.DeleteAsync(idContacto);
-                await JSRuntime.InvokeVoidAsync("alert", "✅ Contacto eliminado exitosamente");
+                await JSRuntime.MsgExito("Contacto eliminado exitosamente");
                 await CargarContactos();
                 
                 // Si estábamos editando este contacto, cancelar la edición
@@ -483,21 +485,21 @@
             }
             catch (KeyNotFoundException)
             {
-                await JSRuntime.InvokeVoidAsync("alert", "❌ El contacto que intenta eliminar ya no existe. La página se actualizará.");
+                await JSRuntime.MsgPrecaucion("El contacto que intenta eliminar ya no existe. La página se actualizará.");
                 await CargarContactos(); // Recargar para mostrar estado actual
             }
             catch (InvalidOperationException ex) when (ex.Message.Contains("otro proceso"))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "❌ Este contacto fue eliminado por otro usuario. La página se actualizará.");
+                await JSRuntime.MsgPrecaucion("Este contacto fue eliminado por otro usuario. La página se actualizará.");
                 await CargarContactos(); // Recargar para mostrar estado actual
             }
             catch (Exception ex)
             {
                 var mensaje = ex.Message.Contains("concurrency") || ex.Message.Contains("tracking")
-                    ? "❌ Error de sincronización. Por favor, recargue la página e intente nuevamente."
-                    : $"❌ Error al eliminar contacto: {ex.Message}";
+                    ? "Error de sincronización. Por favor, recargue la página e intente nuevamente."
+                    : $"Error al eliminar contacto: {ex.Message}";
                 
-                await JSRuntime.InvokeVoidAsync("alert", mensaje);
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { mensaje }, Resultado = false });
             }
         }
     }

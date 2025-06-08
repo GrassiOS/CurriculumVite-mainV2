@@ -4,6 +4,8 @@ using Entidades.DTO.CurriculumVite;
 using Servicios.IRepositorios.CurriculumVite;
 using Presentacion.Components.Shared;
 using Servicios.IRepositorios;
+using Presentacion.Helper;
+using Entidades.Generales;
 
 namespace Presentacion.Areas.CV.Docentes
 {
@@ -231,8 +233,8 @@ namespace Presentacion.Areas.CV.Docentes
 
         private async Task EliminarEducacion(EducacionDTO educacion)
         {
-            var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
-                $"¿Está seguro de que desea eliminar esta educación: {educacion.Titulo ?? educacion.Nivel}?\n\nSi hay documentos asociados, también serán eliminados.");
+            var confirmado = await JSRuntime.InvokeAsync<bool>("SweetAlertHelper.showConfirmation",
+                "¿Eliminar formación académica?", $"¿Está seguro de que desea eliminar esta educación: {educacion.Titulo ?? educacion.Nivel}? Si hay documentos asociados, también serán eliminados. Esta acción no se puede deshacer.");
             
             if (confirmado)
             {
@@ -283,12 +285,12 @@ namespace Presentacion.Areas.CV.Docentes
 
                     // 3. Finalmente eliminar la educación
                     await EducacionServicios.DeleteAsync(educacion.IdEducacion);
-                    await JSRuntime.InvokeVoidAsync("alert", "Educación y documentos asociados eliminados exitosamente");
+                    await JSRuntime.MsgExito("Educación y documentos asociados eliminados exitosamente");
                     await CargarEducaciones();
                 }
                 catch (Exception ex)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al eliminar: {ex.Message}" }, Resultado = false });
                 }
             }
         }
@@ -301,7 +303,7 @@ namespace Presentacion.Areas.CV.Docentes
         private async Task ExportarEducaciones()
         {
             // Implementar exportación
-            await JSRuntime.InvokeVoidAsync("alert", "Función de exportación en desarrollo");
+            await JSRuntime.MsgInfo("Función de exportación en desarrollo");
         }
 
         private string GetColorNivel(string nivel)

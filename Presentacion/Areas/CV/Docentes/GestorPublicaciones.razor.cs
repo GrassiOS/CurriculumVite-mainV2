@@ -4,6 +4,8 @@ using Entidades.DTO.CurriculumVite;
 using Servicios.IRepositorios.CurriculumVite;
 using Servicios.IRepositorios;
 using Presentacion.Components.Shared;
+using Presentacion.Helper;
+using Entidades.Generales;
 
 namespace Presentacion.Areas.CV.Docentes
 {
@@ -53,7 +55,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar datos: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar datos: {ex.Message}" }, Resultado = false });
             }
             finally
             {
@@ -146,13 +148,13 @@ namespace Presentacion.Areas.CV.Docentes
                 else
                 {
                     await JSRuntime.InvokeVoidAsync("console.error", "ModalPublicacionRef es null");
-                    await JSRuntime.InvokeVoidAsync("alert", "Error: No se pudo acceder al formulario de publicación");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "No se pudo acceder al formulario de publicación" }, Resultado = false });
                 }
             }
             catch (Exception ex)
             {
                 await JSRuntime.InvokeVoidAsync("console.error", $"Error al abrir modal editar: {ex.Message}");
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al abrir el formulario de edición: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al abrir el formulario de edición: {ex.Message}" }, Resultado = false });
             }
         }
 
@@ -167,13 +169,13 @@ namespace Presentacion.Areas.CV.Docentes
                 else
                 {
                     await JSRuntime.InvokeVoidAsync("console.error", "ModalPublicacionRef es null");
-                    await JSRuntime.InvokeVoidAsync("alert", "Error: No se pudo acceder al formulario de publicación");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "No se pudo acceder al formulario de publicación" }, Resultado = false });
                 }
             }
             catch (Exception ex)
             {
                 await JSRuntime.InvokeVoidAsync("console.error", $"Error al abrir modal nuevo: {ex.Message}");
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al abrir el formulario: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al abrir el formulario: {ex.Message}" }, Resultado = false });
             }
         }
 
@@ -189,14 +191,14 @@ namespace Presentacion.Areas.CV.Docentes
             catch (Exception ex)
             {
                 await JSRuntime.InvokeVoidAsync("console.error", $"Error al recargar datos: {ex.Message}");
-                await JSRuntime.InvokeVoidAsync("alert", $"La publicación se guardó, pero hubo un error al recargar la lista: {ex.Message}");
+                await JSRuntime.MsgPrecaucion($"La publicación se guardó, pero hubo un error al recargar la lista: {ex.Message}");
             }
         }
 
         private async Task ConfirmarEliminar(PublicacionDTO publicacion)
         {
-            var confirmado = await JSRuntime.InvokeAsync<bool>("confirm",
-                $"¿Está seguro de que desea eliminar la publicación '{publicacion.Titulo}'?");
+            var confirmado = await JSRuntime.InvokeAsync<bool>("SweetAlertHelper.showConfirmation",
+                "¿Eliminar publicación?", $"¿Está seguro de que desea eliminar la publicación '{publicacion.Titulo}'? Esta acción no se puede deshacer.");
 
             if (confirmado)
             {
@@ -254,11 +256,11 @@ namespace Presentacion.Areas.CV.Docentes
                 await PublicacionServicios.DeleteAsync(idPublicacion);
                 await CargarPublicaciones();
                 await CargarConteoDocumentos();
-                await JSRuntime.InvokeVoidAsync("alert", "Publicación y sus documentos eliminados correctamente");
+                await JSRuntime.MsgExito("Publicación y sus documentos eliminados correctamente");
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar publicación: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al eliminar publicación: {ex.Message}" }, Resultado = false });
             }
         }
 
@@ -269,7 +271,7 @@ namespace Presentacion.Areas.CV.Docentes
 
         private async Task ExportarPublicaciones()
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Funcionalidad de exportación en desarrollo");
+            await JSRuntime.MsgInfo("Funcionalidad de exportación en desarrollo");
         }
 
         private void VolverAContactos()

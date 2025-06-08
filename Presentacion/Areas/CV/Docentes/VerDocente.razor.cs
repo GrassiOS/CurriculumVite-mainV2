@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Entidades.DTO.CurriculumVite;
 using Servicios.IRepositorios.CurriculumVite;
+using Presentacion.Helper;
+using Entidades.Generales;
 using AutoMapper;
 
 namespace Presentacion.Areas.CV.Docentes
@@ -40,7 +42,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $". Error al cargar datos: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar datos: {ex.Message}" }, Resultado = false });
             }
             finally
             {
@@ -160,7 +162,7 @@ namespace Presentacion.Areas.CV.Docentes
         private async Task CopiarTexto(string texto)
         {
             await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", texto);
-            await JSRuntime.InvokeVoidAsync("alert", ". Texto copiado al portapapeles");
+            await JSRuntime.MsgExito("Texto copiado al portapapeles");
         }
 
         private bool EsUrlValida(string url)
@@ -226,7 +228,7 @@ namespace Presentacion.Areas.CV.Docentes
             {
                 if (docente == null)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", ". No se puede generar el CV sin datos del docente");
+                    await JSRuntime.MsgPrecaucion("No se puede generar el CV sin datos del docente");
                     return;
                 }
 
@@ -238,7 +240,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $". Error al generar PDF: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al generar PDF: {ex.Message}" }, Resultado = false });
             }
         }
 
@@ -248,7 +250,7 @@ namespace Presentacion.Areas.CV.Docentes
             {
                 if (docente == null)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", ". No se puede descargar el CV sin datos del docente");
+                    await JSRuntime.MsgPrecaucion("No se puede descargar el CV sin datos del docente");
                     return;
                 }
 
@@ -260,7 +262,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $". Error al descargar CV: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al descargar CV: {ex.Message}" }, Resultado = false });
             }
         }
 
@@ -275,7 +277,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $". Error al generar CV demo: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al generar CV demo: {ex.Message}" }, Resultado = false });
             }
         }
 

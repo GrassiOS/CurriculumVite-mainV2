@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Entidades.DTO.CurriculumVite;
 using Servicios.IRepositorios.CurriculumVite;
+using Presentacion.Helper;
+using Entidades.Generales;
 
 namespace Presentacion.Areas.CV.Docentes
 {
@@ -76,7 +78,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar datos: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar datos: {ex.Message}" }, Resultado = false });
             }
             finally
             {

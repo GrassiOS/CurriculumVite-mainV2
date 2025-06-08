@@ -4,6 +4,8 @@ using Entidades.DTO.CurriculumVite;
 using Servicios.IRepositorios.CurriculumVite;
 using Servicios.IRepositorios;
 using Presentacion.Components.Shared;
+using Presentacion.Helper;
+using Entidades.Generales;
 
 namespace Presentacion.Areas.CV.Docentes
 {
@@ -97,7 +99,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar datos: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar datos: {ex.Message}" }, Resultado = false });
             }
             finally
             {
@@ -226,12 +228,12 @@ namespace Presentacion.Areas.CV.Docentes
                     }
 
                     await ExperienciaServicios.DeleteAsync(ExperienciaAEliminar.IdExperiencia);
-                    await JSRuntime.InvokeVoidAsync("alert", "Experiencia eliminada exitosamente");
+                    await JSRuntime.MsgExito("Experiencia eliminada exitosamente");
                     await CargarDatos();
                 }
                 catch (Exception ex)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al eliminar: {ex.Message}" }, Resultado = false });
                 }
                 finally
                 {
@@ -262,7 +264,7 @@ namespace Presentacion.Areas.CV.Docentes
 
         private async Task ExportarExperiencias()
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Función de exportación en desarrollo");
+            await JSRuntime.MsgInfo("Función de exportación en desarrollo");
         }
     }
 } 

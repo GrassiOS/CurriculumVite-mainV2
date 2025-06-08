@@ -4,6 +4,8 @@ using Entidades.DTO.CurriculumVite;
 using Servicios.IRepositorios.CurriculumVite;
 using Servicios.IRepositorios;
 using Presentacion.Components.Shared;
+using Presentacion.Helper;
+using Entidades.Generales;
 
 namespace Presentacion.Areas.CV.Docentes
 {
@@ -98,7 +100,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
             catch (Exception ex)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar datos: {ex.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar datos: {ex.Message}" }, Resultado = false });
             }
             finally
             {
@@ -227,12 +229,12 @@ namespace Presentacion.Areas.CV.Docentes
                     }
 
                     await ProyectoServicios.DeleteAsync(ProyectoAEliminar.IdProyecto);
-                    await JSRuntime.InvokeVoidAsync("alert", "Proyecto y documentos asociados eliminados exitosamente");
+                    await JSRuntime.MsgExito("Proyecto y documentos asociados eliminados exitosamente");
                     await CargarDatos();
                 }
                 catch (Exception ex)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al eliminar: {ex.Message}" }, Resultado = false });
                 }
                 finally
                 {
