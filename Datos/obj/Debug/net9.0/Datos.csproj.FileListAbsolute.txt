@@ -15,3 +15,4 @@
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.pdb
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.genruntimeconfig.cache
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/ref/Datos.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Datos/obj/Debug/net9.0/Datos.sourcelink.json

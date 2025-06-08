@@ -15,3 +15,4 @@
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/refint/Negocios.dll
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.pdb
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/ref/Negocios.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Negocios/obj/Debug/net9.0/Negocios.sourcelink.json

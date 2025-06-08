@@ -1,17 +1,6 @@
 @page "/CV/Docentes/{idDocente:int}/Experiencia"
-@using Entidades.DTO.CurriculumVite
-@using Servicios.IRepositorios.CurriculumVite
-@using Presentacion.Components.Shared
-@using Servicios.IRepositorios
-@using Entidades.DTO.CurriculumVite
-@using Entidades.Modelos.CurriculumVite
-@inject ISRepositorioExperiencia ExperienciaServicios
-@inject ISRepositorioDocumento DocumentoServicios
-@inject IDocumentRepository DocumentRepository
-@inject ISDocenteRepositorio DocenteServicios
-@inject IJSRuntime JSRuntime
-@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
+@using Presentacion.Components.Shared
 
 <PageTitle>Gestión de Experiencia - UABC</PageTitle>
 
@@ -211,55 +200,48 @@
             }
             else
             {
-                <div class="row">
-                    @foreach (var experiencia in ExperienciasFiltradas)
-                    {
-                        <div class="col-12 mb-3">
-                            <div class="card border-0 shadow-sm experience-card">
-                                <div class="card-body">
-                                    <div class="row align-items-start">
-                                        <div class="col-md-8">
-                                            <div class="d-flex align-items-start mb-2">
-                                                <div class="me-3">
-                                                    <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                                         style="width: 45px; height: 45px; background-color: #E8F5E8;">
-                                                        <i class="fas fa-briefcase" style="color: #2D6B3C;"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    <h5 class="card-title mb-1">@experiencia.Puesto</h5>
-                                                    <p class="text-primary mb-1">
-                                                        <i class="fas fa-building me-1"></i>@experiencia.Institucion
-                                                    </p>
-                                                    <div class="d-flex align-items-center text-muted small">
-                                                        <i class="fas fa-calendar me-1"></i>
-                                                        <span class="me-3">@experiencia.PeriodoFormateado</span>
-                                                        <i class="fas fa-clock me-1"></i>
-                                                        <span>@experiencia.DuracionFormateada</span>
-                                                        @if (experiencia.EsActual)
-                                                        {
-                                                            <span class="badge bg-success ms-2">Actual</span>
-                                                        }
-                                                    </div>
-                                                </div>
+                @foreach (var experiencia in ExperienciasFiltradas)
+                {
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card experience-card border-0 shadow-sm">
+                                <div class="card-body" style="padding: 1.5rem;">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <h5 class="card-title mb-2">
+                                                @experiencia.Puesto
+                                                @if (experiencia.EsActual)
+                                                {
+                                                    <span class="badge" style="background-color: #4BB463; color: white; font-size: 0.7rem;">Actual</span>
+                                                }
+                                            </h5>
+                                            <div class="d-flex align-items-center text-muted mb-2">
+                                                <i class="fas fa-building me-2" style="color: #2D6B3C;"></i>
+                                                <span class="fw-semibold">@experiencia.Institucion</span>
+                                            </div>
+                                            <div class="d-flex align-items-center text-muted mb-2">
+                                                <i class="fas fa-calendar-alt me-2" style="color: #F4BF3A;"></i>
+                                                <span>@experiencia.PeriodoFormateado</span>
+                                                <span class="mx-2">•</span>
+                                                <span>@experiencia.DuracionFormateada</span>
                                             </div>
                                             @if (!string.IsNullOrEmpty(experiencia.Descripcion))
                                             {
                                                 <p class="card-text text-muted small mb-0">
-                                                    @((MarkupString)experiencia.Descripcion.Replace("\n", "<br>"))
+                                                    @experiencia.Descripcion
                                                 </p>
                                             }
                                         </div>
-                                        <div class="col-md-4 text-end">
+                                        <div class="col-md-3 text-end">
                                             <div class="btn-group" role="group">
-                                                <button class="btn btn-outline-primary btn-sm" @onclick="() => AbrirModalEditar(experiencia)">
-                                                    <i class="fas fa-edit"></i> Editar
+                                                <button class="btn btn-sm btn-outline-primary" @onclick="() => AbrirModalEditar(experiencia)" title="Editar">
+                                                    <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-outline-info btn-sm" @onclick="() => VerDocumentosExperiencia(experiencia)">
-                                                    <i class="fas fa-file-alt"></i> Documentos
+                                                <button class="btn btn-sm btn-outline-info" @onclick="() => VerDocumentosExperiencia(experiencia)" title="Ver documentos">
+                                                    <i class="fas fa-file-alt"></i>
                                                 </button>
-                                                <button class="btn btn-outline-danger btn-sm" @onclick="() => ConfirmarEliminar(experiencia)">
-                                                    <i class="fas fa-trash"></i> Eliminar
+                                                <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmarEliminar(experiencia)" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -267,387 +249,61 @@
                                 </div>
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             }
         </div>
 
-        <!-- Navegación -->
-        <div class="container mb-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-outline-secondary me-3" @onclick="RegresarAEducacion">
-                                    <i class="fas fa-arrow-left"></i> Regresar a Educación
-                                </button>
-                                <span class="text-muted">Paso 3 de 4 completado</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <span class="text-muted me-3">@ListaExperiencia.Count experiencia(s) registrada(s)</span>
-                                <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="ContinuarAProyectos">
-                                    Continuar a Proyectos <i class="fas fa-arrow-right"></i>
-                                </button>
-                            </div>
+        @if (!FromProfile)
+        {
+            <!-- Navegación de pasos -->
+            <div class="fixed-bottom bg-white border-top" style="padding: 1rem 2rem;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-secondary me-3" @onclick="RegresarAEducacion">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a Educación
+                    </button>
+                    
+                    <div class="text-center">
+                        <small class="text-muted">Paso 4 de 4</small>
+                        <div class="progress mt-1" style="width: 200px; height: 4px;">
+                            <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #2D6B3C;"></div>
                         </div>
                     </div>
+                    
+                    <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="ContinuarAProyectos">
+                        Continuar a Proyectos<i class="fas fa-arrow-right ms-2"></i>
+                    </button>
                 </div>
             </div>
-        </div>
+        }
     }
 </div>
 
-<!-- Modal de Experiencia -->
-<ModalExperiencia @ref="modalExperiencia" 
-                  OnExperienciaGuardada="OnExperienciaGuardada" 
-                  IdDocente="IdDocente"
-                  EmpleadoNombre="@nombreCompletoDocente"
-                  NumeroEmpleado="@numeroEmpleado" />
-
-<!-- Modal de Confirmación -->
+<!-- Modal for confirmation -->
 @if (MostrarModalConfirmacion)
 {
-    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog">
+    <div class="modal show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" @onclick="CerrarModalConfirmacion"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Estás seguro de que deseas eliminar la experiencia laboral <strong>@ExperienciaAEliminar?.Puesto</strong> en <strong>@ExperienciaAEliminar?.Institucion</strong>?</p>
-                    <p class="text-danger small">Esta acción no se puede deshacer.</p>
+                    <p>¿Está seguro de que desea eliminar esta experiencia?</p>
+                    @if (ExperienciaAEliminar != null)
+                    {
+                        <p><strong>@ExperienciaAEliminar.Puesto</strong> en @ExperienciaAEliminar.Institucion</p>
+                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @onclick="CerrarModalConfirmacion">Cancelar</button>
-                    <button type="button" class="btn btn-danger" @onclick="EliminarExperiencia">
-                        <i class="fas fa-trash"></i> Eliminar
-                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="EliminarExperiencia">Eliminar</button>
                 </div>
             </div>
         </div>
     </div>
 }
 
-@code {
-    [Parameter] public int IdDocente { get; set; }
-    
-    private List<ExperienciaDTO> ListaExperiencia = new();
-    private List<ExperienciaDTO> ExperienciasFiltradas = new();
-    private string NombreDocente = "";
-    private string nombreCompletoDocente = "";
-    private bool CargandoExperiencia = true;
-    private ModalExperiencia? modalExperiencia;
-    private string numeroEmpleado = "";
-    
-    // Detectar si viene del perfil del docente
-    private bool FromProfile = false;
-    
-    // Filtros
-    private string FiltroTexto = "";
-    private string FiltroEstado = "";
-    private string OrdenarPor = "fecha";
-    
-    // Modal de confirmación
-    private bool MostrarModalConfirmacion = false;
-    private ExperienciaDTO? ExperienciaAEliminar;
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Detectar si viene del perfil del docente
-        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        FromProfile = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query).ContainsKey("fromProfile");
-
-        await CargarDatos();
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (IdDocente > 0)
-        {
-            await CargarDatos();
-        }
-    }
-
-    private async Task CargarDatos()
-    {
-        try
-        {
-            CargandoExperiencia = true;
-            StateHasChanged();
-
-            // Cargar docente
-            var resultadoDocente = await DocenteServicios.ObtenerDocente<DocenteDTO>(IdDocente);
-            if (resultadoDocente.Resultado && resultadoDocente.Entidad != null)
-            {
-                var docente = resultadoDocente.Entidad;
-                NombreDocente = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim();
-                nombreCompletoDocente = NombreDocente;
-                numeroEmpleado = docente.NumeroEmpleado ?? "";
-            }
-
-            // Cargar experiencias - usando GetAllAsync y luego filtrando
-            var experiencias = await ExperienciaServicios.GetAllAsync();
-            if (experiencias != null)
-            {
-                // Mapear a DTOs manualmente
-                ListaExperiencia = experiencias
-                    .Where(e => e.IdDocente == IdDocente)
-                    .Select(e => new ExperienciaDTO
-                    {
-                        IdExperiencia = e.IdExperiencia,
-                        IdDocente = e.IdDocente,
-                        Puesto = e.Puesto,
-                        Institucion = e.Institucion,
-                        Descripcion = e.Descripcion,
-                        FechaInicio = e.FechaInicio,
-                        FechaFin = e.FechaFin,
-                        NombreDocente = NombreDocente
-                    })
-                    .ToList();
-                    
-                AplicarFiltros();
-            }
-        }
-        catch (Exception ex)
-        {
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar datos: {ex.Message}");
-        }
-        finally
-        {
-            CargandoExperiencia = false;
-            StateHasChanged();
-        }
-    }
-
-    private void AplicarFiltros()
-    {
-        var experienciasFiltradas = ListaExperiencia.AsEnumerable();
-
-        // Filtro por texto
-        if (!string.IsNullOrEmpty(FiltroTexto))
-        {
-            experienciasFiltradas = experienciasFiltradas.Where(e =>
-                (e.Puesto?.Contains(FiltroTexto, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                (e.Institucion?.Contains(FiltroTexto, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                (e.Descripcion?.Contains(FiltroTexto, StringComparison.OrdinalIgnoreCase) ?? false)
-            );
-        }
-
-        // Filtro por estado
-        if (!string.IsNullOrEmpty(FiltroEstado))
-        {
-            experienciasFiltradas = FiltroEstado switch
-            {
-                "actual" => experienciasFiltradas.Where(e => e.EsActual),
-                "pasada" => experienciasFiltradas.Where(e => !e.EsActual),
-                _ => experienciasFiltradas
-            };
-        }
-
-        // Ordenar
-        experienciasFiltradas = OrdenarPor switch
-        {
-            "puesto" => experienciasFiltradas.OrderBy(e => e.Puesto),
-            "institucion" => experienciasFiltradas.OrderBy(e => e.Institucion),
-            "duracion" => experienciasFiltradas.OrderByDescending(e => e.DuracionMeses),
-            _ => experienciasFiltradas.OrderByDescending(e => e.FechaInicio ?? DateTime.MinValue)
-        };
-
-        ExperienciasFiltradas = experienciasFiltradas.ToList();
-        StateHasChanged();
-    }
-
-    private void LimpiarFiltros()
-    {
-        FiltroTexto = "";
-        FiltroEstado = "";
-        OrdenarPor = "fecha";
-        AplicarFiltros();
-    }
-
-    private async Task AbrirModalAgregar()
-    {
-        if (modalExperiencia != null)
-        {
-            await modalExperiencia.AbrirModal(null, IdDocente);
-        }
-    }
-
-    private async Task AbrirModalEditar(ExperienciaDTO experiencia)
-    {
-        if (modalExperiencia != null)
-        {
-            await modalExperiencia.AbrirModal(experiencia);
-        }
-    }
-
-    private async Task OnExperienciaGuardada()
-    {
-        await CargarDatos();
-    }
-
-    private void ConfirmarEliminar(ExperienciaDTO experiencia)
-    {
-        ExperienciaAEliminar = experiencia;
-        MostrarModalConfirmacion = true;
-        StateHasChanged();
-    }
-
-    private void CerrarModalConfirmacion()
-    {
-        MostrarModalConfirmacion = false;
-        ExperienciaAEliminar = null;
-        StateHasChanged();
-    }
-
-    private async Task EliminarExperiencia()
-    {
-        if (ExperienciaAEliminar != null)
-        {
-            try
-            {
-                // 1. Obtener todos los documentos asociados a la experiencia
-                var todosDocumentos = await DocumentoServicios.GetAllAsync();
-                var documentosExperiencia = todosDocumentos
-                    .Where(d => d.IdDocente == IdDocente && 
-                               !string.IsNullOrEmpty(d.Descripcion) && 
-                               d.Descripcion.Contains($"ID Experiencia: {ExperienciaAEliminar.IdExperiencia}"))
-                    .ToList();
-
-                // 2. Eliminar cada documento de Drive y de la base de datos
-                foreach (var documento in documentosExperiencia)
-                {
-                    if (!string.IsNullOrEmpty(documento.Url))
-                    {
-                        try
-                        {
-                            // Extraer el ID de Drive de la URL
-                            string? driveId = null;
-                            var uri = new Uri(documento.Url);
-                            if (uri.Host.Contains("drive.google.com"))
-                            {
-                                if (uri.AbsolutePath.Contains("/file/d/"))
-                                {
-                                    driveId = uri.AbsolutePath.Split("/file/d/")[1].Split('/')[0];
-                                }
-                                else if (uri.Query.Contains("id="))
-                                {
-                                    driveId = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("id");
-                                }
-                            }
-
-                            // Eliminar de Drive si se encontró el ID
-                            if (!string.IsNullOrEmpty(driveId))
-                            {
-                                await DocumentRepository.EliminarDocumentoAsync(driveId);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            await JSRuntime.InvokeVoidAsync("console.error", $"Error al eliminar archivo de Drive: {ex.Message}");
-                            // Continuar con el siguiente documento
-                        }
-                    }
-
-                    // Eliminar el documento de la base de datos
-                    await DocumentoServicios.DeleteAsync(documento.IdDocumento);
-                }
-
-                // 3. Finalmente eliminar la experiencia
-                await ExperienciaServicios.DeleteAsync(ExperienciaAEliminar.IdExperiencia);
-                await JSRuntime.InvokeVoidAsync("alert", "Experiencia y documentos asociados eliminados exitosamente");
-                await CargarDatos();
-            }
-            catch (Exception ex)
-            {
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
-            }
-            finally
-            {
-                CerrarModalConfirmacion();
-            }
-        }
-    }
-
-    private void RegresarAEducacion()
-    {
-        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Educacion");
-    }
-
-    private void ContinuarAProyectos()
-    {
-        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Proyectos");
-    }
-
-    private void VolverAPerfilDocente()
-    {
-        NavigationManager.NavigateTo($"/CV/Docentes/Ver/{IdDocente}");
-    }
-
-    private async Task VerDocumentosExperiencia(ExperienciaDTO experiencia)
-    {
-        NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Experiencia/{experiencia.IdExperiencia}/Documentos");
-    }
-
-    private async Task ExportarExperiencias()
-    {
-        // Implementar exportación
-        await JSRuntime.InvokeVoidAsync("alert", "Función de exportación en desarrollo");
-    }
-}
-
-<style>
-    .experience-card {
-        transition: all 0.3s ease;
-        border-left: 4px solid #E9ECEF;
-    }
-
-    .experience-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(45, 107, 60, 0.15) !important;
-        border-left-color: #2D6B3C;
-    }
-
-    .experience-card .card-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #2D6B3C;
-        line-height: 1.3;
-    }
-
-    .experience-card .card-text {
-        line-height: 1.4;
-        max-height: 60px;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-    }
-
-    .experience-card .btn-sm {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
-    }
-
-    .badge {
-        font-size: 0.7rem;
-        font-weight: 500;
-    }
-
-    /* Responsive */
-    @@media (max-width: 768px) {
-        .experience-card .card-body {
-            padding: 1rem;
-        }
-        
-        .experience-card .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-    }
-</style> 
+<!-- Modal for Experience -->
+<ModalExperiencia @ref="modalExperiencia"
+                 OnExperienciaGuardada="OnExperienciaGuardada" /> 

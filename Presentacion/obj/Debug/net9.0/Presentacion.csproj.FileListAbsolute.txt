@@ -202,7 +202,6 @@
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/scopedcss/Components/Layout/NavMenu.razor.rz.scp.css
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/scopedcss/bundle/Presentacion.styles.css
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/scopedcss/projectbundle/Presentacion.bundle.scp.css
-/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/compressed/yz2nvw295y-sx6qmtgyee.gz
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/compressed/pkb5hk3pxx-56sjvmltm9.gz
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/compressed/keezly5y3a-bqjiyaj88i.gz
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/compressed/kmtsseqb5t-c2jlpeoesf.gz
@@ -263,3 +262,6 @@
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/Presentacion.pdb
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/Presentacion.genruntimeconfig.cache
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/ref/Presentacion.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/Presentacion.sourcelink.json
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/compressed/ur41lkip7h-5ipweew5fc.gz
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Presentacion/obj/Debug/net9.0/compressed/yz2nvw295y-i26ur1i0ov.gz

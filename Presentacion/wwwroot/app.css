@@ -220,3 +220,767 @@ h1, h2, h3, h4, h5, h6 {
 /************************* CSS Para el módulo de Gestión de materias*/
 
 /************************* Fin CSS del módulo de Gestión de materias*/
+
+/* ========== VER DOCENTE ========== */
+.ver-docente-container {
+    background-color: var(--uabc-light-gray);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.ver-docente-loading {
+    height: 100vh;
+}
+
+.ver-docente-header {
+    background-color: var(--uabc-pure-white);
+    border-bottom: 1px solid #E5E7EB;
+    padding: 1.5rem 2rem;
+}
+
+.ver-docente-content {
+    padding: 2rem;
+}
+
+.ver-docente-profile-card {
+    background-color: var(--uabc-pure-white);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.ver-docente-photo-container {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border: 4px solid var(--uabc-secondary-green);
+}
+
+.ver-docente-photo-button {
+    background-color: var(--uabc-secondary-green);
+    border-color: var(--uabc-secondary-green);
+}
+
+.ver-docente-photo-placeholder {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, var(--uabc-primary-green), var(--uabc-secondary-green));
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.ver-docente-contact-btn {
+    background-color: var(--uabc-secondary-green);
+    border-color: var(--uabc-secondary-green);
+}
+
+.ver-docente-cv-section {
+    border-top: 1px solid #E5E7EB;
+    padding: 1rem;
+}
+
+.ver-docente-cv-download {
+    background-color: var(--uabc-secondary-green);
+    color: white;
+    border: 1px solid var(--uabc-secondary-green);
+}
+
+.ver-docente-main-info {
+    background-color: var(--uabc-pure-white);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.ver-docente-semblanza {
+    color: var(--uabc-primary-green);
+}
+
+.ver-docente-institutional-info {
+    color: var(--uabc-primary-green);
+}
+
+.ver-docente-modal {
+    z-index: 1050;
+}
+
+.ver-docente-modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ver-docente-contact-item {
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: var(--uabc-light-gray);
+    transition: all 0.2s ease;
+}
+
+.ver-docente-contact-item:hover {
+    background-color: #E8F5E8;
+    transform: translateY(-1px);
+}
+
+.ver-docente-contact-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--uabc-primary-green);
+    color: white;
+}
+
+.ver-docente-copy-btn {
+    background-color: var(--uabc-secondary-green);
+    border-color: var(--uabc-secondary-green);
+    color: white;
+}
+
+.ver-docente-url-btn {
+    background-color: var(--uabc-golden-yellow);
+    border-color: var(--uabc-golden-yellow);
+    color: var(--uabc-dark-text);
+}
+
+/* ========== VER EXPERIENCIA ========== */
+.ver-experiencia-container {
+    background-color: var(--uabc-light-gray);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.ver-experiencia-loading {
+    height: 100vh;
+}
+
+.ver-experiencia-header {
+    background: linear-gradient(135deg, var(--uabc-primary-green) 0%, var(--uabc-secondary-green) 100%);
+    color: white;
+}
+
+.ver-experiencia-breadcrumb {
+    --bs-breadcrumb-divider-color: rgba(255,255,255,0.6);
+}
+
+.ver-experiencia-breadcrumb a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+}
+
+.ver-experiencia-breadcrumb .active {
+    color: white;
+}
+
+.experience-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #E9ECEF;
+}
+
+.experience-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 107, 60, 0.15) !important;
+    border-left-color: var(--uabc-primary-green);
+}
+
+.experience-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--uabc-primary-green);
+    line-height: 1.3;
+}
+
+.ver-experiencia-stats .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ver-experiencia-stat-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.ver-experiencia-filters .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .experience-card .card-body {
+        padding: 1rem;
+    }
+    
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .d-flex.justify-content-between .badge {
+        margin-top: 0.5rem;
+    }
+}
+
+/* ========== VER PROYECTOS ========== */
+.ver-proyectos-container {
+    background-color: var(--uabc-light-gray);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.ver-proyectos-loading {
+    height: 100vh;
+}
+
+.ver-proyectos-header {
+    background: linear-gradient(135deg, var(--uabc-primary-green) 0%, var(--uabc-secondary-green) 100%);
+    color: white;
+}
+
+.ver-proyectos-breadcrumb {
+    --bs-breadcrumb-divider-color: rgba(255,255,255,0.6);
+}
+
+.ver-proyectos-breadcrumb a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+}
+
+.ver-proyectos-breadcrumb .active {
+    color: white;
+}
+
+.project-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #E9ECEF;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 107, 60, 0.15) !important;
+    border-left-color: var(--uabc-primary-green);
+}
+
+.project-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--uabc-primary-green);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ver-proyectos-stats .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ver-proyectos-stat-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.ver-proyectos-filters .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .project-card .card-body {
+        padding: 1rem;
+    }
+    
+    .d-flex.flex-wrap .me-3 {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ========== VER PUBLICACIONES ========== */
+.ver-publicaciones-container {
+    background-color: var(--uabc-light-gray);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.ver-publicaciones-loading {
+    height: 100vh;
+}
+
+.ver-publicaciones-header {
+    background: linear-gradient(135deg, var(--uabc-primary-green) 0%, var(--uabc-secondary-green) 100%);
+    color: white;
+}
+
+.ver-publicaciones-breadcrumb {
+    --bs-breadcrumb-divider-color: rgba(255,255,255,0.6);
+}
+
+.ver-publicaciones-breadcrumb a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+}
+
+.ver-publicaciones-breadcrumb .active {
+    color: white;
+}
+
+.publication-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #E9ECEF;
+}
+
+.publication-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 107, 60, 0.15) !important;
+    border-left-color: var(--uabc-primary-green);
+}
+
+.publication-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--uabc-primary-green);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ver-publicaciones-stats .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ver-publicaciones-stat-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.ver-publicaciones-filters .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .publication-card .card-body {
+        padding: 1rem;
+    }
+}
+
+/* ========== VER EDUCACION ========== */
+.ver-educacion-container {
+    background-color: var(--uabc-light-gray);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.ver-educacion-loading {
+    height: 100vh;
+}
+
+.ver-educacion-header {
+    background: linear-gradient(135deg, var(--uabc-primary-green) 0%, var(--uabc-secondary-green) 100%);
+    color: white;
+}
+
+.ver-educacion-breadcrumb {
+    --bs-breadcrumb-divider-color: rgba(255,255,255,0.6);
+}
+
+.ver-educacion-breadcrumb a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+}
+
+.ver-educacion-breadcrumb .active {
+    color: white;
+}
+
+.education-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #E9ECEF;
+}
+
+.education-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 107, 60, 0.15) !important;
+    border-left-color: var(--uabc-primary-green);
+}
+
+.education-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--uabc-primary-green);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ver-educacion-stats .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ver-educacion-stat-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.ver-educacion-filters .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .education-card .card-body {
+        padding: 1rem;
+    }
+    
+    .d-flex.flex-wrap .me-3 {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ========== GESTOR EXPERIENCIA ========== */
+.gestor-experiencia-container {
+    background-color: var(--uabc-light-gray);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.gestor-experiencia-loading {
+    height: 100vh;
+}
+
+.gestor-experiencia-header {
+    background-color: var(--uabc-pure-white);
+    border-bottom: 1px solid #E5E7EB;
+    padding: 1.5rem 2rem;
+}
+
+.gestor-experiencia-content {
+    padding: 2rem;
+}
+
+.gestor-experiencia-stats .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.gestor-experiencia-stats .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gestor-experiencia-stat-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.gestor-experiencia-filters .card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.experience-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #E9ECEF;
+}
+
+.experience-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 107, 60, 0.15) !important;
+    border-left-color: var(--uabc-primary-green);
+}
+
+.experience-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--uabc-primary-green);
+    line-height: 1.3;
+}
+
+.experience-card .card-text {
+    line-height: 1.4;
+    max-height: 60px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.experience-card .btn-sm {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .experience-card .card-body {
+        padding: 1rem;
+    }
+    
+    .experience-card .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* ========== GESTOR PUBLICACIONES ========== */
+.publication-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.publication-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(45, 107, 60, 0.15) !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #6C757D;
+}
+
+.btn-close-sm {
+    font-size: 0.7rem;
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+/* ========== GESTOR PROYECTOS ========== */
+.project-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #E9ECEF;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 107, 60, 0.15) !important;
+    border-left-color: #2D6B3C;
+}
+
+.project-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2D6B3C;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.project-card .btn-sm {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+}
+
+.badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .project-card .card-body {
+        padding: 1rem;
+    }
+    
+    .project-card .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* ========== GESTION DOCENTE ========== */
+.gestion-docente-container {
+    background-color: var(--uabc-light-gray);
+    min-height: 100vh;
+}
+
+.gestion-docente-loading {
+    height: 100vh;
+}
+
+.gestion-docente-header h2 {
+    color: var(--uabc-primary-green);
+    font-weight: 600;
+}
+
+.gestion-docente-breadcrumb a {
+    color: var(--uabc-primary-green);
+    text-decoration: none;
+}
+
+.gestion-docente-breadcrumb a:hover {
+    color: var(--uabc-secondary-green);
+}
+
+.gestion-docente-form .card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gestion-docente-form .card-header {
+    font-weight: 600;
+    border-bottom: none;
+}
+
+.gestion-docente-form .form-label {
+    color: var(--uabc-dark-text);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.gestion-docente-form .form-control,
+.gestion-docente-form .form-select {
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.gestion-docente-form .form-control:focus,
+.gestion-docente-form .form-select:focus {
+    border-color: var(--uabc-secondary-green);
+    box-shadow: 0 0 0 3px rgba(75, 180, 99, 0.1);
+}
+
+.gestion-docente-form .text-danger {
+    color: var(--uabc-danger-red) !important;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.gestion-docente-form .form-text {
+    color: var(--uabc-text-secondary);
+    font-size: 0.875rem;
+}
+
+.gestion-docente-photo-preview {
+    width: 64px;
+    height: 64px;
+    border: 3px solid var(--uabc-secondary-green);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.gestion-docente-buttons {
+    background-color: var(--uabc-pure-white);
+    border-top: 1px solid #E5E7EB;
+    padding: 1.5rem 2rem;
+    border-radius: 0 0 12px 12px;
+}
+
+.gestion-docente-btn-primary {
+    background-color: var(--uabc-primary-green);
+    border-color: var(--uabc-primary-green);
+    color: white;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.gestion-docente-btn-primary:hover {
+    background-color: var(--uabc-secondary-green);
+    border-color: var(--uabc-secondary-green);
+    transform: translateY(-1px);
+}
+
+.gestion-docente-btn-secondary {
+    background-color: var(--uabc-golden-yellow);
+    border-color: var(--uabc-golden-yellow);
+    color: var(--uabc-dark-text);
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.gestion-docente-btn-secondary:hover {
+    background-color: #FBBF24;
+    border-color: #FBBF24;
+    transform: translateY(-1px);
+}
+
+.gestion-docente-btn-danger {
+    background-color: #DC2626;
+    border-color: #DC2626;
+    color: white;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.gestion-docente-btn-danger:hover {
+    background-color: #B91C1C;
+    border-color: #B91C1C;
+    transform: translateY(-1px);
+}
+
+.gestion-docente-btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--uabc-medium-gray);
+    color: var(--uabc-medium-gray);
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.gestion-docente-btn-outline:hover {
+    background-color: var(--uabc-medium-gray);
+    color: white;
+}
+
+.gestion-docente-alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.gestion-docente-alert-danger {
+    background-color: rgba(252, 165, 165, 0.1);
+    color: #DC2626;
+    border-left: 4px solid #DC2626;
+}
+
+.gestion-docente-alert-warning {
+    background-color: rgba(244, 191, 58, 0.1);
+    color: #D97706;
+    border-left: 4px solid #D97706;
+}
+
+.gestion-docente-alert-info {
+    background-color: rgba(75, 180, 99, 0.1);
+    color: var(--uabc-primary-green);
+    border-left: 4px solid var(--uabc-primary-green);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gestion-docente-form .card-body {
+        padding: 1rem;
+    }
+    
+    .gestion-docente-buttons {
+        padding: 1rem;
+    }
+    
+    .gestion-docente-buttons .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}

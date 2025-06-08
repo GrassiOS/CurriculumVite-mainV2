@@ -10,3 +10,4 @@
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/refint/Entidades.dll
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.pdb
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/ref/Entidades.dll
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Entidades/obj/Debug/net9.0/Entidades.sourcelink.json

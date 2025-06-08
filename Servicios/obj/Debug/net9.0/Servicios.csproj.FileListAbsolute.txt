@@ -36,3 +36,4 @@
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/bin/Debug/net9.0/LatoFont/Lato-Thin.ttf
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/bin/Debug/net9.0/LatoFont/Lato-ThinItalic.ttf
 /Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/bin/Debug/net9.0/LatoFont/OFL.txt
+/Users/martinortiz/Desktop/CV/CurriculumVite-main/Servicios/obj/Debug/net9.0/Servicios.sourcelink.json
