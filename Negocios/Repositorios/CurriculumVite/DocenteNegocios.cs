@@ -2,12 +2,16 @@ using Entidades.Generales;
 using System.Text.RegularExpressions;
 using Datos.IRepositorios.CurriculumVite;
 using Entidades.Modelos.CurriculumVite;
+using Entidades.DTO.CurriculumVite;
+using Datos;
+using Microsoft.EntityFrameworkCore;
 
 namespace Negocios.Repositorios.CurriculumVite
 {
-    public class DocenteNegocios(IDocenteRepositorio docenteRepositorio)
+    public class DocenteNegocios(IDocenteRepositorio docenteRepositorio, ContextoBD context)
     {
         private readonly IDocenteRepositorio _docenteRepositorio = docenteRepositorio;
+        private readonly ContextoBD _context = context;
 
         public async Task<ResultadoAcciones> InsertarDocente(E_Docente docente)
         {
@@ -453,6 +457,149 @@ namespace Negocios.Repositorios.CurriculumVite
                     Mensajes = { "Error al actualizar la URL de la foto: " + ex.Message },
                     Resultado = false
                 };
+            }
+        }
+
+        // Métodos para obtener catálogos
+        public async Task<IEnumerable<SexoDTO>> ObtenerSexos()
+        {
+            try
+            {
+                return await _context.Sexos
+                    .Select(s => new SexoDTO
+                    {
+                        IdSexo = s.IdSexo,
+                        Sexo = s.Sexo
+                    })
+                    .OrderBy(s => s.Sexo)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<SexoDTO>();
+            }
+        }
+
+        public async Task<IEnumerable<EstadoCivilDTO>> ObtenerEstadosCiviles()
+        {
+            try
+            {
+                return await _context.EstadosCiviles
+                    .Select(ec => new EstadoCivilDTO
+                    {
+                        IdEstadoCivil = ec.IdEstadoCivil,
+                        EstadoCivil = ec.EstadoCivil
+                    })
+                    .OrderBy(ec => ec.EstadoCivil)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<EstadoCivilDTO>();
+            }
+        }
+
+        public async Task<IEnumerable<CategoriaDTO>> ObtenerCategorias()
+        {
+            try
+            {
+                return await _context.Categorias
+                    .Select(c => new CategoriaDTO
+                    {
+                        IdCategoria = c.IdCategoria,
+                        ClaveCategoria = c.ClaveCategoria,
+                        NombreCategoria = c.NombreCategoria
+                    })
+                    .OrderBy(c => c.NombreCategoria)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<CategoriaDTO>();
+            }
+        }
+
+        public async Task<IEnumerable<NombramientoDTO>> ObtenerNombramientos()
+        {
+            try
+            {
+                return await _context.Nombramientos
+                    .Select(n => new NombramientoDTO
+                    {
+                        IdNombramiento = n.IdNombramiento,
+                        Nombramiento = n.Nombramiento
+                    })
+                    .OrderBy(n => n.Nombramiento)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<NombramientoDTO>();
+            }
+        }
+
+        public async Task<IEnumerable<EscolaridadDTO>> ObtenerEscolaridades()
+        {
+            try
+            {
+                return await _context.Escolaridades
+                    .Select(e => new EscolaridadDTO
+                    {
+                        IdEscolaridad = e.IdEscolaridad,
+                        ClaveEscolaridad = e.ClaveEscolaridad,
+                        NombreEscolaridad = e.NombreEscolaridad
+                    })
+                    .OrderBy(e => e.NombreEscolaridad)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<EscolaridadDTO>();
+            }
+        }
+
+        public async Task<IEnumerable<SNIDTO>> ObtenerNivelesSNI()
+        {
+            try
+            {
+                return await _context.NivelesSNI
+                    .Select(sni => new SNIDTO
+                    {
+                        IdNivelSNI = sni.IdNivelSNI,
+                        NivelSNI = sni.NivelSNI
+                    })
+                    .OrderBy(sni => sni.IdNivelSNI)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<SNIDTO>();
+            }
+        }
+
+        public async Task<IEnumerable<PRODEPDTO>> ObtenerPRODEP()
+        {
+            try
+            {
+                return await _context.PRODEP
+                    .Select(p => new PRODEPDTO
+                    {
+                        IdPRODEP = p.IdPRODEP,
+                        TienePRODEP = p.TienePRODEP
+                    })
+                    .OrderBy(p => p.IdPRODEP)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<PRODEPDTO>();
             }
         }
     }

@@ -29,6 +29,16 @@ namespace Presentacion.Areas.CV.Docentes
         private bool estaActivo = true;
         private bool tieneProdep = false;
         private List<E_Carrera> carreras = new();
+        
+        // Catalog data collections
+        private List<SexoDTO> sexos = new();
+        private List<EstadoCivilDTO> estadosCiviles = new();
+        private List<CategoriaDTO> categorias = new();
+        private List<NombramientoDTO> nombramientos = new();
+        private List<EscolaridadDTO> escolaridades = new();
+        private List<SNIDTO> nivelesSNI = new();
+        private List<PRODEPDTO> nivelesPRODEP = new();
+        
         private string? mensajeError;
         private IBrowserFile? fotoSeleccionada;
         private bool mostrarMensaje;
@@ -42,7 +52,16 @@ namespace Presentacion.Areas.CV.Docentes
             try
             {
                 cargando = true;
+                
+                // Load catalog data sequentially to avoid DbContext concurrency issues
                 carreras = (await CarreraServicios.ListarCarreras()).ToList();
+                sexos = (await DocenteServicios.ObtenerSexos()).ToList();
+                estadosCiviles = (await DocenteServicios.ObtenerEstadosCiviles()).ToList();
+                categorias = (await DocenteServicios.ObtenerCategorias()).ToList();
+                nombramientos = (await DocenteServicios.ObtenerNombramientos()).ToList();
+                escolaridades = (await DocenteServicios.ObtenerEscolaridades()).ToList();
+                nivelesSNI = (await DocenteServicios.ObtenerNivelesSNI()).ToList();
+                nivelesPRODEP = (await DocenteServicios.ObtenerPRODEP()).ToList();
 
                 if (EsEdicion && IdDocente.HasValue)
                 {

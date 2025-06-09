@@ -144,5 +144,41 @@ namespace Servicios.Repositorios.CurriculumVite
                 };
             }
         }
+
+        // Métodos para obtener catálogos
+        public async Task<IEnumerable<SexoDTO>> ObtenerSexos()
+        {
+            return await _docenteNegocios.ObtenerSexos();
+        }
+
+        public async Task<IEnumerable<EstadoCivilDTO>> ObtenerEstadosCiviles()
+        {
+            return await _docenteNegocios.ObtenerEstadosCiviles();
+        }
+
+        public async Task<IEnumerable<CategoriaDTO>> ObtenerCategorias()
+        {
+            return await _docenteNegocios.ObtenerCategorias();
+        }
+
+        public async Task<IEnumerable<NombramientoDTO>> ObtenerNombramientos()
+        {
+            return await _docenteNegocios.ObtenerNombramientos();
+        }
+
+        public async Task<IEnumerable<EscolaridadDTO>> ObtenerEscolaridades()
+        {
+            return await _docenteNegocios.ObtenerEscolaridades();
+        }
+
+        public async Task<IEnumerable<SNIDTO>> ObtenerNivelesSNI()
+        {
+            return await _docenteNegocios.ObtenerNivelesSNI();
+        }
+
+        public async Task<IEnumerable<PRODEPDTO>> ObtenerPRODEP()
+        {
+            return await _docenteNegocios.ObtenerPRODEP();
+        }
     }
 } 

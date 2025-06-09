@@ -2,6 +2,8 @@
 @using Entidades.Utilidades
 @using Servicios.IRepositorios.CurriculumVite
 @using Servicios.IRepositorios
+@using Presentacion.Helper
+@using Entidades.Generales
 @inject ISRepositorioPublicacion PublicacionServicios
 @inject ISRepositorioDocumento DocumentoServicios
 @inject IDocumentRepository DocumentRepository
@@ -218,19 +220,19 @@
             // Validaciones básicas
             if (string.IsNullOrWhiteSpace(PublicacionActual.Titulo))
             {
-                await JSRuntime.InvokeVoidAsync("alert", ". Error: El título es obligatorio");
+                await JSRuntime.MsgPrecaucion("El título es obligatorio");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(PublicacionActual.TipoPublicacion))
             {
-                await JSRuntime.InvokeVoidAsync("alert", ". Error: Debe seleccionar un tipo de publicación");
+                await JSRuntime.MsgPrecaucion("Debe seleccionar un tipo de publicación");
                 return;
             }
 
             if (PublicacionActual.IdDocente <= 0)
             {
-                await JSRuntime.InvokeVoidAsync("alert", ". Error: No se pudo identificar el docente");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "No se pudo identificar el docente" }, Resultado = false });
                 return;
             }
 
@@ -240,7 +242,7 @@
                 if (!Uri.TryCreate(PublicacionActual.Enlace, UriKind.Absolute, out var uriResult) || 
                     (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps))
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", ". Error: El enlace debe ser una URL válida que comience con http:// o https://");
+                    await JSRuntime.MsgPrecaucion("El enlace debe ser una URL válida que comience con http:// o https://");
                     return;
                 }
             }
@@ -252,7 +254,7 @@
                 bool archivoSubido = await SubirArchivoSiHay();
                 if (!archivoSubido)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", ". Error: No se pudo subir el archivo. La publicación no se guardará.");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "No se pudo subir el archivo. La publicación no se guardará." }, Resultado = false });
                     return;
                 }
             }
@@ -305,7 +307,7 @@
             }
             catch (Exception pubEx)
             {
-                await JSRuntime.InvokeVoidAsync("alert", $". Error crítico: No se pudo guardar la publicación. {pubEx.Message}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error crítico: No se pudo guardar la publicación. {pubEx.Message}" }, Resultado = false });
                 return;
             }
 
@@ -343,12 +345,12 @@
             if (documentoGuardado || string.IsNullOrEmpty(UrlDocumento))
             {
                 // Caso exitoso completo
-                await JSRuntime.InvokeVoidAsync("alert", $". ¡Éxito! La publicación se guardó correctamente.{(documentoGuardado ? " " + mensajeDocumento : "")}");
+                await JSRuntime.MsgExito($"¡Éxito! La publicación se guardó correctamente.{(documentoGuardado ? " " + mensajeDocumento : "")}");
             }
             else
             {
                 // Publicación guardada pero documento falló
-                await JSRuntime.InvokeVoidAsync("alert", $"⠀ PUBLICACIÓN GUARDADA CORRECTAMENTE\n\n⚠️ Problema con el documento:\n{mensajeDocumento}\n\nPuedes agregar el documento manualmente desde la sección de documentos.");
+                await JSRuntime.MsgPrecaucion($"PUBLICACIÓN GUARDADA CORRECTAMENTE. Problema con el documento: {mensajeDocumento}. Puedes agregar el documento manualmente desde la sección de documentos.");
             }
 
             // Notificar al componente padre
@@ -359,7 +361,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $". Error al guardar la publicación: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al guardar la publicación: {ex.Message}" }, Resultado = false });
         }
         finally
         {
@@ -424,7 +426,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $". Error al abrir el modal: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al abrir el modal: {ex.Message}" }, Resultado = false });
         }
     }
 
@@ -476,7 +478,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $". Error al cerrar el modal: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cerrar el modal: {ex.Message}" }, Resultado = false });
         }
     }
 } 

@@ -4,6 +4,7 @@
 @using Servicios.IRepositorios.CurriculumVite
 @using Servicios.IRepositorios
 @using Entidades.Modelos.CurriculumVite
+@using Presentacion.Helper
 @inject ISRepositorioExperiencia ExperienciaServicios
 @inject ISRepositorioDocumento DocumentoServicios
 @inject IDocumentRepository DocumentRepository
@@ -273,7 +274,7 @@
                 
                 if (idDocente <= 0)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", "Error: No se pudo identificar el docente para crear la experiencia");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "No se pudo identificar el docente para crear la experiencia" }, Resultado = false });
                     return;
                 }
                 
@@ -326,7 +327,7 @@
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("console.error", $"Error al abrir modal: {ex.Message}");
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al abrir el formulario de experiencia: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al abrir el formulario de experiencia: {ex.Message}" }, Resultado = false });
         }
     }
 
@@ -341,7 +342,7 @@
             var archivoSubido = await SubirArchivoSiHay();
             if (!archivoSubido && ArchivoSeleccionado != null)
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error al subir el archivo. Por favor, intente nuevamente.");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "Error al subir el archivo. Por favor, intente nuevamente." }, Resultado = false });
                 return;
             }
 
@@ -411,12 +412,12 @@
             if (documentoGuardado || string.IsNullOrEmpty(UrlDocumento))
             {
                 // Caso exitoso completo
-                await JSRuntime.InvokeVoidAsync("alert", $"¡Éxito! La experiencia se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
+                await JSRuntime.MsgExito($"¡Éxito! La experiencia se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
             }
             else
             {
                 // Experiencia guardada pero documento falló
-                await JSRuntime.InvokeVoidAsync("alert", $"⠀ EXPERIENCIA GUARDADA CORRECTAMENTE\n\n⚠️ Problema con el documento:\n{mensajeDocumento}\n\nPuedes agregar el documento manualmente desde la sección de documentos.");
+                await JSRuntime.MsgPrecaucion($"EXPERIENCIA GUARDADA CORRECTAMENTE. Problema con el documento: {mensajeDocumento}. Puedes agregar el documento manualmente desde la sección de documentos.");
             }
 
             await CerrarModal();
@@ -424,7 +425,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al guardar: {ex.Message}" }, Resultado = false });
         }
         finally
         {

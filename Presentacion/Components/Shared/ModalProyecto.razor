@@ -4,6 +4,7 @@
 @using Servicios.IRepositorios.CurriculumVite
 @using Servicios.IRepositorios
 @using Entidades.Modelos.CurriculumVite
+@using Presentacion.Helper
 @inject ISRepositorioProyecto ProyectoServicios
 @inject ISRepositorioDocumento DocumentoServicios
 @inject IDocumentRepository DocumentRepository
@@ -269,7 +270,7 @@
                 
                 if (idDocente <= 0)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", "Error: No se pudo identificar el docente para crear el proyecto");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "No se pudo identificar el docente para crear el proyecto" }, Resultado = false });
                     return;
                 }
                 
@@ -326,7 +327,7 @@
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("console.error", $"Error al abrir modal: {ex.Message}");
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al abrir el formulario de proyecto: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al abrir el formulario de proyecto: {ex.Message}" }, Resultado = false });
         }
     }
 
@@ -411,7 +412,7 @@
             var archivoSubido = await SubirArchivoSiHay();
             if (!archivoSubido && ArchivoSeleccionado != null)
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error al subir el archivo. Por favor, intente nuevamente.");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "Error al subir el archivo. Por favor, intente nuevamente." }, Resultado = false });
                 return;
             }
 
@@ -476,12 +477,12 @@
             if (documentoGuardado || string.IsNullOrEmpty(UrlDocumento))
             {
                 // Caso exitoso completo
-                await JSRuntime.InvokeVoidAsync("alert", $"¡Éxito! El proyecto se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
+                await JSRuntime.MsgExito($"¡Éxito! El proyecto se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
             }
             else
             {
                 // Proyecto guardado pero documento falló
-                await JSRuntime.InvokeVoidAsync("alert", $"⠀ PROYECTO GUARDADO CORRECTAMENTE\n\n⚠️ Problema con el documento:\n{mensajeDocumento}\n\nPuedes agregar el documento manualmente desde la sección de documentos.");
+                await JSRuntime.MsgPrecaucion($"PROYECTO GUARDADO CORRECTAMENTE. Problema con el documento: {mensajeDocumento}. Puedes agregar el documento manualmente desde la sección de documentos.");
             }
 
             await CerrarModal();
@@ -489,7 +490,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al guardar: {ex.Message}" }, Resultado = false });
         }
         finally
         {

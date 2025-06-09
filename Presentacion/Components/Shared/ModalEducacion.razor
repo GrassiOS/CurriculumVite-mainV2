@@ -2,6 +2,8 @@
 @using Entidades.Utilidades
 @using Servicios.IRepositorios.CurriculumVite
 @using Servicios.IRepositorios
+@using Presentacion.Helper
+@using Entidades.Generales
 @using Entidades.Modelos.CurriculumVite
 @inject ISRepositorioEducacion EducacionServicios
 @inject ISRepositorioDocumento DocumentoServicios
@@ -289,13 +291,13 @@
             // Validaciones básicas
             if (string.IsNullOrWhiteSpace(EducacionActual.Nivel))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error: El nivel educativo es obligatorio");
+                await JSRuntime.MsgPrecaucion("El nivel educativo es obligatorio");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(EducacionActual.Institucion))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error: La institución es obligatoria");
+                await JSRuntime.MsgPrecaucion("La institución es obligatoria");
                 return;
             }
 
@@ -303,7 +305,7 @@
             if (EducacionActual.AnioInicio.HasValue && EducacionActual.AnioFin.HasValue && 
                 EducacionActual.AnioInicio > EducacionActual.AnioFin)
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error: El año de inicio no puede ser mayor al año de finalización");
+                await JSRuntime.MsgPrecaucion("El año de inicio no puede ser mayor al año de finalización");
                 return;
             }
 
@@ -311,7 +313,7 @@
             var archivoSubido = await SubirArchivoSiHay();
             if (!archivoSubido && ArchivoSeleccionado != null)
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error al subir el archivo. Por favor, intente nuevamente.");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "Error al subir el archivo. Por favor, intente nuevamente." }, Resultado = false });
                 return;
             }
 
@@ -380,12 +382,12 @@
             if (documentoGuardado || string.IsNullOrEmpty(UrlDocumento))
             {
                 // Caso exitoso completo
-                await JSRuntime.InvokeVoidAsync("alert", $"¡Éxito! La formación académica se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
+                await JSRuntime.MsgExito($"¡Éxito! La formación académica se guardó correctamente.{(documentoGuardado && !string.IsNullOrEmpty(UrlDocumento) ? " " + mensajeDocumento : "")}");
             }
             else
             {
                 // Educación guardada pero documento falló
-                await JSRuntime.InvokeVoidAsync("alert", $"⠀ FORMACIÓN GUARDADA CORRECTAMENTE\n\n⚠️ Problema con el documento:\n{mensajeDocumento}\n\nPuedes agregar el documento manualmente desde la sección de documentos.");
+                await JSRuntime.MsgPrecaucion($"FORMACIÓN GUARDADA CORRECTAMENTE. Problema con el documento: {mensajeDocumento}. Puedes agregar el documento manualmente desde la sección de documentos.");
             }
 
             // Notificar al componente padre que se guardó la educación
@@ -407,19 +409,19 @@
             
             if (mensajeError.Contains("Invalid object name") || mensajeError.Contains("Invalid column name"))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error de base de datos: Hay un problema con la estructura de la base de datos. Es necesario ejecutar migraciones o verificar la configuración de Entity Framework.\n\nError técnico: " + mensajeError);
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error de base de datos: Hay un problema con la estructura de la base de datos. Es necesario ejecutar migraciones o verificar la configuración de Entity Framework. Error técnico: {mensajeError}" }, Resultado = false });
             }
             else if (mensajeError.Contains("duplicate key") || mensajeError.Contains("PRIMARY KEY"))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error: Ya existe una formación académica con esos datos");
+                await JSRuntime.MsgPrecaucion("Ya existe una formación académica con esos datos");
             }
             else if (mensajeError.Contains("FK_") || mensajeError.Contains("FOREIGN KEY"))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Error: Hay un problema con las relaciones de datos. Verifique que el docente existe en el sistema");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "Hay un problema con las relaciones de datos. Verifique que el docente existe en el sistema" }, Resultado = false });
             }
             else
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"Error al guardar la formación académica:\n\n{mensajeError}");
+                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al guardar la formación académica: {mensajeError}" }, Resultado = false });
             }
         }
         finally
@@ -457,7 +459,7 @@
             {
                 if (idDocente <= 0)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", "Error: No se pudo identificar el docente para crear la formación");
+                    await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { "No se pudo identificar el docente para crear la formación" }, Resultado = false });
                     return;
                 }
                 
@@ -522,7 +524,7 @@
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("console.error", $"Error al abrir modal: {ex.Message}");
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al abrir el formulario de educación: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al abrir el formulario de educación: {ex.Message}" }, Resultado = false });
         }
     }
 

@@ -4,6 +4,8 @@
 @using Entidades.Utilidades
 @using Servicios.IRepositorios.CurriculumVite
 @using Servicios.IRepositorios
+@using Presentacion.Helper
+@using Entidades.Generales
 @inject ISRepositorioDocumento DocumentoServicios
 @inject ISRepositorioExperiencia ExperienciaServicios
 @inject ISDocenteRepositorio DocenteServicios
@@ -310,7 +312,7 @@
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar datos: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al cargar datos: {ex.Message}" }, Resultado = false });
         }
         finally
         {
@@ -368,8 +370,8 @@
                     var eliminadoDeDrive = await DocumentRepository.EliminarDocumentoAsync(driveId);
                     if (!eliminadoDeDrive)
                     {
-                        if (!await JSRuntime.InvokeAsync<bool>("confirm", 
-                            "No se pudo eliminar el archivo de Google Drive. ¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                                        if (!await JSRuntime.InvokeAsync<bool>("SweetAlertHelper.showConfirmation",
+                    "¿Continuar eliminación?", "No se pudo eliminar el archivo de Google Drive. ¿Desea continuar y eliminar solo la referencia en la base de datos?"))
                         {
                             return;
                         }
@@ -377,8 +379,8 @@
                 }
                 catch (Exception driveEx)
                 {
-                    if (!await JSRuntime.InvokeAsync<bool>("confirm", 
-                        $"Error al eliminar de Google Drive: {driveEx.Message}\n\n¿Desea continuar y eliminar solo la referencia en la base de datos?"))
+                                    if (!await JSRuntime.InvokeAsync<bool>("SweetAlertHelper.showConfirmation",
+                    "¿Continuar eliminación?", $"Error al eliminar de Google Drive: {driveEx.Message}. ¿Desea continuar y eliminar solo la referencia en la base de datos?"))
                     {
                         return;
                     }
@@ -387,12 +389,12 @@
 
             // Eliminar de la base de datos
             await DocumentoServicios.DeleteAsync(DocumentoAEliminar.IdDocumento);
-                await JSRuntime.InvokeVoidAsync("alert", "Documento eliminado correctamente");
+                await JSRuntime.MsgExito("Documento eliminado correctamente");
                 await CargarDatos();
             }
             catch (Exception ex)
             {
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al eliminar: {ex.Message}" }, Resultado = false });
         }
         finally
         {
@@ -452,7 +454,7 @@
     {
         if (ArchivoSeleccionado == null || string.IsNullOrWhiteSpace(NuevoDocumento.Titulo))
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Por favor complete los campos requeridos");
+            await JSRuntime.MsgPrecaucion("Por favor complete los campos requeridos");
             return;
         }
 
@@ -493,13 +495,13 @@
 
             await DocumentoServicios.AddAsync(documento);
 
-            await JSRuntime.InvokeVoidAsync("alert", "Documento guardado correctamente");
+            await JSRuntime.MsgExito("Documento guardado correctamente");
             await CargarDatos();
             await CerrarModalDocumento();
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"Error al subir el documento: {ex.Message}");
+            await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error al subir el documento: {ex.Message}" }, Resultado = false });
         }
         finally
         {

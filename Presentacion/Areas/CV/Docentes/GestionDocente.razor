@@ -79,8 +79,13 @@
                             <label class="form-label fw-semibold">Sexo <span class="text-danger">*</span></label>
                             <InputSelect @bind-Value="docente.IdSexo" class="form-select">
                                 <option value="">Seleccionar...</option>
-                                <option value="1">Masculino</option>
-                                <option value="2">Femenino</option>
+                                @if (sexos != null)
+                                {
+                                    @foreach (var sexo in sexos)
+                                    {
+                                        <option value="@sexo.IdSexo">@sexo.Sexo</option>
+                                    }
+                                }
                             </InputSelect>
                             <ValidationMessage For="@(() => docente.IdSexo)" class="text-danger" />
                         </div>
@@ -151,11 +156,13 @@
                             <label class="form-label fw-semibold">Estado Civil <span class="text-danger">*</span></label>
                             <InputSelect @bind-Value="docente.IdEstadoCivil" class="form-select">
                                 <option value="">Seleccionar...</option>
-                                <option value="1">Soltero(a)</option>
-                                <option value="2">Casado(a)</option>
-                                <option value="3">Divorciado(a)</option>
-                                <option value="4">Viudo(a)</option>
-                                <option value="5">Unión Libre</option>
+                                @if (estadosCiviles != null)
+                                {
+                                    @foreach (var estadoCivil in estadosCiviles)
+                                    {
+                                        <option value="@estadoCivil.IdEstadoCivil">@estadoCivil.EstadoCivil</option>
+                                    }
+                                }
                             </InputSelect>
                             <ValidationMessage For="@(() => docente.IdEstadoCivil)" class="text-danger" />
                         </div>
@@ -217,9 +224,13 @@
                             <label class="form-label fw-semibold">Categoría <span class="text-danger">*</span></label>
                             <InputSelect @bind-Value="docente.IdCategoria" class="form-select">
                                 <option value="">Seleccionar...</option>
-                                <option value="1">Tiempo Completo</option>
-                                <option value="2">Medio Tiempo</option>
-                                <option value="3">Asignatura</option>
+                                @if (categorias != null)
+                                {
+                                    @foreach (var categoria in categorias)
+                                    {
+                                        <option value="@categoria.IdCategoria">@categoria.NombreCategoria</option>
+                                    }
+                                }
                             </InputSelect>
                             <ValidationMessage For="@(() => docente.IdCategoria)" class="text-danger" />
                         </div>
@@ -229,9 +240,13 @@
                             <label class="form-label fw-semibold">Nombramiento <span class="text-danger">*</span></label>
                             <InputSelect @bind-Value="docente.IdNombramiento" class="form-select">
                                 <option value="">Seleccionar...</option>
-                                <option value="1">Base</option>
-                                <option value="2">Interino</option>
-                                <option value="3">Honorarios</option>
+                                @if (nombramientos != null)
+                                {
+                                    @foreach (var nombramiento in nombramientos)
+                                    {
+                                        <option value="@nombramiento.IdNombramiento">@nombramiento.Nombramiento</option>
+                                    }
+                                }
                             </InputSelect>
                             <ValidationMessage For="@(() => docente.IdNombramiento)" class="text-danger" />
                         </div>
@@ -257,10 +272,13 @@
                             <label class="form-label fw-semibold">Escolaridad <span class="text-danger">*</span></label>
                             <InputSelect @bind-Value="docente.IdEscolaridad" class="form-select">
                                 <option value="">Seleccionar...</option>
-                                <option value="1">Licenciatura</option>
-                                <option value="2">Maestría</option>
-                                <option value="3">Doctorado</option>
-                                <option value="4">Posdoctorado</option>
+                                @if (escolaridades != null)
+                                {
+                                    @foreach (var escolaridad in escolaridades)
+                                    {
+                                        <option value="@escolaridad.IdEscolaridad">@escolaridad.NombreEscolaridad</option>
+                                    }
+                                }
                             </InputSelect>
                             <ValidationMessage For="@(() => docente.IdEscolaridad)" class="text-danger" />
                         </div>
@@ -299,12 +317,14 @@
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Nivel SNI</label>
                             <InputSelect @bind-Value="docente.IdNivelSNI" class="form-select">
-                                <option value="">No pertenece</option>
-                                <option value="1">Candidato</option>
-                                <option value="2">Nivel I</option>
-                                <option value="3">Nivel II</option>
-                                <option value="4">Nivel III</option>
-                                <option value="5">Emérito</option>
+                                <option value="">Seleccionar...</option>
+                                @if (nivelesSNI != null)
+                                {
+                                    @foreach (var nivelSNI in nivelesSNI)
+                                    {
+                                        <option value="@nivelSNI.IdNivelSNI">@nivelSNI.NivelSNI</option>
+                                    }
+                                }
                             </InputSelect>
                             <ValidationMessage For="@(() => docente.IdNivelSNI)" class="text-danger" />
                         </div>
