@@ -325,14 +325,19 @@ namespace Presentacion.Areas.CV.Docentes
             NavigationManager.NavigateTo($"/CV/Docentes/Ver/{IdDocente}");
         }
 
-        private void RegresarAPublicaciones()
+        private void VolverAContactos()
         {
-            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Publicaciones");
+            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Contactos");
         }
 
         private void ContinuarAExperiencia()
         {
             NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Experiencia");
+        }
+
+        private void FinalizarGestion()
+        {
+            NavigationManager.NavigateTo($"/CV/Docentes/Ver/{IdDocente}");
         }
     }
 } 

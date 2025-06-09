@@ -247,9 +247,14 @@ namespace Presentacion.Areas.CV.Docentes
             NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Educacion");
         }
 
-        private void ContinuarAProyectos()
+        private void ContinuarAPublicaciones()
         {
-            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Proyectos");
+            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Publicaciones");
+        }
+
+        private void FinalizarGestion()
+        {
+            NavigationManager.NavigateTo($"/CV/Docentes/Ver/{IdDocente}");
         }
 
         private void VolverAPerfilDocente()

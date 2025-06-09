@@ -1,0 +1,46 @@
+@if (ShowIndicator)
+{
+    <div class="fixed-bottom bg-white border-top" style="padding: 1rem 2rem;">
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Botón anterior -->
+            <button class="btn btn-outline-secondary me-3" @onclick="OnPreviousStep" disabled="@(CurrentStep == 1)">
+                <i class="fas fa-arrow-left me-2"></i>@PreviousStepName
+            </button>
+            
+            <!-- Indicador de progreso -->
+            <div class="text-center">
+                <small class="text-muted">Paso @CurrentStep de @TotalSteps - @CurrentStepName</small>
+                <div class="progress mt-1" style="width: 200px; height: 4px;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: @((CurrentStep * 100.0 / TotalSteps).ToString("0"))%; background-color: #2D6B3C;"></div>
+                </div>
+            </div>
+            
+            <!-- Botón siguiente o finalizar -->
+            @if (CurrentStep < TotalSteps)
+            {
+                <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="OnNextStep">
+                    @NextStepName<i class="fas fa-arrow-right ms-2"></i>
+                </button>
+            }
+            else
+            {
+                <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="OnFinish">
+                    Finalizar Gestión de CV <i class="fas fa-check ms-2"></i>
+                </button>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool ShowIndicator { get; set; } = true;
+    [Parameter] public int CurrentStep { get; set; } = 1;
+    [Parameter] public int TotalSteps { get; set; } = 4;
+    [Parameter] public string CurrentStepName { get; set; } = "";
+    [Parameter] public string NextStepName { get; set; } = "";
+    [Parameter] public string PreviousStepName { get; set; } = "";
+    [Parameter] public EventCallback OnPreviousStep { get; set; }
+    [Parameter] public EventCallback OnNextStep { get; set; }
+    [Parameter] public EventCallback OnFinish { get; set; }
+} 

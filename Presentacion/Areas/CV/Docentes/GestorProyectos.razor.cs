@@ -243,9 +243,9 @@ namespace Presentacion.Areas.CV.Docentes
             }
         }
 
-        private void RegresarAExperiencia()
+        private void RegresarAPublicaciones()
         {
-            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Experiencia");
+            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Publicaciones");
         }
 
         private void FinalizarGestion()

@@ -274,14 +274,19 @@ namespace Presentacion.Areas.CV.Docentes
             await JSRuntime.MsgInfo("Funcionalidad de exportación en desarrollo");
         }
 
-        private void VolverAContactos()
+        private void VolverAExperiencia()
         {
-            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Contactos");
+            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Experiencia");
         }
 
-        private void ContinuarAEducacion()
+        private void ContinuarAProyectos()
         {
-            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Educacion");
+            NavigationManager.NavigateTo($"/CV/Docentes/{IdDocente}/Proyectos");
+        }
+
+        private void FinalizarGestion()
+        {
+            NavigationManager.NavigateTo($"/CV/Docentes/Ver/{IdDocente}");
         }
 
         private void VolverAPerfilDocente()

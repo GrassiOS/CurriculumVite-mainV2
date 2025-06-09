@@ -44,7 +44,13 @@
                             <span style="color: #6c757d;">@nombreCompletoDocente</span>
                         </li>
                         <li class="breadcrumb-item">
+                            <a href="/CV/Docentes/@IdDocente/Educacion" class="text-decoration-none" style="color: #2D6B3C;">Educación</a>
+                        </li>
+                        <li class="breadcrumb-item">
                             <a href="/CV/Docentes/@IdDocente/Experiencia" class="text-decoration-none" style="color: #2D6B3C;">Experiencia</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="/CV/Docentes/@IdDocente/Publicaciones" class="text-decoration-none" style="color: #2D6B3C;">Publicaciones</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page" style="color: #2D6B3C;">Proyectos</li>
                     }
@@ -242,31 +248,16 @@
         </div>
 
         <!-- Navegación final -->
-        @if (!FromProfile)
-        {
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-outline-secondary me-3" @onclick="RegresarAExperiencia">
-                                    <i class="fas fa-arrow-left"></i> Regresar a Experiencia
-                                </button>
-                                <span class="text-muted">Paso 4 de 4 completado</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <span class="text-muted me-3">@ListaProyectos.Count proyecto(s) registrado(s)</span>
-                                <button class="btn" style="background-color: #2D6B3C; color: white;" @onclick="FinalizarGestion">
-                                    Finalizar Gestión de CV <i class="fas fa-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        <!-- Indicador de pasos para flujo de gestión -->
+        <StepIndicator ShowIndicator="@(!FromProfile)"
+                      CurrentStep="4"
+                      TotalSteps="4"
+                      CurrentStepName="Proyectos"
+                      NextStepName=""
+                      PreviousStepName="Volver a Publicaciones"
+                      OnPreviousStep="@RegresarAPublicaciones"
+                      OnNextStep="@FinalizarGestion"
+                      OnFinish="@FinalizarGestion" />
     }
 </div>
 
