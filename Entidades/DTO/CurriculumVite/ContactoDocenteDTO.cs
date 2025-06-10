@@ -10,7 +10,7 @@ namespace Entidades.DTO.CurriculumVite
         [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un tipo de contacto válido")]
         public int IdTipoContacto { get; set; }
         [Required(ErrorMessage = "La URL/enlace es obligatoria")]
-        [StringLength(500, ErrorMessage = "La URL/enlace no puede exceder 500 caracteres")]
+        [StringLength(500, MinimumLength = 3, ErrorMessage = "La URL/enlace debe tener entre 3 y 500 caracteres")]
         public string Url { get; set; } = null!;
         
         // Información del tipo de contacto (para display)

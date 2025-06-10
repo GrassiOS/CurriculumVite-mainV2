@@ -1,8 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Entidades.DTO.CurriculumVite
 {
     public class TipoContactoDTO
     {
         public int TipoContactoId { get; set; }
+        
+        [Required(ErrorMessage = "El nombre del tipo de contacto es obligatorio")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 100 caracteres")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\-]+$", ErrorMessage = "El nombre solo puede contener letras, espacios y guiones")]
         public string Nombre { get; set; } = null!;
         
         // Propiedades calculadas para iconos y estilos

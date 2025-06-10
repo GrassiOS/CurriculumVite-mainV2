@@ -40,8 +40,9 @@
     }
     else
     {
-        <EditForm Model="docente" OnValidSubmit="GuardarDocente">
+        <EditForm Model="docente" OnValidSubmit="GuardarDocente" OnInvalidSubmit="OnInvalidSubmit">
             <DataAnnotationsValidator />
+            <ValidationSummary class="alert alert-danger" />
 
             <!-- Segment 1: Datos Personales -->
             <div class="card shadow-sm mb-4">
@@ -434,7 +435,7 @@
                             }
 
                             <button type="submit" class="btn btn-primary" style="background-color: #2D6B3C; border-color: #2D6B3C;"
-                                    disabled="@guardando">
+                                    disabled="@guardando" @onclick="() => continuarAContactos = false">
                                 @if (guardando)
                                 {
                                     <span class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -448,8 +449,8 @@
 
                             @if (!EsEdicion)
                             {
-                                <button type="button" class="btn btn-success ms-2" style="background-color: #4BB463; border-color: #4BB463;"
-                                        @onclick="GuardarYContinuar" disabled="@guardando">
+                                <button type="submit" class="btn btn-success ms-2" style="background-color: #4BB463; border-color: #4BB463;"
+                                        @onclick="() => continuarAContactos = true" disabled="@guardando">
                                     @if (guardando)
                                     {
                                         <span class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -468,4 +469,10 @@
         </EditForm>
     }
 </div>
+
+<script>
+    window.scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>
  

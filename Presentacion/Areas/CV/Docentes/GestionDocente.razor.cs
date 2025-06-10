@@ -44,6 +44,7 @@ namespace Presentacion.Areas.CV.Docentes
         private bool mostrarMensaje;
         private string tipoMensaje = "info";
         private string mensaje = "";
+        private bool continuarAContactos = false;
 
         private bool EsEdicion => IdDocente.HasValue && IdDocente.Value > 0;
 
@@ -93,6 +94,14 @@ namespace Presentacion.Areas.CV.Docentes
             }
         }
 
+        private async Task OnInvalidSubmit()
+        {
+            mostrarMensaje = true;
+            tipoMensaje = "danger";
+            mensaje = "Por favor, corrija los errores en el formulario antes de continuar.";
+            await JSRuntime.InvokeVoidAsync("scrollToTop");
+        }
+
         private async Task GuardarDocente()
         {
             try
@@ -135,7 +144,7 @@ namespace Presentacion.Areas.CV.Docentes
                             FileData = fileData,
                             FileName = fotoSeleccionada.Name,
                             FileType = fotoSeleccionada.ContentType,
-                            EmpleadoNombre = $"{docente.NombreDocente} {docente.PaternoDocente}".Trim(),
+                            EmpleadoNombre = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim(),
                             NumeroEmpleado = docente.NumeroEmpleado ?? "Sin Número",
                             TipoDocumento = DocumentType.General
                         };
@@ -172,7 +181,15 @@ namespace Presentacion.Areas.CV.Docentes
                     }
 
                     await JSRuntime.MsgExito("Docente creado exitosamente");
-                    Navigation.NavigateTo($"/CV/Docentes/Ver/{nuevoDocente.IdDocente}");
+                    
+                    if (continuarAContactos)
+                    {
+                        Navigation.NavigateTo($"/CV/Docentes/{nuevoDocente.IdDocente}/Contactos");
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo($"/CV/Docentes/Ver/{nuevoDocente.IdDocente}");
+                    }
                 }
                 else
                 {
@@ -188,7 +205,15 @@ namespace Presentacion.Areas.CV.Docentes
                         if (resultado.Resultado)
                         {
                             await JSRuntime.MsgExito("Docente actualizado exitosamente");
-                            Navigation.NavigateTo($"/CV/Docentes/Ver/{docente.IdDocente}");
+                            
+                            if (continuarAContactos)
+                            {
+                                Navigation.NavigateTo($"/CV/Docentes/{docente.IdDocente}/Contactos");
+                            }
+                            else
+                            {
+                                Navigation.NavigateTo($"/CV/Docentes/Ver/{docente.IdDocente}");
+                            }
                         }
                         else
                         {
@@ -251,7 +276,7 @@ namespace Presentacion.Areas.CV.Docentes
                     FileData = fileData,
                     FileName = fotoSeleccionada.Name,
                     FileType = fotoSeleccionada.ContentType,
-                    EmpleadoNombre = $"{docente.NombreDocente} {docente.PaternoDocente}".Trim(),
+                    EmpleadoNombre = $"{docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}".Trim(),
                     NumeroEmpleado = docente.NumeroEmpleado ?? "Sin Número",
                     TipoDocumento = DocumentType.General
                 };
@@ -275,7 +300,7 @@ namespace Presentacion.Areas.CV.Docentes
                     else
                     {
                         await JSRuntime.InvokeVoidAsync("console.log", "URL de foto guardada exitosamente en la base de datos (edición)");
-                        await JSRuntime.InvokeVoidAsync("alert", "Docente actualizado exitosamente");
+                        await JSRuntime.MsgExito("Docente actualizado exitosamente");
                         Navigation.NavigateTo($"/CV/Docentes/Ver/{idDocente}");
                     }
                 }
@@ -323,7 +348,7 @@ namespace Presentacion.Areas.CV.Docentes
             if (!EsEdicion) return;
 
             var confirmado = await JSRuntime.InvokeAsync<bool>("SweetAlertHelper.showConfirmation", 
-                "¿Eliminar docente?", $"¿Estás seguro de que deseas eliminar al docente {docente.NombreDocente} {docente.PaternoDocente}? Esta acción no se puede deshacer.");
+                "¿Eliminar docente?", $"¿Estás seguro de que deseas eliminar al docente {docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}? Esta acción no se puede deshacer.");
 
             if (confirmado)
             {
@@ -461,88 +486,7 @@ namespace Presentacion.Areas.CV.Docentes
             }
         }
 
-        private async Task GuardarYContinuar()
-        {
-            try
-            {
-                guardando = true;
-                StateHasChanged();
 
-                // Actualizar los campos de estado
-                docente.EstadoDocente = estaActivo ? 1 : 0;
-                docente.IdPRODEP = tieneProdep ? 1 : 2; // 1 = "Sí", 2 = "No"
-
-                // 1. Crear el docente primero
-                var resultado = await DocenteServicios.InsertarDocente(docente);
-                if (!resultado.Resultado || resultado.Entidad == null)
-                {
-                    var resultadoError = new ResultadoAcciones { Mensajes = resultado.Mensajes, Resultado = false };
-                    await JSRuntime.MsgError(resultadoError);
-                    return;
-                }
-
-                var nuevoDocente = resultado.Entidad;
-
-                // 2. Si hay foto seleccionada, subirla y actualizar el docente
-                if (fotoSeleccionada != null)
-                {
-                    await JSRuntime.InvokeVoidAsync("console.log", "Subiendo foto...");
-                    
-                    using var stream = fotoSeleccionada.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
-                    using var ms = new MemoryStream();
-                    await stream.CopyToAsync(ms);
-                    var fileData = ms.ToArray();
-
-                    var uploadRequest = new DocumentUploadRequest
-                    {
-                        FileData = fileData,
-                        FileName = fotoSeleccionada.Name,
-                        FileType = fotoSeleccionada.ContentType,
-                        EmpleadoNombre = $"{docente.NombreDocente} {docente.PaternoDocente}".Trim(),
-                        NumeroEmpleado = docente.NumeroEmpleado ?? "Sin Número",
-                        TipoDocumento = DocumentType.General
-                    };
-
-                    var response = await DocumentRepository.SubirDocumentoAsync(uploadRequest);
-                    
-                    if (!string.IsNullOrEmpty(response.Url))
-                    {
-                        await JSRuntime.InvokeVoidAsync("console.log", "Foto subida. URL recibida: " + response.Url);
-                        
-                        // Actualizar el docente con la URL de la foto
-                        nuevoDocente.URLFoto = response.Url;
-                        
-                        var resultadoUpdate = await DocenteServicios.ModificarDocente(nuevoDocente);
-                        if (!resultadoUpdate.Resultado)
-                        {
-                            await JSRuntime.InvokeVoidAsync("console.log", "Error al guardar URL de foto: " + string.Join(", ", resultadoUpdate.Mensajes));
-                            await JSRuntime.MsgPrecaucion("Docente creado pero hubo un error al guardar la URL de la foto. Puede editarla más tarde.");
-                        }
-                        else
-                        {
-                            await JSRuntime.InvokeVoidAsync("console.log", "URL de foto guardada exitosamente en la base de datos");
-                        }
-                    }
-                    else
-                    {
-                        await JSRuntime.InvokeVoidAsync("console.log", "Error: No se recibió URL de la foto");
-                        await JSRuntime.MsgPrecaucion("Docente creado pero no se pudo subir la foto. Puede intentar subirla más tarde.");
-                    }
-                }
-
-                await JSRuntime.MsgExito("Docente guardado exitosamente. Ahora puede agregar contactos.");
-                Navigation.NavigateTo($"/CV/Docentes/{nuevoDocente.IdDocente}/Contactos");
-            }
-            catch (Exception ex)
-            {
-                await JSRuntime.MsgError(new ResultadoAcciones { Mensajes = new List<string> { $"Error inesperado: {ex.Message}" }, Resultado = false });
-            }
-            finally
-            {
-                guardando = false;
-                StateHasChanged();
-            }
-        }
 
         private async Task SubirFotoPerfil(InputFileChangeEventArgs e)
         {

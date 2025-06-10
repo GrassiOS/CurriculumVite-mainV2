@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Entidades.DTO.CurriculumVite
@@ -6,15 +7,30 @@ namespace Entidades.DTO.CurriculumVite
     public class DocumentoDTO
     {
         public int IdDocumento { get; set; }
+        
+        [Required(ErrorMessage = "Debe seleccionar un docente")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un docente válido")]
         public int IdDocente { get; set; }
+        
         public int? IdPublicacion { get; set; }
         public int? IdDistincion { get; set; }
         public int? IdProyecto { get; set; }
         public int? IdTesis { get; set; }
         public int? IdEducacion { get; set; }
+        
+        [StringLength(300, ErrorMessage = "El título no puede exceder 300 caracteres")]
         public string? Titulo { get; set; }
+        
+        [Required(ErrorMessage = "La URL del documento es obligatoria")]
+        [Url(ErrorMessage = "La URL no tiene un formato válido")]
+        [StringLength(1000, ErrorMessage = "La URL no puede exceder 1000 caracteres")]
         public string Url { get; set; } = null!;
+        
+        [StringLength(1000, ErrorMessage = "La descripción no puede exceder 1000 caracteres")]
         public string? Descripcion { get; set; }
+        
+        [Required(ErrorMessage = "La fecha de subida es obligatoria")]
+        [DataType(DataType.DateTime)]
         public DateTime FechaSubida { get; set; }
         
         // Propiedades calculadas

@@ -6,19 +6,27 @@ namespace Entidades.DTO.CurriculumVite
     public class ExperienciaDTO
     {
         public int IdExperiencia { get; set; }
+        
+        [Required(ErrorMessage = "Debe seleccionar un docente")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un docente válido")]
         public int IdDocente { get; set; }
         
         [Required(ErrorMessage = "El puesto es obligatorio")]
+        [StringLength(200, MinimumLength = 2, ErrorMessage = "El puesto debe tener entre 2 y 200 caracteres")]
         public string? Puesto { get; set; }
         
         [Required(ErrorMessage = "La institución es obligatoria")]
+        [StringLength(200, MinimumLength = 2, ErrorMessage = "La institución debe tener entre 2 y 200 caracteres")]
         public string? Institucion { get; set; }
         
+        [StringLength(1000, ErrorMessage = "La descripción no puede exceder 1000 caracteres")]
         public string? Descripcion { get; set; }
         
         [Required(ErrorMessage = "La fecha de inicio es obligatoria")]
+        [DataType(DataType.Date)]
         public DateTime? FechaInicio { get; set; }
         
+        [DataType(DataType.Date)]
         public DateTime? FechaFin { get; set; }
         
         // Propiedades calculadas

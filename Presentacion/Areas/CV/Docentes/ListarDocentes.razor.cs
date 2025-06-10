@@ -142,7 +142,7 @@ namespace Presentacion.Areas.CV.Docentes
             if (docente == null) return;
 
             var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", 
-                $". ¿Estás seguro de que deseas eliminar al docente {docente.NombreDocente} {docente.PaternoDocente}?");
+                $". ¿Estás seguro de que deseas eliminar al docente {docente.NombreDocente} {docente.PaternoDocente} {docente.MaternoDocente}?");
 
             if (confirmado)
             {
